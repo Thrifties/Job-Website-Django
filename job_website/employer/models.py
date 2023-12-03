@@ -34,6 +34,7 @@ class Applicant(models.Model):
     phone = models.CharField(max_length=10, default="")
     address = models.CharField(max_length=100, default="")
     resume = models.FileField(upload_to='employer/applicants/resume/')
+    company = models.CharField(max_length=50, default="")
     job = models.CharField(max_length=50, default="")
     application_status = [
         ('Pending', 'Pending'),
