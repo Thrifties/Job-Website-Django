@@ -59,7 +59,9 @@ ROOT_URLCONF = 'job_website.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+                "/job_website/employer/templates"
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
