@@ -1,0 +1,9 @@
+# Ignore virtual environment
+venv/
+*.pyc
+
+# Ignore database files
+db.sqlite3
+
+# Ignore local settings (if applicable)
+local_settings.py
