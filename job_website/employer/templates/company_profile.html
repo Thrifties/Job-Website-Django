@@ -37,27 +37,28 @@
                     <div class="bg-white shadow overflow-hidden">
                         <div class="px-4 pt-0 pb-4 cover">
                             <div class="media align-items-end profile-head">
-                                <div class="profile mr-3"><img
-                                        src="./static/resources/accenture.png"
-                                        alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#"
-                                        class="btn btn-outline-dark btn-sm btn-block" data-bs-toggle="modal"
-                                        data-bs-target="#edit-company-profile">Edit profile</a></div>
-
+                                <div class="profile mr-3">
+                                    <img src="./static/resources/accenture.png" alt="..." width="130"
+                                        class="rounded mb-2 img-thumbnail">
+                                    <a href="#" class="btn btn-outline-dark btn-sm btn-block" data-bs-toggle="modal"
+                                        data-bs-target="#edit-choose">Edit profile</a>
+                                </div>
                                 <div class="media-body mb-5 text-white">
-                                    <h4 class="mt-0 mb-0 text-purple">Accenture</h4>
-                                    <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>Philippines</p>
+                                    <h2 class="mt-0 mb-3 fw-bold text-purple">Accenture</h2>
                                 </div>
                             </div>
-                            
+
                         </div>
-                        <div class="bg-light p-4 d-flex justify-content-end text-center">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item">
-                                    <h5 class="font-weight-bold mb-0 d-block">215</h5><small class="text-muted"> <i
-                                            class="fas fa-image mr-1"></i>Jobs</small>
-                                </li>
-                            </ul>
+                        <div style="height: 100px;" class="bg-light p-4 d-flex justify-content-end text-center">
+
                         </div>
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong>
+                            {{ form.errors }}
+                        </div>
+                        {% endif %}
+
 
                         <!-- ABOUT -->
                         <div class="p-4">
@@ -158,21 +159,286 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <div class="modal fade" id="edit-company-profile" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="edit-choose" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Company Profile</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save profile</button>
-                    </div>
+                    <form>
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Edit Company Profile</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-grid gap-2">
+                                <button type="button" class="btn btn-purple" data-bs-toggle="modal"
+                                    data-bs-target="#edit-company-picture"><i class="bi bi-camera2 me-1"></i>Profile
+                                    Picture</button>
+                                <button type="button" class="btn btn-purple" data-bs-toggle="modal"
+                                    data-bs-target="#edit-company-cover"><i class="bi bi-image me-1"></i>Cover
+                                    Photo</button>
+                                <button type="button" class="btn btn-purple" data-bs-toggle="modal"
+                                    data-bs-target="#edit-company-profile"><i class="bi bi-info-circle me-1"></i>Company
+                                    Details</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="edit-company-cover" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Edit Company Cover</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <!-- Inside the modal body -->
+                                    <div id="image-cover-preview" style="display: none;">
+                                        <img id="preview-cover" alt="File Preview" class="m-auto"
+                                            style="max-width: 100%; max-height: 200px;" />
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="profile-picture" class="form-label">Profile Picture</label>
+                                        <input class="form-control" type="file" id="profile-picture"
+                                            onchange="handleCover(event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="closePreview()">Close</button>
+                            <button type="button" class="btn btn-purple">Save Cover</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="edit-company-picture" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Edit Company Picture</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <!-- Inside the modal body -->
+                                    <div id="image-gallery-preview" style="display: none;">
+                                        <img id="preview-image" alt="File Preview" class="m-auto"
+                                            style="max-width: 100%; max-height: 200px;" />
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="profile-picture" class="form-label">Profile Picture</label>
+                                        <input class="form-control" type="file" id="cover"
+                                            onchange="handlePicture(event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+
+                            function closePreview() {
+                                document.getElementById("preview-image").style.display = "none";
+                                document.getElementById("image-gallery-preview").style.display = "none";
+                                document.getElementById("preview-cover").style.display = "none";
+                                document.getElementById("image-cover-preview").style.display = "none";
+                            }
+
+                            function handleCover(event) {
+                                const fileInput = event.target;
+                                const file = fileInput.files[0];
+
+                                // Check if a file is selected
+                                if (file) {
+                                    const reader = new FileReader();
+
+                                    // Set up the reader to display the file
+                                    reader.onload = function (e) {
+                                        const previewElement = document.getElementById("preview-cover");
+
+                                        // Check the file type
+                                        if (file.type.includes("image")) {
+                                            // If it's an image, display it
+                                            previewElement.src = e.target.result;
+                                            previewElement.style.display = "block"; // Display the image preview
+                                        } else {
+                                            // If it's not an image, hide the image preview
+                                            previewElement.style.display = "none";
+                                        }
+
+                                        // Show the preview container
+                                        document.getElementById("image-cover-preview").style.display = "block";
+
+                                    };
+
+                                    // Read the file as a data URL
+                                    reader.readAsDataURL(file);
+                                } else {
+                                    // Hide the preview container, file name, and download link if no file is selected
+                                    document.getElementById("image-cover-preview").style.display = "none";
+                                }
+                            }
+
+                            function handlePicture(event) {
+                                const fileInput = event.target;
+                                const file = fileInput.files[0];
+
+                                // Check if a file is selected
+                                if (file) {
+                                    const reader = new FileReader();
+
+                                    // Set up the reader to display the file
+                                    reader.onload = function (e) {
+                                        const previewElement = document.getElementById("preview-image");
+
+                                        // Check the file type
+                                        if (file.type.includes("image")) {
+                                            // If it's an image, display it
+                                            previewElement.src = e.target.result;
+                                            previewElement.style.display = "block"; // Display the image preview
+                                        } else {
+                                            // If it's not an image, hide the image preview
+                                            previewElement.style.display = "none";
+                                        }
+
+                                        // Show the preview container
+                                        document.getElementById("image-gallery-preview").style.display = "block";
+
+                                    };
+
+                                    // Read the file as a data URL
+                                    reader.readAsDataURL(file);
+                                } else {
+                                    // Hide the preview container, file name, and download link if no file is selected
+                                    document.getElementById("image-gallery-preview").style.display = "none";
+                                }
+                            }
+                        </script>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="closePreview()">Close</button>
+                            <button type="button" class="btn btn-purple">Save picture</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="edit-company-picture" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Edit Company Picture</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div>
+                                    <div class="mb-3">
+                                        <label for="profile-picture" class="form-label">Profile Picture</label>
+                                        <input class="form-control" type="file" id="profile-picture">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-purple">Save picture</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="edit-company-profile" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <form method="post" action="{% url 'add_company_profile' %}">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Edit Company Profile</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                {{ form.as_p }}
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="company_name" name="company_name"
+                                            placeholder="" required>
+                                        <label for="companyName">Company Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="company_email" name="company_email"
+                                            placeholder="" required>
+                                        <label for="companyEmail">Company Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="location" name="location"
+                                            placeholder="" required>
+                                        <label for="location">Location</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="url" class="form-control" id="website" name="website"
+                                            placeholder="" required>
+                                        <label for="website">Website</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="scope" name="scope" placeholder=""
+                                            required>
+                                        <label for="scope">Scope</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <textarea style="height: 100px;" class="form-control" id="overview"
+                                            name="overview" placeholder="" required></textarea>
+                                        <label for="overview">Overview</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <textarea style="height: 100px;" class="form-control" id="join_us" name="join_us"
+                                            placeholder="" required></textarea>
+                                        <label for="joinUs">Why Join Us?</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-purple">Save profile</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>

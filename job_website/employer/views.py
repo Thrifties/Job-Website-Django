@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Job, Details
+from .forms import CompanyForm
+from django.contrib import messages
 # Create your views here.
 
 
@@ -114,3 +116,22 @@ def company_profile(request):
         'title': 'Company Profile Page'
     }
     return render(request, template, context)
+
+def add_company_profile(request):
+    if request.method == 'POST':
+        form = CompanyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Company profile saved successfully.')
+            return redirect('company_profile')
+        else:
+            messages.error(request, 'Form submission has errors. Please check the form.')
+    else:
+        form = CompanyForm()
+
+    context = {
+        'title': 'Add Company Profile',
+        'form': form,
+    }
+
+    return render(request, 'company_profile.html', context)
