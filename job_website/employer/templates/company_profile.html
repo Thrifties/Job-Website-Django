@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{title}}</title>
+    <!-- Custom fonts for this template -->
+    {% include 'includes/header-cdn.html' %}
+    <link rel="stylesheet" href="{% static 'css/company_profile.css' %}">
+    <!-- Include Bootstrap Datepicker JS -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% include 'includes/navbar.html' %}
+
+        <div class="banner d-flex justify-content-end align-items-center">
+        </div>
+
+        <!-- Begin Page Content -->
+        <div class="">
+            <div>
+                <div class="col-md-12 mx-auto p-0">
+                    <div class="bg-white shadow overflow-hidden">
+                        <div class="px-4 pt-0 pb-4 cover">
+                            <div class="media align-items-end profile-head">
+                                <div class="profile mr-3"><img
+                                        src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"
+                                        alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#"
+                                        class="btn btn-outline-dark btn-sm btn-block" data-bs-toggle="modal"
+                                        data-bs-target="#edit-company-profile">Edit profile</a></div>
+
+                                <div class="media-body mb-5 text-white">
+                                    <h4 class="mt-0 mb-0 text-purple">Accenture</h4>
+                                    <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>Philippines</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-light p-4 d-flex justify-content-end text-center">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item">
+                                    <h5 class="font-weight-bold mb-0 d-block">215</h5><small class="text-muted"> <i
+                                            class="fas fa-image mr-1"></i>Jobs</small>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- ABOUT -->
+                        <div class="p-4">
+                            <ul class="nav nav-underline mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link  active" id="pills-home-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-about" type="button" role="tab"
+                                        aria-controls="pills-home" aria-selected="true">Home</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-jobs" type="button" role="tab"
+                                        aria-controls="pills-profile" aria-selected="false">Profile</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-about" role="tabpanel"
+                                    aria-labelledby="pills-about-tab" tabindex="0">
+                                    <ul class="list-unstyled text-purple">
+                                        <li class="mb-2"><i class="bi bi-envelope me-2"></i><span
+                                                class="text-black fw-bold">Accenture@gmail.com</span></li>
+                                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i></i><span
+                                                class="text-black fw-bold">Citibank Center, Paseo de Roxas, Makati, 1126
+                                                Metro Manila, Philippines</span></li>
+                                        <li class="mb-2"><i class="bi bi-link-45deg me-2"></i><span
+                                                class="text-black fw-bold">Accenture.com</span></li>
+                                        <li class="mb-2"><i class="bi bi-card-checklist me-2"></i><span
+                                                class="text-black fw-bold">Information Communications and
+                                                Technology</span></li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="pills-jobs" role="tabpanel"
+                                    aria-labelledby="pills-jobs-tab" tabindex="0">...</div>
+                            </div>
+                        </div>
+                        <!-- ABOUT -->
+
+                        <!-- COMPANY OVERVIEW -->
+                        <div class="px-4 mb-3">
+                            <h4 class="text-purple fw-bold">Company Overview</h4>
+                            <div class="border border-light-subtle rounded p-2">
+                                <p>
+                                    Accenture is a global professional services company with leading capabilities in
+                                    digital, cloud and security. Combining unmatched experience and specialized skills
+                                    across more than 40 industries, we offer Strategy and Consulting, Interactive,
+                                    Technology and Operations services—all powered by the world’s largest network of
+                                    Advanced Technology and Intelligent Operations centers.
+
+                                    Our 514,000 people deliver on the promise of technology and human ingenuity every
+                                    day, serving clients in more than 120 countries. We embrace the power of change to
+                                    create value and shared success for our clients, people, shareholders, partners and
+                                    communities.
+
+                                    Visit us at www.accent
+
+                                </p>
+                            </div>
+                        </div>
+                        <!-- COMPANY OVERVIEW -->
+
+                        <!-- COMPANY OVERVIEW -->
+                        <div class="px-4 mb-3">
+                            <h4 class="text-purple fw-bold">Why Join us?</h4>
+                            <div class="border border-light-subtle rounded p-2">
+                                <p>
+                                    Your career is about what you want to do and who you want to be. It’s about bringing
+                                    your skills, your curiosity and your best true self to work every day.
+                                    At Accenture, we collaborate with exceptional people across the globe, combining our
+                                    ingenuity, industry expertise and the latest technology to deliver 360° value for
+                                    our clients, people and communities.
+                                    Here, you can harness powerful change to make a world of difference!
+                                </p>
+                            </div>
+                        </div>
+                        <!-- COMPANY OVERVIEW -->
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2021</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <div class="modal fade" id="edit-company-profile" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Company Profile</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.html">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% include 'includes/js-cdn.html' %}
+
+</body>
+
+</html>

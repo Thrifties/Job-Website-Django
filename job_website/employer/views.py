@@ -58,3 +58,11 @@ def add_job(request):
     }
 
     return render(request, 'post_job.html', context)
+
+def company_profile(request):
+
+    template = 'company_profile.html'
+    context = {
+        'title': 'Company Profile Page'
+    }
+    return render(request, template, context)
