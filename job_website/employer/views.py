@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Job
+from .models import Job, Details
 # Create your views here.
 
 
@@ -10,6 +10,46 @@ def dashboard(request):
         'title': 'Dashboard Page'
     }
     return render(request, template, context)
+
+def register(request):
+    
+    template = 'register.html'
+    context = {
+        'title': 'Register Page'
+    }
+    return render(request, template, context)
+
+def add_employer(request):
+    if request.method == 'POST':
+        # Access form data directly from request.POST
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        company = request.POST.get('company')
+        address = request.POST.get('company_address')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+
+        # Create a new Job instance and save to the database
+        Details.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            company=company,
+            address=address,
+            email=email,
+            phone=phone,
+            password=password
+        )
+
+        # Redirect to a success page or do something else
+        # Adjust 'success_page' to your actual success page URL
+        return redirect('register')
+
+    context = {
+        'title': 'Register Page',
+    }
+
+    return render(request, 'register.html', context)
 
 
 def post_job(request):

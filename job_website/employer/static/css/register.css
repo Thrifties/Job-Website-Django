@@ -1,0 +1,51 @@
+:root {
+    --primary: #1e2f96;
+    --secondary: #9f2efd;    
+    --tertiary: #d86dfc;
+    --accent: #4371f6;
+    --dark: #7146fd;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.logo {
+    height: 60px;
+}
+
+.banner {
+    /* background: linear-gradient(0deg, rgba(18, 81, 40, 0.7), rgba(18, 81, 40, 0.7)), url('./img/BSU FRONT 2.jpg'); */
+    background: url('/static/resources/banner.png'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; 
+    position: relative;
+    width: 100%;
+    height: 50px;
+  }
+
+#formContainer {
+    width: 80vw;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+    padding: 3em;
+    margin-bottom: 3em;
+}
+
+#formContainer button {
+    padding: .5em 6em;
+    background: var(--secondary);
+    border: none;
+}
+
+#formContainer button:hover {
+    background: var(--dark);
+    cursor: pointer;
+}
+
+#formContainer span {
+    color: var(--secondary)
+}
