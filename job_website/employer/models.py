@@ -17,15 +17,17 @@ class Details(models.Model):
 
 
 class Job(models.Model):
-    title = models.CharField(max_length=50, default="")
-    address = models.CharField(max_length=100, default="")
-    location = models.CharField(max_length=50, default="")
-    salary = models.CharField(max_length=50, default="")
-    description = models.CharField(max_length=1000, default="")
-    requirements = models.CharField(max_length=1000, default="")
-    email = models.EmailField(max_length=50, default="")
-    phone = models.CharField(max_length=10, default="")
-    date = models.DateField()
+    title = models.CharField(max_length=255, default="")
+    # Set a valid default numerical value
+    number_of_people = models.IntegerField(default=0)
+    salary = models.CharField(max_length=255, default="")
+    category = models.CharField(max_length=255, default="")
+    location = models.CharField(max_length=255, default="")
+    description = models.TextField(max_length=255, default="")
+    date = models.DateField(default=None)  # Or set a default date if needed
+    requirement1 = models.BooleanField(default=False)
+    requirement2 = models.BooleanField(default=False)
+    requirement3 = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

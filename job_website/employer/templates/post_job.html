@@ -10,27 +10,12 @@
     <meta name="author" content="">
 
     <title>{{title}}</title>
-
     <!-- Custom fonts for this template -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"
-        type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-    <!-- ICON -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
-
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="{% static 'css/sb-admin-2.min.css' %}">
+    {% include 'includes/header-cdn.html' %}
     <link rel="stylesheet" href="{% static 'css/post_job.css' %}">
+    <!-- Include Bootstrap Datepicker JS -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 </head>
 
@@ -43,118 +28,146 @@
         {% include 'includes/navbar.html' %}
 
         <div class="banner d-flex justify-content-end align-items-center">
-            <button id="post" class="btn btn-primary btn-sm me-5 rounded-pill" type="button"><i
+            <button id="post" class="btn btn-primary btn-sm me-2 rounded-pill" type="button"><i
                     class="bi bi-plus-circle me-0 me-sm-1"></i><span class="d-none d-sm-inline" data-bs-toggle="modal"
-                    data-bs-target="#add-announcement">POST A JOB</span></button>
+                    data-bs-target="#add">POST A JOB</span></button>
         </div>
 
         <!-- Modal Add-->
-        <div class="modal fade" id="add-announcement" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5">Add Announcement</h1>
+                        <h1 class="modal-title fs-5">Post A Job</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="form-announcement" onsubmit="return false;">
+                    <form id="form-add" method="post" action="{% url 'add_job' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="modal-body">
-                            <div class="mb-2" id="reflect">
-                                <div class="border rounded p-3">
-                                    <div class="text-secondary">
-                                        Sample Output
+                            <div class="alert alert-danger mb-2" role="alert" id="alert-container"
+                                style="display: none;">
+                                <i class="bi bi-exclamation-circle me-2"></i><span id="alert-text"></span>
+                            </div>
+
+                            <div class="container-fluid">
+
+
+                                <div class="row gap-1">
+                                    <div class="col-6 mb-1 p-0">
+                                        <div class="form-floating">
+                                            <input type="text" name="title" id="edit-benefactor" class="form-control"
+                                                placeholder="" />
+                                            <label class="form-label" for="edit-benefactor">Job Title<span
+                                                    class="text-danger"> *</span></label>
+                                        </div>
                                     </div>
-                                    <div class=" rounded border shadow position-relative mt-2">
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                                        </span>
-                                        <div>
-                                            <div class="border-bottom">
-                                                <div class="px-3 py-3">
-                                                    <h3 class="m-0 ">Announcement</h3>
+
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="number" name="number_of_people" id="edit-student-number"
+                                                class="form-control" required />
+                                            <label class="form-label" for="edit-student-number">Number of People to
+                                                hire<span class="text-danger"> *</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col mb-1 p-0">
+                                        <div class="form-floating">
+                                            <input type="number" name="salary" id="edit-benefactor" class="form-control"
+                                                placeholder="" />
+                                            <label class="form-label" for="edit-benefactor">Salary<span
+                                                    class="text-danger"> *</span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="text" name="category" id="edit-student-number"
+                                                class="form-control" required />
+                                            <label class="form-label" for="edit-student-number">Category<span
+                                                    class="text-danger"> *</span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="text" name="location" id="edit-student-number"
+                                                class="form-control" required />
+                                            <label class="form-label" for="edit-student-number">Location<span
+                                                    class="text-danger"> *</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col-12 mb-1 p-0">
+                                        <div class="form-floating mb-2">
+                                            <textarea class="form-control" name="description" id="editDescription"
+                                                style="height: 100px" rows="4"></textarea>
+                                            <label class="form-label" for="description">Job Description</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col mb-1 p-0">
+                                        <label class="form-label" for="description">Job Requirements</label>
+
+                                        <div class="row ms-4">
+                                            <div class="col mb-2 p-0">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" name="requirement1" type="checkbox"
+                                                        id="requirement1">
+                                                    <label class="form-check-label" for="requirement1">
+                                                        Requirement 1
+                                                    </label>
                                                 </div>
                                             </div>
-                                            <div class="px-3 py-2 overflow-y-auto announcement-container">
 
-                                                <h5 class="border-start border-5 border-success ps-1"
-                                                    id="announcement_title">
-                                                    Title
-                                                </h5>
-
-                                                <p id="announcement_description" class="">
-                                                    Description
-                                                </p>
-                                                <strong><a href="#" id="announcement_link">...</a></strong>
-
-                                                <div id="announcement_file">
-                                                    <!-- DISPLAY THE FILE -->
+                                            <div class="col mb-2 p-0">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" name="requirement2" type="checkbox"
+                                                        id="requirement2">
+                                                    <label class="form-check-label" for="requirement2">
+                                                        Requirement 2
+                                                    </label>
                                                 </div>
-                                                <!-- Inside the modal body -->
-                                                <div id="image-preview" style="display: none;">
-                                                    <img id="preview" alt="File Preview"
-                                                        style="max-width: 100%; max-height: 200px;" />
-                                                    <span id="file-name" style="display: none;"></span>
-                                                </div>
-
-                                                <!-- ... -->
-
-                                                <!-- Modify the download link to use the file name -->
-                                                <a id="download-link" style="display: none;" download>Download</a>
                                             </div>
+
+                                            <div class="col mb-2 p-0">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" name="requirement3" type="checkbox"
+                                                        id="requirement3">
+                                                    <label class="form-check-label" for="requirement3">
+                                                        Requirement 3
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col mb-2 p-0">
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1">Date</span>
+                                            <input type="date" name="date" class="form-control datepicker"
+                                                id="datepicker">
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
 
-
-                            <div class="grid-modal">
-                                <div class="alert alert-danger mb-2" role="alert" id="alert-container"
-                                    style="display: none;">
-                                    <i class="bi bi-exclamation-circle me-2"></i><span id="alert-text"></span>
-                                </div>
-                                <div class="title grid-span">
-                                    <div class="form-floating mb-2">
-                                        <input type="text" id="title" class="form-control form-control-sm" required
-                                            placeholder=" " />
-                                        <label class="form-label" for="title">Title</label>
-                                    </div>
-                                </div>
-
-                                <div class="title grid-span">
-                                    <div class="form-floating mb-2">
-                                        <textarea class="form-control" id="description" rows="4" placeholder=" "
-                                            required style="height: 100px"></textarea>
-                                        <label class="form-label" for="description">Description</label>
-                                    </div>
-                                </div>
-
-                                <div class="title grid-span">
-                                    <div class="form-floating mb-2">
-                                        <input type="url" id="url" class="form-control" placeholder=" " />
-                                        <label class="form-label" for="url">URL input</label>
-                                    </div>
-                                </div>
-
-                                <div class="title grid-span">
-                                    <div class="form-floating mb-2">
-                                        <input type="file" id="file-announcement" class="form-control" placeholder=" "
-                                            accept=".pdf, image/jpeg, image/png" onchange="handleFileSelect(event)" />
-                                        <label class="form-label" for="file">PDF, JPEG, or PNG</label>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="publish-announcement"
-                                onclick="addAnnouncement()">Publish</button>
+                            <button type="submit" class="btn btn-primary" id="publish-announcement">Post</button>
                         </div>
                     </form>
                 </div>
@@ -214,20 +227,16 @@
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script> -->
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-
-    <!-- Your custom scripts -->
-    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'js/chart-area-demo.js' %}"></script>
-    <script src="{% static 'js/chart-pie-demo.js' %}"></script> -->
+    {% include 'includes/js-cdn.html' %}
+    <!-- <script>
+        // Initialize datepicker
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'mm/dd/yyyy',  // You can customize the date format
+                autoclose: true,
+            });
+        });
+    </script> -->
 
 
 </body>
