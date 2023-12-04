@@ -51,6 +51,14 @@ def add_employer(request):
 
     return render(request, 'register.html', context)
 
+def profile_settings(request):
+    
+    template = 'profile_settings.html'
+    context = {
+        'title': 'Profile Settings Page'
+    }
+    return render(request, template, context)
+
 
 def post_job(request):
 
