@@ -1,0 +1,18 @@
+:root {
+    --primary: #1e2f96;
+    --secondary: #9f2efd;    
+    --tertiary: #d86dfc;
+    --accent: #4371f6;
+    --dark: #7146fd;
+}
+
+#navbar-brand-logo {
+    height: 5rem;
+    margin-top: -20px;
+    margin-bottom: -20px;
+}
+
+#topPartSidebar span {
+    font-size: 1em;
+    color: #fff;
+}
