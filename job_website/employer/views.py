@@ -5,6 +5,9 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import json
+from .models import Job, Details
+from .forms import CompanyForm
+from django.contrib import messages
 # Create your views here.
 
 
@@ -13,6 +16,57 @@ def dashboard(request):
     template = 'dashboard.html'
     context = {
         'title': 'Dashboard Page'
+    }
+    return render(request, template, context)
+
+
+def register(request):
+
+    template = 'register.html'
+    context = {
+        'title': 'Register Page'
+    }
+    return render(request, template, context)
+
+
+def add_employer(request):
+    if request.method == 'POST':
+        # Access form data directly from request.POST
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        company = request.POST.get('company')
+        address = request.POST.get('company_address')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+
+        # Create a new Job instance and save to the database
+        Details.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            company=company,
+            address=address,
+            email=email,
+            phone=phone,
+            password=password
+        )
+
+        # Redirect to a success page or do something else
+        # Adjust 'success_page' to your actual success page URL
+        return redirect('register')
+
+    context = {
+        'title': 'Register Page',
+    }
+
+    return render(request, 'register.html', context)
+
+
+def profile_settings(request):
+
+    template = 'profile_settings.html'
+    context = {
+        'title': 'Profile Settings Page'
     }
     return render(request, template, context)
 
@@ -149,3 +203,33 @@ def save_job_changes(request):
             return JsonResponse({'error': 'Invalid data.'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def company_profile(request):
+
+    template = 'company_profile.html'
+    context = {
+        'title': 'Company Profile Page'
+    }
+    return render(request, template, context)
+
+
+def add_company_profile(request):
+    if request.method == 'POST':
+        form = CompanyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Company profile saved successfully.')
+            return redirect('company_profile')
+        else:
+            messages.error(
+                request, 'Form submission has errors. Please check the form.')
+    else:
+        form = CompanyForm()
+
+    context = {
+        'title': 'Add Company Profile',
+        'form': form,
+    }
+
+    return render(request, 'company_profile.html', context)
