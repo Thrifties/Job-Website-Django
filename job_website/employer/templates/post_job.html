@@ -5,18 +5,60 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{title}}</title>
-    <!-- Custom fonts for this template -->
+    <title>{{ title }}</title>
+    <!-- Custom fonts for this template (assuming it's loading fonts) -->
     {% include 'includes/header-cdn.html' %}
-    <link rel="stylesheet" href="{% static 'css/post_job.css' %}">
-    <!-- Include Bootstrap Datepicker JS -->
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <!-- DATATABLES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- Your custom CSS file -->
+    <link rel="stylesheet" href="{% static 'css/post_job.css' %}">
+
+
+
+    <!-- Your custom CSS file -->
+    <link rel="stylesheet" href="{% static 'css/post_job.css' %}">
+
+    <style>
+        /* Center align DataTables header and content */
+        #job_list.dataTable thead th,
+        #job_list.dataTable tbody td {
+            text-align: center;
+        }
+
+        /* Ensure proper alignment for DataTables wrapper */
+        #job_list_wrapper {
+            text-align: center;
+        }
+
+        /* Left-align length data and info data in DataTables */
+        #job_list_info,
+        #job_list_length {
+            text-align: left;
+        }
+
+        #job_list_closed.dataTable thead th,
+        #job_list_closed.dataTable tbody td {
+            text-align: center;
+        }
+
+        /* Ensure proper alignment for DataTables wrapper */
+        #job_list_closed_wrapper {
+            text-align: center;
+        }
+
+        /* Left-align length data and info data in DataTables */
+        #job_list_closed_info,
+        #job_list_closed_length {
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -57,18 +99,18 @@
                                 <div class="row gap-1">
                                     <div class="col-6 mb-1 p-0">
                                         <div class="form-floating">
-                                            <input type="text" name="title" id="edit-benefactor" class="form-control"
+                                            <input type="text" name="title" id="title" class="form-control"
                                                 placeholder="" />
-                                            <label class="form-label" for="edit-benefactor">Job Title<span
-                                                    class="text-danger"> *</span></label>
+                                            <label class="form-label" for="title">Job Title<span class="text-danger">
+                                                    *</span></label>
                                         </div>
                                     </div>
 
                                     <div class="col mb-2 p-0">
                                         <div class="form-floating position-relative">
-                                            <input type="number" name="number_of_people" id="edit-student-number"
-                                                class="form-control" required />
-                                            <label class="form-label" for="edit-student-number">Number of People to
+                                            <input type="number" name="number_of_people" id="number_of_people"
+                                                class="form-control" required placeholder="" />
+                                            <label class="form-label" for="number_of_people">Number of People to
                                                 hire<span class="text-danger"> *</span></label>
                                         </div>
                                     </div>
@@ -77,28 +119,28 @@
                                 <div class="row gap-1">
                                     <div class="col mb-1 p-0">
                                         <div class="form-floating">
-                                            <input type="number" name="salary" id="edit-benefactor" class="form-control"
+                                            <input type="number" name="salary" id="salary" class="form-control"
                                                 placeholder="" />
-                                            <label class="form-label" for="edit-benefactor">Salary<span
-                                                    class="text-danger"> *</span></label>
+                                            <label class="form-label" for="salary">Salary<span class="text-danger">
+                                                    *</span></label>
                                         </div>
                                     </div>
 
                                     <div class="col mb-2 p-0">
                                         <div class="form-floating position-relative">
-                                            <input type="text" name="category" id="edit-student-number"
-                                                class="form-control" required />
-                                            <label class="form-label" for="edit-student-number">Category<span
-                                                    class="text-danger"> *</span></label>
+                                            <input type="text" name="category" id="category" class="form-control"
+                                                required placeholder="" />
+                                            <label class="form-label" for="category">Category<span class="text-danger">
+                                                    *</span></label>
                                         </div>
                                     </div>
 
                                     <div class="col mb-2 p-0">
                                         <div class="form-floating position-relative">
-                                            <input type="text" name="location" id="edit-student-number"
-                                                class="form-control" required />
-                                            <label class="form-label" for="edit-student-number">Location<span
-                                                    class="text-danger"> *</span></label>
+                                            <input type="text" name="location" id="location" class="form-control"
+                                                required placeholder="" />
+                                            <label class="form-label" for="location">Location<span class="text-danger">
+                                                    *</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -106,48 +148,22 @@
                                 <div class="row gap-1">
                                     <div class="col-12 mb-1 p-0">
                                         <div class="form-floating mb-2">
-                                            <textarea class="form-control" name="description" id="editDescription"
-                                                style="height: 100px" rows="4"></textarea>
-                                            <label class="form-label" for="description">Job Description</label>
+                                            <textarea class="form-control" name="description" id="description"
+                                                style="height: 100px" rows="4" placeholder=""></textarea>
+                                            <label class="form-label" for="description">Job Description<span
+                                                    class="text-danger"> *</span></label>
                                         </div>
 
                                     </div>
                                 </div>
 
                                 <div class="row gap-1">
-                                    <div class="col mb-1 p-0">
-                                        <label class="form-label" for="description">Job Requirements</label>
-
-                                        <div class="row ms-4">
-                                            <div class="col mb-2 p-0">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" name="requirement1" type="checkbox"
-                                                        id="requirement1">
-                                                    <label class="form-check-label" for="requirement1">
-                                                        Requirement 1
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col mb-2 p-0">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" name="requirement2" type="checkbox"
-                                                        id="requirement2">
-                                                    <label class="form-check-label" for="requirement2">
-                                                        Requirement 2
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col mb-2 p-0">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" name="requirement3" type="checkbox"
-                                                        id="requirement3">
-                                                    <label class="form-check-label" for="requirement3">
-                                                        Requirement 3
-                                                    </label>
-                                                </div>
-                                            </div>
+                                    <div class="col-12 mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="text" name="requirements" id="requirements"
+                                                class="form-control" required placeholder="" />
+                                            <label class="form-label" for="requirements">Job Requirements<span
+                                                    class="text-danger"> *</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -155,13 +171,29 @@
                                 <div class="row gap-1">
                                     <div class="col mb-2 p-0">
                                         <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon1">Date</span>
+                                            <span class="input-group-text" id="basic-addon1">Date<span
+                                                    class="text-danger"> *</span></span>
                                             <input type="date" name="date" class="form-control datepicker"
                                                 id="datepicker">
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row gap-1">
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <select class="form-select" name="status" required>
+                                                <option value="Open">Open</option>
+                                                <option value="Closed">Closed</option>
+                                            </select>
+                                            <label class="form-label" for="status">Job Status<span class="text-danger">
+                                                    *</span></label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+
 
 
                         </div>
@@ -174,70 +206,361 @@
             </div>
         </div>
 
+
+
         <!-- Begin Page Content -->
         <div class="container">
-            <div>
-                <h3>Test Page</h3>
-            </div>
-
-        </div>
-        <!-- /.container-fluid -->
-
-    </div>
-    <!-- End of Main Content -->
-
-    <!-- Footer -->
-    <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2021</span>
-            </div>
-        </div>
-    </footer>
-    <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
+            <nav class="m-3">
+                <div class="nav nav-underline fw-bold" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-open"
+                        type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                        <i class="bi bi-check-circle me-1"></i>Open Jobs
+                    </button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-closed"
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                        <i class="bi bi-list-check me-1"></i>Closed Jobs
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+            </nav>
+
+            <div class="tab-content mt-4">
+                <!-- Tab for OPEN jobs -->
+                <div class="tab-pane fade show active" id="nav-open" role="tabpanel" aria-labelledby="nav-home-tab"
+                    tabindex="0">
+                    <table id="job_list" class="table table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Number of People</th>
+                                <th>Salary</th>
+                                <th>Category</th>
+                                <th>Location</th>
+                                <th>Description</th>
+                                <th>Job Requirements</th>
+                                <th>Application Deadline</th>
+                                <th>Job Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in jobs %}
+                            <tr>
+                                <td>{{ job.title }}</td>
+                                <td>{{ job.number_of_people }}</td>
+                                <td>{{ job.salary }}</td>
+                                <td>{{ job.category }}</td>
+                                <td>{{ job.location }}</td>
+                                <td>{{ job.description }}</td>
+                                <td>{{ job.requirements }}</td>
+                                <td>{{ job.date }}</td>
+                                <td>{{ job.status }}</td>
+                                <td>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-warning me-2 text-light" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#editModal"
+                                            data-jobid="{{ job.id }}">
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-danger text-light" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal{{ job.id }}">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tab for CLOSED jobs -->
+                <div class="tab-pane fade" id="nav-closed" role="tabpanel" aria-labelledby="nav-profile-tab"
+                    tabindex="0">
+                    <table id="job_list_closed" class="table table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Number of People</th>
+                                <th>Salary</th>
+                                <th>Category</th>
+                                <th>Location</th>
+                                <th>Description</th>
+                                <th>Application Deadline</th>
+                                <th>Job Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in jobs %}
+                            <tr>
+                                <td>{{ job.title }}</td>
+                                <td>{{ job.number_of_people }}</td>
+                                <td>{{ job.salary }}</td>
+                                <td>{{ job.category }}</td>
+                                <td>{{ job.location }}</td>
+                                <td>{{ job.description }}</td>
+                                <td>{{ job.date }}</td>
+                                <td>
+                                    <div class="input-group">
+                                        <select class="form-control bg-primary text-dark text-center"
+                                            id="jobStatus{{ job.id }}" name="jobStatus">
+                                            <option value="active">Open</option>
+                                            <option value="inactive">Close</option>
+                                            <!-- Add more status options as needed -->
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-warning me-2 text-light" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#editModal">
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-danger text-light" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal{{ job.id }}">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Edit Job</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="editJobForm">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <div class="alert alert-danger mb-2" role="alert" id="alert-container"
+                                    style="display: none;">
+                                    <i class="bi bi-exclamation-circle me-2"></i><span id="alert-text"></span>
+                                </div>
+
+                                <div class="container-fluid">
+
+
+                                    <div class="row gap-1">
+                                        <div class="col-6 mb-1 p-0">
+                                            <div class="form-floating">
+                                                <input type="text" name="edit-title" id="edit-title"
+                                                    class="form-control" placeholder="" />
+                                                <label class="form-label" for="edit-title">Job Title<span
+                                                        class="text-danger"> *</span></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col mb-2 p-0">
+                                            <div class="form-floating position-relative">
+                                                <input type="number" name="edit-number-of-people"
+                                                    id="edit-number-of-people" class="form-control" required />
+                                                <label class="form-label" for="edit-number-of-people">Number of People
+                                                    to
+                                                    hire<span class="text-danger"> *</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row gap-1">
+                                        <div class="col mb-1 p-0">
+                                            <div class="form-floating">
+                                                <input type="number" name="edit-salary" id="edit-salary"
+                                                    class="form-control" placeholder="" />
+                                                <label class="form-label" for="edit-salary">Salary<span
+                                                        class="text-danger"> *</span></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col mb-2 p-0">
+                                            <div class="form-floating position-relative">
+                                                <input type="text" name="edit-category" id="edit-category"
+                                                    class="form-control" required />
+                                                <label class="form-label" for="edit-category">Category<span
+                                                        class="text-danger"> *</span></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col mb-2 p-0">
+                                            <div class="form-floating position-relative">
+                                                <input type="text" name="edit-location" id="edit-location"
+                                                    class="form-control" required />
+                                                <label class="form-label" for="edit-location">Location<span
+                                                        class="text-danger"> *</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row gap-1">
+                                        <div class="col-12 mb-1 p-0">
+                                            <div class="form-floating mb-2">
+                                                <textarea class="form-control" name="edit-description"
+                                                    id="edit-description" style="height: 100px" rows="4"></textarea>
+                                                <label class="form-label" for="edit-description">Job Description</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row gap-1">
+                                        <div class="col mb-1 p-0">
+                                            <label class="form-label" for="edit-description">Job Requirements</label>
+
+                                            <div class="row ms-4">
+                                                <div class="col mb-2 p-0">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="edit-requirement1"
+                                                            type="checkbox" id="edit-requirement1">
+                                                        <label class="form-check-label" for="edit-requirement1">
+                                                            Requirement 1
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col mb-2 p-0">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="edit-requirement2"
+                                                            type="checkbox" id="edit-requirement2">
+                                                        <label class="form-check-label" for="edit-requirement2">
+                                                            Requirement 2
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col mb-2 p-0">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="edit-requirement3"
+                                                            type="checkbox" id="edit-requirement3">
+                                                        <label class="form-check-label" for="edit-requirement3">
+                                                            Requirement 3
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row gap-1">
+                                        <div class="col mb-2 p-0">
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="basic-addon1">Date</span>
+                                                <input type="date" name="edit-date" class="form-control datepicker"
+                                                    id="edit-date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        <!-- End of Main Content -->
+
     </div>
 
+
     {% include 'includes/js-cdn.html' %}
-    <!-- <script>
-        // Initialize datepicker
+    <!-- DATA TABLE -->
+    <script src=" https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Ensure jQuery is loaded before DataTables -->
+    <script>
         $(document).ready(function () {
-            $('.datepicker').datepicker({
-                format: 'mm/dd/yyyy',  // You can customize the date format
-                autoclose: true,
+            $('#job_list, #job_list_closed').DataTable();
+
+            // Open Edit Modal
+            $('.btn-warning').on('click', function () {
+                var jobId = $(this).data('jobid');
+
+                // Set the jobId in the modal data attribute
+                $('#editModal').data('jobid', jobId);
+
+                // Make an AJAX request to fetch job details
+                $.ajax({
+                    url: '{% url "get_job_details" %}',  // Replace with your Django view URL
+                    method: 'GET',
+                    data: { job_id: jobId },
+                    success: function (data) {
+                        // Populate input fields in the modal with retrieved data
+                        $('#edit-title').val(data.title);
+                        $('#edit-number-of-people').val(data.number_of_people);
+                        $('#edit-salary').val(data.salary);
+                        $('#edit-category').val(data.category);
+                        $('#edit-location').val(data.location);
+                        $('#edit-description').val(data.description);
+                        $('#edit-date').val(data.date);
+
+
+                        // Show the modal
+                        $('#editModal').modal('show');
+                    },
+                    error: function () {
+                        alert('Failed to fetch job details.');
+                    }
+                });
+            });
+
+            // Save Changes button click event
+            $('#saveChangesBtn').on('click', function () {
+                // Retrieve jobId from the modal data attribute
+                var jobId = $('#editModal').data('jobid');
+                // Collect data from modal fields
+                var updatedData = {
+                    title: $('#edit-title').val(),
+                    number_of_people: $('#edit-number-of-people').val(),
+                    salary: $('#edit-salary').val(),
+                    category: $('#edit-category').val(),
+                    location: $('#edit-location').val(),
+                    description: $('#edit-description').val(),
+                    date: $('#edit-date').val(),
+
+                    // Add other fields as needed
+                };
+
+                // Make an AJAX request to save changes
+                $.ajax({
+                    url: '{% url "save_job_changes" %}',  // Replace with your Django view URL for saving changes
+                    method: 'POST',
+                    data: {
+                        job_id: jobId,  // Include the job ID for identification
+                        updated_data: JSON.stringify(updatedData),
+                        csrfmiddlewaretoken: '{% csrf_token %}'  // Include CSRF token for security
+                    },
+                    success: function (response) {
+                        // Handle success, e.g., show a success message
+                        alert('Changes saved successfully.');
+                        // Optionally, you can reload the page or update the DataTable
+                        location.reload();
+                    },
+                    error: function () {
+                        alert('Failed to save changes.');
+                    }
+                });
+
+                // Close the modal
+                $('#editModal').modal('hide');
             });
         });
-    </script> -->
-
+    </script>
 
 </body>
 

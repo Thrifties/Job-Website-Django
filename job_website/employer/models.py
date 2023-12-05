@@ -16,6 +16,11 @@ class Details(models.Model):
         return self.name
 
 
+class JobStatus(models.TextChoices):
+    OPEN = 'Open', 'Open'
+    CLOSED = 'Closed', 'Closed'
+
+
 class Job(models.Model):
     title = models.CharField(max_length=255, default="")
     # Set a valid default numerical value
@@ -25,9 +30,11 @@ class Job(models.Model):
     location = models.CharField(max_length=255, default="")
     description = models.TextField(max_length=255, default="")
     date = models.DateField(default=None)  # Or set a default date if needed
-    requirement1 = models.BooleanField(default=False)
-    requirement2 = models.BooleanField(default=False)
-    requirement3 = models.BooleanField(default=False)
+    requirements = models.CharField(max_length=255, default="")
+    status = models.CharField(
+        max_length=10,
+        choices=JobStatus.choices,
+        default=JobStatus.OPEN)
 
     def __str__(self):
         return self.title
