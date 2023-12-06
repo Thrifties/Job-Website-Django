@@ -1,5 +1,13 @@
 from django.shortcuts import render, redirect
 from .models import Job
+from .models import Applicant
+from django.http import FileResponse
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
+
 # Create your views here.
 
 
@@ -58,3 +66,41 @@ def add_job(request):
     }
 
     return render(request, 'post_job.html', context)
+
+
+def applicant_list(request):
+        
+        applicants = Applicant.objects.all()
+        template = 'manage_applicants.html'
+        context = {
+            'title': 'Applicants Page',
+            'applicants': applicants
+        }
+        return render(request, template, context)
+
+def view_resume(request, resume_filename):
+    
+        applicant = get_object_or_404(Applicant, resume=resume_filename)
+        file_path = applicant.resume.path
+        return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+    
+
+@require_POST
+def approve_applicant(request, applicant_id):
+    applicant = get_object_or_404(Applicant, id=applicant_id)
+    # Perform approval logic here
+    applicant.status = 'Approved'
+    applicant.save()
+    return JsonResponse({'status': 'success'})
+
+@csrf_exempt
+def reject_applicant(request, applicant_id):
+    applicant = get_object_or_404(Applicant, id=applicant_id)
+    rejection_reason = request.POST.get('rejection_reason', '')
+    if request.method == 'POST':
+        applicant.status = 'Rejected'
+        applicant.rejection_reason = rejection_reason
+        applicant.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'})

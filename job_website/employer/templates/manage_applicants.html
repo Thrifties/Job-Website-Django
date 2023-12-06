@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{{ title }}</title>
+    {% include 'includes/header-cdn.html' %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{% static 'css/manage_applicants.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom_table.css' %}">
+
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        {% include 'includes/navbar.html' %}
+        <div class="banner d-flex justify-content-end align-items-center"></div>
+        <!-- Begin Page Content -->
+        <div class="purple-line">
+            <h1 class="applicant_list">Applicant List</h1>
+        </div>
+        <div class="applicant_container">
+            <table id="applicant_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact Number</th>
+                        <th>Address</th>
+                        <th>Company</th>
+                        <th>Job</th>
+                        <th>Status</th>
+                        <th>Resume</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for applicant in applicants %}
+                        <tr>
+                            <td class="detail">{{ applicant.name }}</td>
+                            <td class="detail">{{ applicant.email }}</td>
+                            <td class="detail">{{ applicant.phone }}</td>
+                            <td class="detail">{{ applicant.address }}</td>
+                            <td class="detail">{{ applicant.company }}</td>
+                            <td class="detail">{{ applicant.job }}</td>
+                            <td class="detail status {{ applicant.status|lower }}"> {{ applicant.status }}</td>
+                            <td class="detail"><a href="{{ applicant.resume.url }}" target="_blank">Download Resume</a></td>
+                            <td class="detail">
+                                <form id="applicantForm{{ applicant.id }}">
+                                    <button class="action-button approve-button" data-applicant-id="{{ applicant.id }}">Approve</button>
+                                    <button class="action-button reject-button" data-applicant-id="{{ applicant.id }}" data-toggle="modal" data-target="#rejectionModal">Reject</button>
+                                    {% csrf_token %}
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- End of Main Content -->
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2021</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap Modal for Rejection Reason -->
+    <div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog" aria-labelledby="rejectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectionModalLabel">Enter Rejection Reason</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label for="rejectionReason">Rejection Reason:</label>
+                    <textarea class="form-control" id="rejectionReason" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="confirmRejection">Confirm Rejection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% include 'includes/js-cdn.html' %}
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{% static 'js/approve_reject.js' %}"></script>
+ 
+</body>
+</html>
