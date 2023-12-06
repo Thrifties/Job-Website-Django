@@ -13,10 +13,10 @@
     padding: 5px 5px 5px 10px;
   }
 
-/* #post{
-    margin-right: 15px;
-} */
-
-/* #post i{
-    margin-right: 5px;
-} */
+  .custom-select-caret::after {
+    content: '\25BC'; /* Unicode character for downward arrow */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}

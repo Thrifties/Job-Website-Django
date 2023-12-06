@@ -6,4 +6,4 @@ venv/
 db.sqlite3
 
 # Ignore local settings (if applicable)
-job_website/settings.py
+settings.py
