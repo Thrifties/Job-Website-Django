@@ -1,0 +1,59 @@
+#applicant_table thead th,
+#applicant_table tbody td {
+    text-align: center;
+} 
+        
+#applicant_table_wrapper {
+    text-align: center;
+}
+    
+#applicant_table_info,
+#applicant_table_length {
+    text-align: left;
+}
+    
+#applicant_table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse:collapse;
+    border-radius: 10px;
+}
+    
+#applicant_table th {
+    background-color: #e0e0e0;
+    font-family: sans-serif;
+    font-size: 14pt;
+}
+
+#applicant_table td {
+    font-family: sans-serif;
+    font-size: 12pt;
+}
+    
+#applicant_table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+    
+#applicant_table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+#applicant_table td.status {
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+#applicant_table td.status.pending {
+    color: rgb(68, 68, 66);
+}
+
+#applicant_table td.status.approved {
+    color: rgb(114, 190, 114);
+}
+
+#applicant_table td.status.rejected {
+    color: rgb(223, 107, 107);
+}

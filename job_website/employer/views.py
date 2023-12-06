@@ -10,6 +10,14 @@ from .forms import CompanyForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.hashers import make_password
+from .models import Applicant
+from django.http import FileResponse
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
+
 # Create your views here.
 
 
