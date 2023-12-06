@@ -12,5 +12,6 @@ urlpatterns = [
          name="add_company_profile"),
     path('register', views.register, name="register"),
     path('add_employer', views.add_employer, name="add_employer"),
-    path('profile_settings', views.profile_settings, name="profile_settings")
+    path('profile_settings', views.profile_settings, name="profile_settings"),
+    path('login', views.login, name='login'),
 ]

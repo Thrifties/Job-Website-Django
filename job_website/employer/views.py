@@ -8,6 +8,8 @@ import json
 from .models import Job, Details
 from .forms import CompanyForm
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.hashers import make_password
 # Create your views here.
 
 
@@ -29,9 +31,34 @@ def register(request):
     return render(request, template, context)
 
 
+def login(request):
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        first_name = request.POST.get('first_name')
+
+        # Authenticate user
+        employer_phone = Details.objects.filter(phone=phone).first()
+        employer_name = Details.objects.filter(first_name=first_name).first()
+
+        if employer_phone is not None and employer_name is not None:
+            user = authenticate(
+                request, phone=employer_phone, first_name=employer_name)
+            if user is not None:
+                auth_login(request, user)
+                return redirect('dashboard.html')
+            else:
+                messages.error(
+                    request, 'Invalid phone number or first name.')
+        
+    context = {
+        'title': 'Login Page'
+    }
+    
+    return render(request, 'login.html', context)
+
 def add_employer(request):
     if request.method == 'POST':
-        # Access form data directly from request.POST
+        
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         company = request.POST.get('company')
@@ -39,8 +66,8 @@ def add_employer(request):
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         password = request.POST.get('password')
+        hashed_password = make_password(password)
 
-        # Create a new Job instance and save to the database
         Details.objects.create(
             first_name=first_name,
             last_name=last_name,
@@ -48,11 +75,9 @@ def add_employer(request):
             address=address,
             email=email,
             phone=phone,
-            password=password
+            password=hashed_password
         )
 
-        # Redirect to a success page or do something else
-        # Adjust 'success_page' to your actual success page URL
         return redirect('register')
 
     context = {

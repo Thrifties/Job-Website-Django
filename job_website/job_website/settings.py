@@ -87,11 +87,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
-<<<<<<< HEAD
-        'PORT': '3308',
-=======
-        'PORT': '3307',
->>>>>>> 879759db9365f1b9edb0b6c9bdb8addab43cc6fa
+        'PORT': '3306',
     }
 }
 

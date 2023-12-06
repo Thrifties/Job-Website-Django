@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link href="{% static 'css/login.css' %}" rel="stylesheet" />
+
+        <title>{{title}}</title>
+
+        <!-- Custom fonts for this template -->
+        {% include 'includes/header-cdn.html' %}
+
+    </head>
+
+    <body>
+
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6" id="formContainer">
+                    <h2 class="mb-4 text-center" id="login-heading"><span>Login</span></h2>
+                    <form class="align-items-center justify-content-center" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingEmail" name="phone" placeholder="phone" required>
+                            <label for="floatingEmail">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingPassword" name="first_name" placeholder="password" required>
+                            <label for="floatingPassword">Password</label>
+                        </div>
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" id="submitBtn">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        {% include 'includes/js-cdn.html' %}
+
+        <script>
+            let submit = document.getElementById("submitBtn");
+            submit.addEventListener("click", function() {
+                let email = document.getElementById("floatingEmail").value;
+                let password = document.getElementById("floatingPassword").value;
+                console.log(email);
+                console.log(password);
+            });
+        </script>
+
+    </body>
+
+</html>
