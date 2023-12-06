@@ -59,8 +59,8 @@ class Applicant(models.Model):
 
     def __str__(self):
         return self.name
-    
-    
+
+
 class Company(models.Model):
     company_name = models.CharField(max_length=255)
     company_email = models.EmailField()
