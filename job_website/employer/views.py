@@ -171,7 +171,6 @@ def get_job_details(request):
         if job_id is not None:
             job = get_object_or_404(Job, id=job_id)
 
-            # Assuming Job has fields like title, number_of_people, salary, etc.
             job_details = {
                 'title': job.title,
                 'number_of_people': job.number_of_people,
@@ -179,11 +178,12 @@ def get_job_details(request):
                 'category': job.category,
                 'location': job.location,
                 'description': job.description,
+                'requirements': job.requirements,
                 # Format date as string if not None
                 'date': job.date.strftime('%Y-%m-%d') if job.date else None,
-                # 'requirement1': job.requirement1,
-                # 'requirement2': job.requirement2,
-                # 'requirement3': job.requirement3,
+                'status': job.status
+
+
             }
 
             return JsonResponse(job_details)
@@ -212,22 +212,30 @@ def save_job_changes(request):
             job.category = updated_data.get('category', job.category)
             job.location = updated_data.get('location', job.location)
             job.description = updated_data.get('description', job.description)
+            job.requirements = updated_data.get(
+                'requirements', job.requirements)
             job.date = updated_data.get('date', job.date)
-            # job.requirement1 = updated_data.get(
-            #     'requirement1', job.requirement1)
-            # job.requirement2 = updated_data.get(
-            #     'requirement2', job.requirement2)
-            # job.requirement3 = updated_data.get(
-            #     'requirement3', job.requirement3)
-
+            job.status = updated_data.get('status', job.status)
+            print(f"Old Status: {job.status}")
             # Save the changes
             job.save()
+            print(f"New Status: {job.status}")
 
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'error': 'Invalid data.'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def delete_job(request, job_id):
+    job = get_object_or_404(Job, pk=job_id)
+
+    if request.method == 'POST':
+        job.delete()
+        return JsonResponse({'message': 'Job deleted successfully.'})
+
+    return JsonResponse({'message': 'Invalid request.'}, status=400)
 
 
 def company_profile(request):
