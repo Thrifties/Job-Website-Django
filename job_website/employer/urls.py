@@ -18,6 +18,7 @@ urlpatterns = [
     path('add_employer', views.add_employer, name="add_employer"),
     path('profile_settings', views.profile_settings, name="profile_settings"),
     path('login', views.login, name='login'),
+    path('to_login', views.to_login, name='to_login'),
     path('add_job', views.add_job, name="add_job"),
     path('applicants/', applicant_list, name="applicant_list"),
     path('applicants/resume/<str:resume_filename>/', view_resume, name='view_resume'),

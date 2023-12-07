@@ -40,29 +40,28 @@ def register(request):
 
 
 def login(request):
-    if request.method == 'POST':
-        phone = request.POST.get('phone')
-        first_name = request.POST.get('first_name')
-
-        # Authenticate user
-        employer_phone = Details.objects.filter(phone=phone).first()
-        employer_name = Details.objects.filter(first_name=first_name).first()
-
-        if employer_phone is not None and employer_name is not None:
-            user = authenticate(
-                request, phone=employer_phone, first_name=employer_name)
-            if user is not None:
-                auth_login(request, user)
-                return redirect('dashboard.html')
-            else:
-                messages.error(
-                    request, 'Invalid phone number or first name.')
-        
-    context = {
-        'title': 'Login Page'
-    }
     
-    return render(request, 'login.html', context)
+        template = 'login.html'
+        context = {
+            'title': 'Login Page'
+        }
+        return render(request, template, context)
+    
+def to_login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = Details.objects.get(email=email)
+        if user:
+            if user.password == password:
+                request.session['user_id'] = user.id
+                return redirect('dashboard')
+            else:
+                return redirect('login')
+        else:
+            return redirect('login')
+    else:
+        return redirect('login')
 
 def add_employer(request):
     if request.method == 'POST':
@@ -74,7 +73,7 @@ def add_employer(request):
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         password = request.POST.get('password')
-        hashed_password = make_password(password)
+        #hashed_password = make_password(password)
 
         Details.objects.create(
             first_name=first_name,
@@ -83,7 +82,7 @@ def add_employer(request):
             address=address,
             email=email,
             phone=phone,
-            password=hashed_password
+            password=password
         )
 
         return redirect('register')
@@ -245,7 +244,6 @@ def delete_job(request, job_id):
 
     return JsonResponse({'message': 'Invalid request.'}, status=400)
 
-
 def company_profile(request):
 
     template = 'company_profile.html'
@@ -274,41 +272,3 @@ def add_company_profile(request):
     }
 
     return render(request, 'company_profile.html', context)
-
-
-def applicant_list(request):
-        
-        applicants = Applicant.objects.all()
-        template = 'manage_applicants.html'
-        context = {
-            'title': 'Applicants Page',
-            'applicants': applicants
-        }
-        return render(request, template, context)
-
-def view_resume(request, resume_filename):
-    
-        applicant = get_object_or_404(Applicant, resume=resume_filename)
-        file_path = applicant.resume.path
-        return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
-    
-
-@require_POST
-def approve_applicant(request, applicant_id):
-    applicant = get_object_or_404(Applicant, id=applicant_id)
-    # Perform approval logic here
-    applicant.status = 'Approved'
-    applicant.save()
-    return JsonResponse({'status': 'success'})
-
-@csrf_exempt
-def reject_applicant(request, applicant_id):
-    applicant = get_object_or_404(Applicant, id=applicant_id)
-    rejection_reason = request.POST.get('rejection_reason', '')
-    if request.method == 'POST':
-        applicant.status = 'Rejected'
-        applicant.rejection_reason = rejection_reason
-        applicant.save()
-        return JsonResponse({'status': 'success'})
-    else:
-        return JsonResponse({'status': 'error'})

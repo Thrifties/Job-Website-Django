@@ -23,15 +23,15 @@
             <div class="row justify-content-center">
                 <div class="col-md-6" id="formContainer">
                     <h2 class="mb-4 text-center" id="login-heading"><span>Login</span></h2>
-                    <form class="align-items-center justify-content-center" method="post">
+                    <form class="align-items-center justify-content-center" action="{% url 'to_login' %}" method="post">
                         {% csrf_token %}
 
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="floatingEmail" name="phone" placeholder="phone" required>
+                            <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@email.com" required>
                             <label for="floatingEmail">Email address</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="floatingPassword" name="first_name" placeholder="password" required>
+                            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="password" required>
                             <label for="floatingPassword">Password</label>
                         </div>
                         <button class="w-100 btn btn-lg btn-primary" type="submit" id="submitBtn">Login</button>
@@ -39,7 +39,6 @@
                 </div>
             </div>
         </div>
-
 
         {% include 'includes/js-cdn.html' %}
 
