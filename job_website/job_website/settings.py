@@ -87,11 +87,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
-<<<<<<< HEAD
-        'PORT': '3308',
-=======
         'PORT': '3307',
->>>>>>> 879759db9365f1b9edb0b6c9bdb8addab43cc6fa
     }
 }
 
@@ -136,3 +132,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Media files (uploads)
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'

@@ -16,13 +16,234 @@
     <!-- Include Bootstrap Datepicker JS -->
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 
 </head>
 
 <body id="page-top">
+    <script>
+
+        $(document).ready(function () {
+            fetchCompanyData(5);
+
+
+            $("#add-company-btn").click(function () {
+                // Make an Ajax request to the Django endpoint
+                $.ajax({
+                    type: "GET",
+                    url: "add_company_profile",  // Update with your actual URL
+                    success: function (data) {
+                        if (data.success) {
+                            console.log(data.message);
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error adding company profile:", error);
+                    }
+                });
+            });
+
+            // Bind the fetchCompanyData function to the button click event
+            $("#edit-company-profile-btn").click(function () {
+                // Specify the desired company ID (in this case, 5)
+                assignCompanyData(5);
+            });
+        });
+
+        function fetchCompanyData(companyId) {
+            // Make an Ajax request to fetch company data
+            $.ajax({
+                type: "GET",
+                url: `/get_company_data/${companyId}/`,  // Update with your actual URL
+                success: function (data) {
+                    console.log(data);
+                    if (data.success) {
+                        // Populate input fields with fetched data
+                        $('#profile-company-name').text(data.company.company_name);
+                        $('#profile-email').text(data.company.company_email);
+                        $('#profile-location').text(data.company.location);
+                        $('#profile-website').text(data.company.website);
+                        $('#profile-scope').text(data.company.scope);
+                        $('#profile-overview').html(data.company.overview);
+                        $('#profile-join-us').html(data.company.join_us);
+
+                        // Set the src of the image
+                        var profilePicturePath = data.company.profile_picture_path;
+                        if (profilePicturePath || profilePicturePath !== "-") {
+                            // If profile_picture_path is not "-" or falsy, use the provided path
+                            var timestamp = new Date().getTime(); // Get the current timestamp
+                            $('#display-profile-picture').attr('src', `./static/resources/profile_picture/${profilePicturePath}?timestamp=${timestamp}`);
+                            console.log("Meron laman" + data.company.profile_picture_path);
+                        } else {
+                            // If profile_picture_path is "-" or falsy, use the default path
+                            $('#display-profile-picture').attr('src', './static/resources/default_profile.png');
+                            console.log("Wala laman");
+                        }
+
+                        // Set the background-image of the display-cover div
+                        var coverPhotoPath = data.company.cover_photo_path;
+                        if (coverPhotoPath && coverPhotoPath !== "-") {
+                            // If cover_photo_path is not "-" or falsy, use the provided path
+                            $('#display-cover').css('background-image', 'url(' + coverPhotoPath + ')');
+                        } else {
+                            // If cover_photo_path is "-" or falsy, use the default path
+                            $('#display-cover').css('background-image', 'url(./static/resources/default_cover.png)');
+                        }
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                },
+                error: function (error) {
+                    console.error("Error fetching company data:", error);
+                }
+            });
+        }
+
+        function assignCompanyData(companyId) {
+            // Make an Ajax request to fetch company data
+            $.ajax({
+                type: "GET",
+                url: `/get_company_data/${companyId}/`,  // Update with your actual URL
+                success: function (data) {
+                    if (data.success) {
+                        // Populate input fields with fetched data
+                        $('#company_name').val(data.company.company_name);
+                        $('#company_email').val(data.company.company_email);
+                        $('#location').val(data.company.location);
+                        $('#website').val(data.company.website);
+                        $('#scope').val(data.company.scope);
+                        // $('#overview').html(data.company.overview);
+                        // $('#join_us').val(data.company.join_us);
+                        // Replace <br> tags with newlines in the overview and join_us fields
+                        var overviewWithNewlines = data.company.overview.replace(/<br>/g, '\n');
+                        $('#overview').val(overviewWithNewlines);
+
+                        var joinUsWithNewlines = data.company.join_us.replace(/<br>/g, '\n');
+                        $('#join_us').val(joinUsWithNewlines);
+
+                    } else {
+                        alert("Error: " + data.message);
+
+                    }
+                },
+                error: function (error) {
+                    console.error("Error fetching company data:", error);
+                }
+            });
+        }
+
+        function hidePreviewProfile(){
+            $('#preview-image').hide();
+            $('#profile').val('');
+        }
+
+        function hideEditAlert() {
+            $('#edit-alert').hide();
+        }
+
+        function hideProfileAlert() {
+            $('#profile-alert').hide();
+        }
+
+        function editCompanyProfile() {
+            var companyId = $("#edit-company-id").val();
+
+            // Collect data from form
+            var formData = {
+                company_name: $("#company_name").val(),
+                company_email: $("#company_email").val(),
+                location: $("#location").val(),
+                website: $("#website").val(),
+                scope: $("#scope").val(),
+                overview: $("#overview").val().replace(/\n/g, '<br>'),
+                join_us: $("#join_us").val().replace(/\n/g, '<br>'),
+                // Add other form fields as needed
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: "POST",  // Use POST or PUT based on your server implementation
+                url: "/update_company_profile/" + companyId + "/",  // Replace with your API endpoint
+                data: formData,
+                success: function (response) {
+
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+                        // Close the modal or perform other actions
+                        $('#edit-company-profile').modal('hide');
+                        const success_edit_toast = document.getElementById('success-edit-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_edit_toast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        $('#edit-alert').show();
+                        $("#edit-alert").text(response.message).show();
+                        // You can display an error message to the user or take other actions
+                        const failed_edit_toast = document.getElementById('failed-edit-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
+                    }
+
+                    fetchCompanyData(5);
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+    </script>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="success-edit-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Successfully edited company profile.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+
+            <div id="success-profile-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Successfully change profile picture.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+
+            <div id="failed-profile-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to edit company profile.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+
+            <div id="failed-edit-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to edit company profile.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
 
         <!-- Sidebar -->
         {% include 'includes/navbar.html' %}
@@ -35,16 +256,18 @@
             <div>
                 <div class="col-md-12 mx-auto p-0">
                     <div class="bg-white shadow overflow-hidden">
-                        <div class="px-4 pt-0 pb-4 cover">
+                        <div id="display-cover" style="background-image: url(./static/resources/default_profile.png);"
+                            class="px-4 pt-0 pb-4 cover">
                             <div class="media align-items-end profile-head">
                                 <div class="profile mr-3">
-                                    <img src="./static/resources/accenture.png" alt="..." width="130"
+                                    <img style="width: 130px; height: 130px;" src="./static/resources/default_cover.png"
+                                        id="display-profile-picture" alt="..." width="130"
                                         class="rounded mb-2 img-thumbnail">
                                     <a href="#" class="btn btn-outline-dark btn-sm btn-block" data-bs-toggle="modal"
                                         data-bs-target="#edit-choose">Edit profile</a>
                                 </div>
                                 <div class="media-body mb-5 text-white">
-                                    <h2 class="mt-0 mb-3 fw-bold text-purple">Accenture</h2>
+                                    <h2 class="mt-0 mb-3 fw-bold text-purple" id="profile-company-name">-</h2>
                                 </div>
                             </div>
 
@@ -79,15 +302,15 @@
                                     aria-labelledby="pills-about-tab" tabindex="0">
                                     <ul class="list-unstyled text-purple">
                                         <li class="mb-2"><i class="bi bi-envelope me-2"></i><span
-                                                class="text-black fw-bold">Accenture@gmail.com</span></li>
+                                                class="text-black fw-bold" id="profile-email">-</span>
+                                        </li>
                                         <li class="mb-2"><i class="bi bi-geo-alt me-2"></i></i><span
-                                                class="text-black fw-bold">Citibank Center, Paseo de Roxas, Makati, 1126
-                                                Metro Manila, Philippines</span></li>
+                                                class="text-black fw-bold" id="profile-location">-</span></li>
                                         <li class="mb-2"><i class="bi bi-link-45deg me-2"></i><span
-                                                class="text-black fw-bold">Accenture.com</span></li>
+                                                class="text-black fw-bold" id="profile-website">-</span>
+                                        </li>
                                         <li class="mb-2"><i class="bi bi-card-checklist me-2"></i><span
-                                                class="text-black fw-bold">Information Communications and
-                                                Technology</span></li>
+                                                class="text-black fw-bold" id="profile-scope">-</span></li>
                                     </ul>
                                 </div>
                                 <div class="tab-pane fade" id="pills-jobs" role="tabpanel"
@@ -100,21 +323,7 @@
                         <div class="px-4 mb-3">
                             <h4 class="text-purple fw-bold">Company Overview</h4>
                             <div class="border border-light-subtle rounded p-2">
-                                <p>
-                                    Accenture is a global professional services company with leading capabilities in
-                                    digital, cloud and security. Combining unmatched experience and specialized skills
-                                    across more than 40 industries, we offer Strategy and Consulting, Interactive,
-                                    Technology and Operations services—all powered by the world’s largest network of
-                                    Advanced Technology and Intelligent Operations centers.
-
-                                    Our 514,000 people deliver on the promise of technology and human ingenuity every
-                                    day, serving clients in more than 120 countries. We embrace the power of change to
-                                    create value and shared success for our clients, people, shareholders, partners and
-                                    communities.
-
-                                    Visit us at www.accent
-
-                                </p>
+                                <p id="profile-overview">-</p>
                             </div>
                         </div>
                         <!-- COMPANY OVERVIEW -->
@@ -123,14 +332,7 @@
                         <div class="px-4 mb-3">
                             <h4 class="text-purple fw-bold">Why Join us?</h4>
                             <div class="border border-light-subtle rounded p-2">
-                                <p>
-                                    Your career is about what you want to do and who you want to be. It’s about bringing
-                                    your skills, your curiosity and your best true self to work every day.
-                                    At Accenture, we collaborate with exceptional people across the globe, combining our
-                                    ingenuity, industry expertise and the latest technology to deliver 360° value for
-                                    our clients, people and communities.
-                                    Here, you can harness powerful change to make a world of difference!
-                                </p>
+                                <p id="profile-join-us">-</p>
                             </div>
                         </div>
                         <!-- COMPANY OVERVIEW -->
@@ -159,6 +361,7 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
+
         <div class="modal fade" id="edit-choose" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
@@ -170,14 +373,19 @@
                         <div class="modal-body">
                             <div class="d-grid gap-2">
                                 <button type="button" class="btn btn-purple" data-bs-toggle="modal"
-                                    data-bs-target="#edit-company-picture"><i class="bi bi-camera2 me-1"></i>Profile
+                                    data-bs-target="#edit-company-picture" onclick="hideProfileAlert(), hidePreviewProfile()"><i class="bi bi-camera2 me-1"></i>Profile
                                     Picture</button>
                                 <button type="button" class="btn btn-purple" data-bs-toggle="modal"
                                     data-bs-target="#edit-company-cover"><i class="bi bi-image me-1"></i>Cover
                                     Photo</button>
                                 <button type="button" class="btn btn-purple" data-bs-toggle="modal"
-                                    data-bs-target="#edit-company-profile"><i class="bi bi-info-circle me-1"></i>Company
+                                    data-bs-target="#edit-company-profile" id="edit-company-profile-btn"><i
+                                        class="bi bi-info-circle me-1" onclick="hideEditAlert()"></i>Company
                                     Details</button>
+                                <button type="button" class="btn btn-purple" data-bs-toggle="modal"
+                                    data-bs-target="#add-company-profile" ><i
+                                        class="bi bi-info-circle me-1"></i>Add
+                                    Company</button>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -229,142 +437,159 @@
         <div class="modal fade" id="edit-company-picture" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
-                    <form>
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5">Edit Company Picture</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-12 mb-3">
-                                    <!-- Inside the modal body -->
-                                    <div id="image-gallery-preview" style="display: none;">
-                                        <img id="preview-image" alt="File Preview" class="m-auto"
-                                            style="max-width: 100%; max-height: 200px;" />
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mb-3">
-                                        <label for="profile-picture" class="form-label">Profile Picture</label>
-                                        <input class="form-control" type="file" id="cover"
-                                            onchange="handlePicture(event)">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <script>
+                    <script>
 
-                            function closePreview() {
-                                document.getElementById("preview-image").style.display = "none";
-                                document.getElementById("image-gallery-preview").style.display = "none";
-                                document.getElementById("preview-cover").style.display = "none";
+                        function closePreview() {
+                            document.getElementById("preview-image").style.display = "none";
+                            document.getElementById("image-gallery-preview").style.display = "none";
+                            document.getElementById("preview-cover").style.display = "none";
+                            document.getElementById("image-cover-preview").style.display = "none";
+                        }
+
+                        function handleCover(event) {
+                            const fileInput = event.target;
+                            const file = fileInput.files[0];
+
+                            // Check if a file is selected
+                            if (file) {
+                                const reader = new FileReader();
+
+                                // Set up the reader to display the file
+                                reader.onload = function (e) {
+                                    const previewElement = document.getElementById("preview-cover");
+
+                                    // Check the file type
+                                    if (file.type.includes("image")) {
+                                        // If it's an image, display it
+                                        previewElement.src = e.target.result;
+                                        previewElement.style.display = "block"; // Display the image preview
+                                    } else {
+                                        // If it's not an image, hide the image preview
+                                        previewElement.style.display = "none";
+                                    }
+
+                                    // Show the preview container
+                                    document.getElementById("image-cover-preview").style.display = "block";
+
+                                };
+
+                                // Read the file as a data URL
+                                reader.readAsDataURL(file);
+                            } else {
+                                // Hide the preview container, file name, and download link if no file is selected
                                 document.getElementById("image-cover-preview").style.display = "none";
                             }
+                        }
 
-                            function handleCover(event) {
-                                const fileInput = event.target;
-                                const file = fileInput.files[0];
+                        function handlePicture(event) {
+                            const fileInput = event.target;
+                            const file = fileInput.files[0];
 
-                                // Check if a file is selected
-                                if (file) {
-                                    const reader = new FileReader();
+                            // Check if a file is selected
+                            if (file) {
+                                const reader = new FileReader();
 
-                                    // Set up the reader to display the file
-                                    reader.onload = function (e) {
-                                        const previewElement = document.getElementById("preview-cover");
+                                // Set up the reader to display the file
+                                reader.onload = function (e) {
+                                    const previewElement = document.getElementById("preview-image");
 
-                                        // Check the file type
-                                        if (file.type.includes("image")) {
-                                            // If it's an image, display it
-                                            previewElement.src = e.target.result;
-                                            previewElement.style.display = "block"; // Display the image preview
-                                        } else {
-                                            // If it's not an image, hide the image preview
-                                            previewElement.style.display = "none";
-                                        }
+                                   
 
-                                        // Show the preview container
-                                        document.getElementById("image-cover-preview").style.display = "block";
+                                    // Check the file type
+                                    if (file.type.includes("image")) {
+                                        // If it's an image, display it
+                                        previewElement.src = e.target.result;
+                                        previewElement.style.display = "block"; // Display the image preview
+                                    } else {
+                                        // If it's not an image, hide the image preview
+                                        previewElement.style.display = "none";
+                                    }
 
-                                    };
+                                    // Show the preview container
+                                    document.getElementById("image-gallery-preview").style.display = "block";
 
-                                    // Read the file as a data URL
-                                    reader.readAsDataURL(file);
-                                } else {
-                                    // Hide the preview container, file name, and download link if no file is selected
-                                    document.getElementById("image-cover-preview").style.display = "none";
-                                }
+                                };
+
+                                // Read the file as a data URL
+                                reader.readAsDataURL(file);
+                            } else {
+                                // Hide the preview container, file name, and download link if no file is selected
+                                document.getElementById("image-gallery-preview").style.display = "none";
                             }
+                        }
 
-                            function handlePicture(event) {
-                                const fileInput = event.target;
-                                const file = fileInput.files[0];
 
-                                // Check if a file is selected
-                                if (file) {
-                                    const reader = new FileReader();
-
-                                    // Set up the reader to display the file
-                                    reader.onload = function (e) {
-                                        const previewElement = document.getElementById("preview-image");
-
-                                        // Check the file type
-                                        if (file.type.includes("image")) {
-                                            // If it's an image, display it
-                                            previewElement.src = e.target.result;
-                                            previewElement.style.display = "block"; // Display the image preview
-                                        } else {
-                                            // If it's not an image, hide the image preview
-                                            previewElement.style.display = "none";
-                                        }
-
-                                        // Show the preview container
-                                        document.getElementById("image-gallery-preview").style.display = "block";
-
-                                    };
-
-                                    // Read the file as a data URL
-                                    reader.readAsDataURL(file);
-                                } else {
-                                    // Hide the preview container, file name, and download link if no file is selected
-                                    document.getElementById("image-gallery-preview").style.display = "none";
+                        function saveProfilePicture(companyId) {
+                            var formData = new FormData();
+                            formData.append('profile_picture', document.getElementById('profile').files[0]);
+                            formData.append('company_id', companyId);
+                            console.log(document.getElementById('profile').files[0]);
+                            $.ajax({
+                                type: 'POST',
+                                url: '/update_profile_picture/',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.success) {
+                                        console.log('Profile picture updated successfully');
+                                        // Add any additional logic or UI updates here
+                                        const success_edit_toast = document.getElementById('success-profile-toast');
+                                        bootstrap.Toast.getOrCreateInstance(success_edit_toast).show();
+                                        $('#edit-company-picture').modal('hide');
+                                        hidePreviewProfile();
+                                    } else {
+                                        $('#profile-alert').show();
+                                        $("#profile-alert").text(response.message).show();
+                                        console.log('Failed to update profile picture: ' + data.message);
+                                        const failed_edit_toast = document.getElementById('failed-profile-toast');
+                                        bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
+                                        hidePreviewProfile();
+                                    }
+                                    fetchCompanyData(5);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log('Failed to update profile picture: ' + error);
+                                    const failed_edit_toast = document.getElementById('failed-profile-toast');
+                                    bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
                                 }
-                            }
-                        </script>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                onclick="closePreview()">Close</button>
-                            <button type="button" class="btn btn-purple">Save picture</button>
-                        </div>
-                    </form>
+                            });
+                        }
 
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="edit-company-picture" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <form>
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5">Edit Company Picture</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div>
-                                    <div class="mb-3">
-                                        <label for="profile-picture" class="form-label">Profile Picture</label>
-                                        <input class="form-control" type="file" id="profile-picture">
-                                    </div>
+                    </script>
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Edit Company Picture</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert" id="profile-alert">
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <!-- Inside the modal body -->
+                                <div id="image-gallery-preview" style="display: none;">
+                                    <img id="preview-image" alt="File Preview" class="m-auto"
+                                        style="max-width: 100%; max-height: 200px;" />
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="profile-picture" class="form-label">Profile Picture</label>
+                                    <input class="form-control" type="file" id="profile" accept="image/*"
+                                        onchange="handlePicture(event)">
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-purple">Save picture</button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="closePreview()">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="saveProfilePicture(5)">Save
+                            picture</button>
+                    </div>
 
                 </div>
             </div>
@@ -373,72 +598,95 @@
         <div class="modal fade" id="edit-company-profile" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
-                    <form method="post" action="{% url 'add_company_profile' %}">
-                        {% csrf_token %}
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5">Edit Company Profile</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                {{ form.as_p }}
-                                <div class="col-12">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="company_name" name="company_name"
-                                            placeholder="" required>
-                                        <label for="companyName">Company Name</label>
-                                    </div>
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Edit Company Profile</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <input type="hidden" id="edit-company-id" name="company_id" value="5">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert" id="edit-alert">
                                 </div>
-                                <div class="col-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" id="company_email" name="company_email"
-                                            placeholder="" required>
-                                        <label for="companyEmail">Company Email</label>
-                                    </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="company_name" name="company_name"
+                                        placeholder="" required>
+                                    <label for="companyName">Company Name</label>
                                 </div>
-                                <div class="col-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="location" name="location"
-                                            placeholder="" required>
-                                        <label for="location">Location</label>
-                                    </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="company_email" name="company_email"
+                                        placeholder="" required>
+                                    <label for="companyEmail">Company Email</label>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-floating mb-3">
-                                        <input type="url" class="form-control" id="website" name="website"
-                                            placeholder="" required>
-                                        <label for="website">Website</label>
-                                    </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="location" name="location" placeholder=""
+                                        required>
+                                    <label for="location">Location</label>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="scope" name="scope" placeholder=""
-                                            required>
-                                        <label for="scope">Scope</label>
-                                    </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="url" class="form-control" id="website" name="website" placeholder=""
+                                        required>
+                                    <label for="website">Website</label>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-floating mb-3">
-                                        <textarea style="height: 100px;" class="form-control" id="overview"
-                                            name="overview" placeholder="" required></textarea>
-                                        <label for="overview">Overview</label>
-                                    </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="scope" name="scope" placeholder=""
+                                        required>
+                                    <label for="scope">Scope</label>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-floating mb-3">
-                                        <textarea style="height: 100px;" class="form-control" id="join_us" name="join_us"
-                                            placeholder="" required></textarea>
-                                        <label for="joinUs">Why Join Us?</label>
-                                    </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <textarea style="height: 100px;" class="form-control" id="overview" name="overview"
+                                        placeholder="" required></textarea>
+                                    <label for="overview">Overview</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <textarea style="height: 100px;" class="form-control" id="join_us" name="join_us"
+                                        placeholder="" required></textarea>
+                                    <label for="joinUs">Why Join Us?</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-purple">Save profile</button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="editCompanyProfile()">Save
+                            profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="modal fade" id="add-company-profile" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Edit Company Profile</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" id="add-company-btn">Add
+                            profile</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -462,8 +710,8 @@
                 </div>
             </div>
         </div>
-
         {% include 'includes/js-cdn.html' %}
+    </div>
 
 </body>
 
