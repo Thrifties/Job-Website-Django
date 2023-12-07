@@ -31,6 +31,7 @@ def to_login(request):
                 request.session['email'] = user.email
                 request.session['first_name'] = user.first_name
                 request.session['last_name'] = user.last_name
+                request.session['company'] = user.company
                 return render(request, 'dashboard.html')
             else:
                 return redirect('login')
@@ -38,6 +39,7 @@ def to_login(request):
             return redirect('login')
     else:
         return redirect('login')
+
 
 def dashboard(request):
 
@@ -58,12 +60,13 @@ def register(request):
 
 
 def login(request):
-    
-        template = 'login.html'
-        context = {
-            'title': 'Login Page'
-        }
-        return render(request, template, context)
+
+    template = 'login.html'
+    context = {
+        'title': 'Login Page'
+    }
+    return render(request, template, context)
+
 
 def logout(request):
     try:
@@ -72,9 +75,10 @@ def logout(request):
         pass
     return redirect('login')
 
+
 def add_employer(request):
     if request.method == 'POST':
-        
+
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         company = request.POST.get('company')
@@ -82,7 +86,7 @@ def add_employer(request):
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         password = request.POST.get('password')
-        #hashed_password = make_password(password)
+        # hashed_password = make_password(password)
 
         Details.objects.create(
             first_name=first_name,
@@ -135,6 +139,7 @@ def post_job(request):
 
 def add_job(request):
     if request.method == 'POST':
+        company = request.POST.get('company')
         title = request.POST.get('title')
         number_of_people = request.POST.get('number_of_people')
         salary = request.POST.get('salary')
@@ -147,6 +152,7 @@ def add_job(request):
 
         # Create a new Job instance and save to the database
         Job.objects.create(
+            company=company,
             title=title,
             number_of_people=number_of_people,
             salary=salary,
@@ -253,6 +259,7 @@ def delete_job(request, job_id):
 
     return JsonResponse({'message': 'Invalid request.'}, status=400)
 
+
 def company_profile(request):
 
     template = 'company_profile.html'
@@ -260,6 +267,7 @@ def company_profile(request):
         'title': 'Company Profile Page'
     }
     return render(request, template, context)
+
 
 def add_company_profile(request):
     if request.method == 'POST':

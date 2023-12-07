@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Details(models.Model):
 
     first_name = models.CharField(max_length=50, default="")
@@ -16,13 +17,15 @@ class Details(models.Model):
     def __str__(self):
         return self.first_name
 
+
 class JobStatus(models.TextChoices):
     OPEN = 'Open', 'Open'
     CLOSED = 'Closed', 'Closed'
 
+
 class Job(models.Model):
+    company = models.CharField(max_length=255, default="")
     title = models.CharField(max_length=255, default="")
-    # Set a valid default numerical value
     number_of_people = models.IntegerField(default=0)
     salary = models.CharField(max_length=255, default="")
     category = models.CharField(max_length=255, default="")
@@ -71,4 +74,3 @@ class Company(models.Model):
 
     def __str__(self):
         return self.company_name
-
