@@ -250,7 +250,7 @@
                                     <td>{{ job.description }}</td>
                                     <td>{{ job.requirements }}</td>
                                     <td>{{ job.date }}</td>
-                                    <td>{{ job.status }}</td>
+                                    <td class="text-primary font-weight-bold">{{ job.status }}</td>
                                     <td>
                                         <div class="input-group-append">
                                             <button class="btn edit-open me-2 text-light" type="button"
@@ -305,7 +305,7 @@
                                 <td>{{ job.description }}</td>
                                 <td>{{ job.requirements }}</td>
                                 <td>{{ job.date }}</td>
-                                <td>{{ job.status }}</td>
+                                <td class="text-danger font-weight-bold">{{ job.status }}</td>
                                 <td>
                                     <div class="input-group-append">
                                         <button class="btn edit-closed me-2 text-light" type="button"
@@ -561,9 +561,9 @@
                                     <div class="row gap-1">
                                         <div class="col mb-2 p-0">
                                             <div class="form-floating position-relative">
-                                                <input type="date" name="edit-close-date"
-                                                    class="form-control datepicker" id="edit-date" required>
-                                                <label class="form-label" for="edit-close-date">Application
+                                                <input type="date" name="edit-closed-date"
+                                                    class="form-control datepicker" id="edit-closed-date" required>
+                                                <label class="form-label" for="edit-closed-date">Application
                                                     Deadline<span class="text-danger"> *</span></label>
                                             </div>
                                         </div>
