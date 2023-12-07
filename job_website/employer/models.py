@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -11,10 +12,10 @@ class Details(models.Model):
     address = models.CharField(max_length=100, default="")
     email = models.EmailField(max_length=50, default="")
     phone = models.CharField(max_length=10, default="")
-    password = models.CharField(max_length=50, default="")
+    password = models.CharField(max_length=128, default="")
 
     def __str__(self):
-        return self.name
+        return self.first_name
 
 
 class JobStatus(models.TextChoices):
@@ -23,8 +24,8 @@ class JobStatus(models.TextChoices):
 
 
 class Job(models.Model):
+    company = models.CharField(max_length=255, default="")
     title = models.CharField(max_length=255, default="")
-    # Set a valid default numerical value
     number_of_people = models.IntegerField(default=0)
     salary = models.CharField(max_length=255, default="")
     category = models.CharField(max_length=255, default="")
@@ -44,7 +45,7 @@ class Job(models.Model):
 class Applicant(models.Model):
     name = models.CharField(max_length=50, default="")
     email = models.EmailField(max_length=50, default="")
-    phone = models.CharField(max_length=10, default="")
+    phone = models.CharField(max_length=11, default="")
     address = models.CharField(max_length=100, default="")
     resume = models.FileField(upload_to='employer/applicants/resume/')
     company = models.CharField(max_length=50, default="")
@@ -56,11 +57,12 @@ class Applicant(models.Model):
     ]
     status = models.CharField(
         max_length=10, choices=application_status, default='Pending')
+    rejection_reason = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name
-    
-    
+
+
 class Company(models.Model):
     company_name = models.CharField(max_length=255, default='-', blank=False)
     company_email = models.EmailField(default='-', blank=False)

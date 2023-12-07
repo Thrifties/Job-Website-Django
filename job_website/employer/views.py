@@ -8,7 +8,37 @@ import json
 from .models import Job, Details
 from .forms import CompanyForm
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.hashers import make_password
+from .models import Applicant
+from django.http import FileResponse
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
+
+
+def to_login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = Details.objects.get(email=email)
+        if user:
+            if user.password == password:
+                request.session['id'] = user.id
+                request.session['email'] = user.email
+                request.session['first_name'] = user.first_name
+                request.session['last_name'] = user.last_name
+                request.session['company'] = user.company
+                return render(request, 'dashboard.html')
+            else:
+                return redirect('login')
+        else:
+            return redirect('login')
+    else:
+        return redirect('login')
 
 
 def dashboard(request):
@@ -29,9 +59,26 @@ def register(request):
     return render(request, template, context)
 
 
+def login(request):
+
+    template = 'login.html'
+    context = {
+        'title': 'Login Page'
+    }
+    return render(request, template, context)
+
+
+def logout(request):
+    try:
+        del request.session['id']
+    except KeyError:
+        pass
+    return redirect('login')
+
+
 def add_employer(request):
     if request.method == 'POST':
-        # Access form data directly from request.POST
+
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         company = request.POST.get('company')
@@ -39,8 +86,8 @@ def add_employer(request):
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         password = request.POST.get('password')
+        # hashed_password = make_password(password)
 
-        # Create a new Job instance and save to the database
         Details.objects.create(
             first_name=first_name,
             last_name=last_name,
@@ -51,8 +98,6 @@ def add_employer(request):
             password=password
         )
 
-        # Redirect to a success page or do something else
-        # Adjust 'success_page' to your actual success page URL
         return redirect('register')
 
     context = {
@@ -94,6 +139,7 @@ def post_job(request):
 
 def add_job(request):
     if request.method == 'POST':
+        company = request.POST.get('company')
         title = request.POST.get('title')
         number_of_people = request.POST.get('number_of_people')
         salary = request.POST.get('salary')
@@ -106,6 +152,7 @@ def add_job(request):
 
         # Create a new Job instance and save to the database
         Job.objects.create(
+            company=company,
             title=title,
             number_of_people=number_of_people,
             salary=salary,
@@ -146,7 +193,6 @@ def get_job_details(request):
         if job_id is not None:
             job = get_object_or_404(Job, id=job_id)
 
-            # Assuming Job has fields like title, number_of_people, salary, etc.
             job_details = {
                 'title': job.title,
                 'number_of_people': job.number_of_people,
@@ -154,11 +200,12 @@ def get_job_details(request):
                 'category': job.category,
                 'location': job.location,
                 'description': job.description,
+                'requirements': job.requirements,
                 # Format date as string if not None
                 'date': job.date.strftime('%Y-%m-%d') if job.date else None,
-                # 'requirement1': job.requirement1,
-                # 'requirement2': job.requirement2,
-                # 'requirement3': job.requirement3,
+                'status': job.status
+
+
             }
 
             return JsonResponse(job_details)
@@ -187,22 +234,30 @@ def save_job_changes(request):
             job.category = updated_data.get('category', job.category)
             job.location = updated_data.get('location', job.location)
             job.description = updated_data.get('description', job.description)
+            job.requirements = updated_data.get(
+                'requirements', job.requirements)
             job.date = updated_data.get('date', job.date)
-            # job.requirement1 = updated_data.get(
-            #     'requirement1', job.requirement1)
-            # job.requirement2 = updated_data.get(
-            #     'requirement2', job.requirement2)
-            # job.requirement3 = updated_data.get(
-            #     'requirement3', job.requirement3)
-
+            job.status = updated_data.get('status', job.status)
+            print(f"Old Status: {job.status}")
             # Save the changes
             job.save()
+            print(f"New Status: {job.status}")
 
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'error': 'Invalid data.'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def delete_job(request, job_id):
+    job = get_object_or_404(Job, pk=job_id)
+
+    if request.method == 'POST':
+        job.delete()
+        return JsonResponse({'message': 'Job deleted successfully.'})
+
+    return JsonResponse({'message': 'Invalid request.'}, status=400)
 
 
 def company_profile(request):
@@ -371,3 +426,44 @@ def update_profile_picture(request):
             return JsonResponse({'success': False, 'message': str(e)})
 
     return JsonResponse({'success': False, 'message': 'Invalid request'})
+    return render(request, 'company_profile.html', context)
+
+
+def applicant_list(request):
+
+    applicants = Applicant.objects.all()
+    template = 'manage_applicants.html'
+    context = {
+        'title': 'Applicants Page',
+        'applicants': applicants
+    }
+    return render(request, template, context)
+
+
+def view_resume(request, resume_filename):
+
+    applicant = get_object_or_404(Applicant, resume=resume_filename)
+    file_path = applicant.resume.path
+    return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+
+
+@require_POST
+def approve_applicant(request, applicant_id):
+    applicant = get_object_or_404(Applicant, id=applicant_id)
+    # Perform approval logic here
+    applicant.status = 'Approved'
+    applicant.save()
+    return JsonResponse({'status': 'success'})
+
+
+@csrf_exempt
+def reject_applicant(request, applicant_id):
+    applicant = get_object_or_404(Applicant, id=applicant_id)
+    rejection_reason = request.POST.get('rejection_reason', '')
+    if request.method == 'POST':
+        applicant.status = 'Rejected'
+        applicant.rejection_reason = rejection_reason
+        applicant.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'})

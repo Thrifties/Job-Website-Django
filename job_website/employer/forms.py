@@ -12,9 +12,12 @@ class JobForm(forms.ModelForm):
         fields = ['title', 'number_of_people', 'salary', 'category', 'location',
                   'description', 'date', 'requirements', 'status']
         
+        fields = '__all__'
+
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
         fields = '__all__'
         
         
+

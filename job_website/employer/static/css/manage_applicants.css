@@ -1,0 +1,92 @@
+
+.banner {
+    /* background: linear-gradient(0deg, rgba(18, 81, 40, 0.7), rgba(18, 81, 40, 0.7)), url('./img/BSU FRONT 2.jpg'); */
+    background: url('/static/resources/banner.png'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; 
+    position: relative;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: end;
+    color: white;
+    padding: 5px 5px 5px 10px;
+}
+
+.applicant_list {
+    font-family: sans-serif;
+  line-height: 1.15;
+  color: rgba(20, 20, 20, 0.822);
+  font-weight: bolder;
+}
+
+.detail{
+    font-family: sans-serif;
+  line-height: 1.15;
+  text-align: center;
+  padding: 20px;
+}
+
+.action-button {
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.approve-button {
+    background-color: rgb(99, 146, 233);
+    border: none;
+    color: white;
+}
+
+
+.approve-button:hover {
+    background-color: rgb(31, 90, 201);
+}
+
+
+.reject-button {
+    background-color: rgb(223, 123, 209); 
+    border: none;
+    color: white;
+}
+
+
+.reject-button:hover {
+    background-color: rgb(218, 56, 233);
+}
+
+.applicant_container{
+    text-align: center;
+    padding: 20px;
+    border: none;
+    background-color: #fcfcfc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    height: 100vh;
+}
+.applicant_container {
+    margin-top: 20px;
+}
+
+.purple-line {
+    border-left: 3px solid rgb(163, 43, 163); 
+    height: 50px;
+    padding-left: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center; 
+}
+
+
+
