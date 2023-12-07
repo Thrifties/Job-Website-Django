@@ -17,9 +17,27 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
-
 # Create your views here.
 
+
+def to_login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = Details.objects.get(email=email)
+        if user:
+            if user.password == password:
+                request.session['id'] = user.id
+                request.session['email'] = user.email
+                request.session['first_name'] = user.first_name
+                request.session['last_name'] = user.last_name
+                return render(request, 'dashboard.html')
+            else:
+                return redirect('login')
+        else:
+            return redirect('login')
+    else:
+        return redirect('login')
 
 def dashboard(request):
 
@@ -46,22 +64,13 @@ def login(request):
             'title': 'Login Page'
         }
         return render(request, template, context)
-    
-def to_login(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = Details.objects.get(email=email)
-        if user:
-            if user.password == password:
-                request.session['user_id'] = user.id
-                return redirect('dashboard')
-            else:
-                return redirect('login')
-        else:
-            return redirect('login')
-    else:
-        return redirect('login')
+
+def logout(request):
+    try:
+        del request.session['id']
+    except KeyError:
+        pass
+    return redirect('login')
 
 def add_employer(request):
     if request.method == 'POST':
@@ -252,7 +261,6 @@ def company_profile(request):
     }
     return render(request, template, context)
 
-
 def add_company_profile(request):
     if request.method == 'POST':
         form = CompanyForm(request.POST)
@@ -272,3 +280,43 @@ def add_company_profile(request):
     }
 
     return render(request, 'company_profile.html', context)
+
+
+def applicant_list(request):
+
+    applicants = Applicant.objects.all()
+    template = 'manage_applicants.html'
+    context = {
+        'title': 'Applicants Page',
+        'applicants': applicants
+    }
+    return render(request, template, context)
+
+
+def view_resume(request, resume_filename):
+
+    applicant = get_object_or_404(Applicant, resume=resume_filename)
+    file_path = applicant.resume.path
+    return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+
+
+@require_POST
+def approve_applicant(request, applicant_id):
+    applicant = get_object_or_404(Applicant, id=applicant_id)
+    # Perform approval logic here
+    applicant.status = 'Approved'
+    applicant.save()
+    return JsonResponse({'status': 'success'})
+
+
+@csrf_exempt
+def reject_applicant(request, applicant_id):
+    applicant = get_object_or_404(Applicant, id=applicant_id)
+    rejection_reason = request.POST.get('rejection_reason', '')
+    if request.method == 'POST':
+        applicant.status = 'Rejected'
+        applicant.rejection_reason = rejection_reason
+        applicant.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'})

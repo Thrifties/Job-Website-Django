@@ -23,7 +23,8 @@ urlpatterns = [
     path('applicants/', applicant_list, name="applicant_list"),
     path('applicants/resume/<str:resume_filename>/', view_resume, name='view_resume'),
     path('approve_applicant/<int:applicant_id>/', approve_applicant, name='approve_applicant'),
-    path('reject_applicant/<int:applicant_id>/', reject_applicant, name='reject_applicant'), 
+    path('reject_applicant/<int:applicant_id>/', reject_applicant, name='reject_applicant'),
+    path('logout', views.logout, name='logout'),
 ]
 
 if settings.DEBUG:
