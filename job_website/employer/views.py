@@ -468,6 +468,39 @@ def update_profile_picture(request):
     return render(request, 'company_profile.html', context)
 
 
+@csrf_exempt
+def update_cover_photo(request):
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        try:
+            company_id = int(request.POST.get('company_id'))
+            company = Company.objects.get(employerID=company_id)
+
+            cover_photo = request.FILES.get('cover_photo')
+            if cover_photo:
+                # Determine the file extension dynamically
+                file_extension = cover_photo.name.split('.')[-1]
+                
+                # Save the file to the desired folder
+                cover_photo_path = f'employer/static/resources/cover_photo/cover_photo_{company_id}.png'
+                cover_photo_name = f'cover_photo_{company_id}.png'
+                
+                with open(cover_photo_path, 'wb') as file:
+                    for chunk in cover_photo.chunks():
+                        file.write(chunk)
+
+                company.cover_photo_path = cover_photo_name
+                company.save()
+
+                return JsonResponse({'success': True, 'message': 'Cover photo updated successfully'})
+            else:
+                return JsonResponse({'success': False, 'message': 'No file provided'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
+    return render(request, 'company_profile.html', context)
+
+
 def applicant_list(request):
 
     applicants = Applicant.objects.all()
