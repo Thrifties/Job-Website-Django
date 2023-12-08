@@ -1,11 +1,462 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ title }}</title>
+    <!-- Custom fonts for this template (assuming it's loading fonts) -->
+    {% include 'includes/header-cdn.html' %}
+
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <!-- DATATABLES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- Your custom CSS file -->
+    <link rel="stylesheet" href="{% static 'css/post_job.css' %}">
+
+    <style>
+        /* Center align DataTables header and content */
+        #pending_list.dataTable thead th,
+        #pending_list.dataTable tbody td {
+            text-align: center;
+        }
+
+        /* Ensure proper alignment for DataTables wrapper */
+        #pending_list_wrapper {
+            text-align: center;
+        }
+
+        /* Left-align length data and info data in DataTables */
+        #pending_list_info,
+        #pending_list_length {
+            text-align: left;
+        }
+
+        #rejected_list.dataTable thead th,
+        #rejected_list.dataTable tbody td {
+            text-align: center;
+        }
+
+        /* Ensure proper alignment for DataTables wrapper */
+        #rejected_list_wrapper {
+            text-align: center;
+        }
+
+        /* Left-align length data and info data in DataTables */
+        #rejected_list_info,
+        #rejected_list_length {
+            text-align: left;
+        }
+    </style>
 </head>
-<body>
-    List of jobs admin
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper" class="d-flex flex-column">
+
+
+        <div class="banner d-flex justify-content-end align-items-center">
+        </div>
+
+        <!-- Modal Add-->
+        <div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Post A Job</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="form-add" method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <!-- <div id="alert-error"></div> -->
+                            <div class="container-fluid">
+                                <div id="alert-error-add"></div>
+
+                                <input type="text" name="company" id="company" value="{{request.session.company}}"
+                                    readonly hidden>
+                                <div class="row gap-1">
+                                    <div class="col-6 mb-1 p-0">
+                                        <div class="form-floating">
+                                            <input type="text" name="title" id="title" class="form-control"
+                                                placeholder="" required />
+                                            <label class="form-label" for="title">Job Title<span class="text-danger">
+                                                    *</span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="number" name="number_of_people" id="number_of_people"
+                                                class="form-control" placeholder="" required />
+                                            <label class="form-label" for="number_of_people">Number of People to
+                                                hire<span class="text-danger"> *</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col mb-1 p-0">
+                                        <div class="input-group">
+                                            <span class="input-group-text">₱</span>
+                                            <div class="form-floating">
+                                                <input type="number" name="salary" id="salary" class="form-control"
+                                                    placeholder="" required />
+                                                <label class="form-label" for="salary">Salary<span class="text-danger">
+                                                        *</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="text" name="category" id="category" class="form-control"
+                                                placeholder="" required />
+                                            <label class="form-label" for="category">Category<span class="text-danger">
+                                                    *</span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="text" name="location" id="location" class="form-control"
+                                                placeholder="" required />
+                                            <label class="form-label" for="location">Location<span class="text-danger">
+                                                    *</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col-12 mb-1 p-0">
+                                        <div class="form-floating mb-2">
+                                            <textarea class="form-control" name="description" id="description"
+                                                style="height: 100px" rows="4" placeholder="" required></textarea>
+                                            <label class="form-label" for="description">Job Description<span
+                                                    class="text-danger"> *</span></label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col-12 mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="text" name="requirements" id="requirements"
+                                                class="form-control" placeholder="" required />
+                                            <label class="form-label" for="requirements">Job Requirements<span
+                                                    class="text-danger"> *</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <input type="date" name="date" class="form-control datepicker"
+                                                id="datepicker" required>
+                                            <label class="form-label" for="date">Application Deadline<span
+                                                    class="text-danger"> *</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gap-1">
+                                    <div class="col mb-2 p-0">
+                                        <div class="form-floating position-relative">
+                                            <select class="form-select" name="status" required hidden>
+                                                <option value="Pending" selected>Pending</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="add-job">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Begin Page Content -->
+        <div class="container">
+            <nav class="m-3">
+                <div class="nav nav-underline fw-bold" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-open"
+                        type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                        <i class="bi bi-check-circle me-1"></i>Pending Jobs
+                    </button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-closed"
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                        <i class="bi bi-list-check me-1"></i>Rejected Jobs
+                    </button>
+                </div>
+            </nav>
+
+            <div class="tab-content mt-4">
+                <!-- Tab for OPEN jobs -->
+                <div class="tab-pane fade show active" id="nav-open" role="tabpanel" aria-labelledby="nav-home-tab"
+                    tabindex="0">
+                    <div class="table-responsive">
+                        <table id="pending_list" class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Job Title</th>
+                                    <th>Number of People</th>
+                                    <th>Salary</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Description</th>
+                                    <th>Job Requirements</th>
+                                    <th>Application Deadline</th>
+                                    <th>Job Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for job in jobs %}
+                                {% if job.status == 'Pending' %}
+                                <tr>
+                                    <td>{{ job.company }}</td>
+                                    <td>{{ job.title }}</td>
+                                    <td>{{ job.number_of_people }}</td>
+                                    <td>₱ {{ job.salary }}</td>
+                                    <td>{{ job.category }}</td>
+                                    <td>{{ job.location }}</td>
+                                    <td>{{ job.description }}</td>
+                                    <td>{{ job.requirements }}</td>
+                                    <td>{{ job.date }}</td>
+                                    <td class="text-primary font-weight-bold">{{ job.status }}</td>
+                                    <td>
+                                        <div class="input-group-append">
+                                            <button class="btn approve me-2 text-light" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#approvalModal"
+                                                data-jobid="{{ job.id }}" style="background-color: rgb(99, 146, 233);">
+                                                Approve
+                                            </button>
+                                            <button class="btn reject text-light" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#rejectModal" data-jobid="{{ job.id }}"
+                                                style="background-color: rgb(223, 123, 209);">
+                                                Reject
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <!-- Tab for CLOSED jobs -->
+                <div class="tab-pane fade" id="nav-closed" role="tabpanel" aria-labelledby="nav-profile-tab"
+                    tabindex="0">
+                    <table id="rejected_list" class="table table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>Company Name</th>
+                                <th>Job Title</th>
+                                <th>Number of People</th>
+                                <th>Salary</th>
+                                <th>Category</th>
+                                <th>Location</th>
+                                <th>Description</th>
+                                <th>Job Requirements</th>
+                                <th>Application Deadline</th>
+                                <th>Job Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for job in jobs %}
+                            {% if job.status == 'Rejected' %}
+                            <tr>
+                                <td>{{ job.company }}</td>
+                                <td>{{ job.title }}</td>
+                                <td>{{ job.number_of_people }}</td>
+                                <td>₱ {{ job.salary }}</td>
+                                <td>{{ job.category }}</td>
+                                <td>{{ job.location }}</td>
+                                <td>{{ job.description }}</td>
+                                <td>{{ job.requirements }}</td>
+                                <td>{{ job.date }}</td>
+                                <td class="text-danger font-weight-bold">{{ job.status }}</td>
+                                <td>
+                                    <button class="btn delete text-light" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal" data-jobid="{{ job.id }}"
+                                        style="background-color: rgb(255, 0, 0);">
+                                        Delete
+                                    </button>
+
+                </div>
+                </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <!-- Modal for Approval -->
+        <div class="modal fade" id="approvalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Approve Job</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p id="approvalModalBody">Are you sure you want to approve this job?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a id="approveJobButton" class="btn btn-primary">Approve</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal for Approval -->
+
+        <!-- Modal for Rejection -->
+        <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Reject Job</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p id="rejectModalBody">Are you sure you want to reject this job?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <a id="rejectJobButton" class="btn btn-danger">Reject</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal for Rejection -->
+
+        <!-- Modal for Delete Confirmation -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Job</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p id="deleteModalBody">Are you sure you want to delete this job?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a id="deleteJobButton" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Delete Confirmation -->
+
+    </div>
+    <!-- End of Main Content -->
+
+    </div>
+
+
+    {% include 'includes/js-cdn.html' %}
+    <!-- DATA TABLE -->
+    <script src=" https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#pending_list, #rejected_list').DataTable();
+
+
+        });
+
+        // Script to dynamically update modal content based on the clicked job
+        $(document).on('click', '.approve', function () {
+            var jobId = $(this).data('jobid');
+            var approvalModalBody = $('#approvalModalBody');
+            var approveJobButton = $('#approveJobButton');
+
+            // Example: You can customize the content based on the job ID
+            approvalModalBody.text('Are you sure you want to approve job?');
+
+            // Update the approve button href dynamically
+            approveJobButton.attr('href', '/job_website_admin/approve_job/' + jobId + '/');
+        });
+
+        $(document).on('click', '.reject', function () {
+            var jobId = $(this).data('jobid');
+            var rejectModalBody = $('#rejectModalBody');
+            var rejectJobButton = $('#rejectJobButton');
+
+            // Example: You can customize the content based on the job ID
+            rejectModalBody.text('Are you sure you want to reject job?');
+
+            // Update the reject button href dynamically
+            rejectJobButton.attr('href', '/job_website_admin/reject_job/' + jobId + '/');
+        });
+
+
+        $(document).on('click', '.delete', function () {
+            var jobId = $(this).data('jobid');
+            var deleteModalBody = $('#deleteModalBody');
+            var deleteJobButton = $('#deleteJobButton');
+
+            // Example: You can customize the content based on the job ID
+            deleteModalBody.text('Are you sure you want to delete job?');
+
+            // Update the delete button href dynamically
+            deleteJobButton.attr('href', '/job_website_admin/delete_job/' + jobId + '/');
+        });
+
+    </script>
+
+
 </body>
+
 </html>

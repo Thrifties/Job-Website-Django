@@ -179,12 +179,10 @@
                                 <div class="row gap-1">
                                     <div class="col mb-2 p-0">
                                         <div class="form-floating position-relative">
-                                            <select class="form-select" name="status" required>
-                                                <option value="Open">Open</option>
-                                                <option value="Closed">Closed</option>
+                                            <select class="form-select" name="status" required hidden>
+                                                <option value="Pending" selected>Pending</option>
+
                                             </select>
-                                            <label class="form-label" for="status">Job Status<span class="text-danger">
-                                                    *</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -254,7 +252,7 @@
                                     <td>{{ job.description }}</td>
                                     <td>{{ job.requirements }}</td>
                                     <td>{{ job.date }}</td>
-                                    <td class="text-primary font-weight-bold">{{ job.status }}</td>
+                                    <td class="text-success font-weight-bold">{{ job.status }}</td>
                                     <td>
                                         <div class="input-group-append">
                                             <button class="btn edit-open me-2 text-light" type="button"

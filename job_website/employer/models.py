@@ -19,6 +19,8 @@ class Details(models.Model):
 
 
 class JobStatus(models.TextChoices):
+    PENDING = 'Pending', 'Pending'
+    REJECTED = 'Reject', 'Reject'
     OPEN = 'Open', 'Open'
     CLOSED = 'Closed', 'Closed'
 
@@ -36,7 +38,7 @@ class Job(models.Model):
     status = models.CharField(
         max_length=10,
         choices=JobStatus.choices,
-        default=JobStatus.OPEN)
+        default=JobStatus.PENDING)
 
     def __str__(self):
         return self.title
@@ -71,10 +73,10 @@ class Company(models.Model):
     scope = models.CharField(max_length=255, default='-', blank=False)
     overview = models.TextField(default='-', blank=False)
     join_us = models.TextField(default='-', blank=False)
-    profile_picture_path = models.CharField(max_length=255, default='', blank=True)
+    profile_picture_path = models.CharField(
+        max_length=255, default='', blank=True)
     cover_photo_path = models.CharField(max_length=255, default='', blank=True)
     employerID = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.company_name
-
