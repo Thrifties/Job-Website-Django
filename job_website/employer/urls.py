@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from .views import get_company_data
+from .views import update_company_profile
+from .views import update_profile_picture
 from .views import view_resume, applicant_list, approve_applicant, reject_applicant
 
 from django.conf import settings
@@ -17,6 +20,9 @@ urlpatterns = [
     path('register', views.register, name="register"),
     path('add_employer', views.add_employer, name="add_employer"),
     path('profile_settings', views.profile_settings, name="profile_settings"),
+    path('get_company_data/<int:company_id>/', get_company_data, name='get_company_data'),
+    path('update_company_profile/<int:company_id>/', update_company_profile, name='update_company_profile'),
+    path('update_profile_picture/', update_profile_picture, name='update_profile_picture')
     path('login', views.login, name='login'),
     path('to_login', views.to_login, name='to_login'),
     path('add_job', views.add_job, name="add_job"),

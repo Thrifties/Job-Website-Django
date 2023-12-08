@@ -31,6 +31,7 @@ def to_login(request):
                 request.session['email'] = user.email
                 request.session['first_name'] = user.first_name
                 request.session['last_name'] = user.last_name
+                request.session['company'] = user.company
                 return render(request, 'dashboard.html')
             else:
                 return redirect('login')
@@ -38,6 +39,7 @@ def to_login(request):
             return redirect('login')
     else:
         return redirect('login')
+
 
 def dashboard(request):
 
@@ -58,12 +60,13 @@ def register(request):
 
 
 def login(request):
-    
-        template = 'login.html'
-        context = {
-            'title': 'Login Page'
-        }
-        return render(request, template, context)
+
+    template = 'login.html'
+    context = {
+        'title': 'Login Page'
+    }
+    return render(request, template, context)
+
 
 def logout(request):
     try:
@@ -72,9 +75,10 @@ def logout(request):
         pass
     return redirect('login')
 
+
 def add_employer(request):
     if request.method == 'POST':
-        
+
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         company = request.POST.get('company')
@@ -82,7 +86,7 @@ def add_employer(request):
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         password = request.POST.get('password')
-        #hashed_password = make_password(password)
+        # hashed_password = make_password(password)
 
         Details.objects.create(
             first_name=first_name,
@@ -135,6 +139,7 @@ def post_job(request):
 
 def add_job(request):
     if request.method == 'POST':
+        company = request.POST.get('company')
         title = request.POST.get('title')
         number_of_people = request.POST.get('number_of_people')
         salary = request.POST.get('salary')
@@ -147,6 +152,7 @@ def add_job(request):
 
         # Create a new Job instance and save to the database
         Job.objects.create(
+            company=company,
             title=title,
             number_of_people=number_of_people,
             salary=salary,
@@ -253,6 +259,7 @@ def delete_job(request, job_id):
 
     return JsonResponse({'message': 'Invalid request.'}, status=400)
 
+
 def company_profile(request):
 
     template = 'company_profile.html'
@@ -261,24 +268,164 @@ def company_profile(request):
     }
     return render(request, template, context)
 
+
+from django.http import JsonResponse
+from .models import Company
+
 def add_company_profile(request):
-    if request.method == 'POST':
-        form = CompanyForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Company profile saved successfully.')
-            return redirect('company_profile')
-        else:
-            messages.error(
-                request, 'Form submission has errors. Please check the form.')
+    try:
+        # Create a new company with default values
+        new_company = Company.objects.create(
+            company_name="-",
+            company_email="-",
+            location="-",
+            website="-",
+            scope="-",
+            overview="-",
+            join_us="-",
+            profile_picture_path="-",
+            cover_photo_path="-",
+        )
+
+        # Update the employerID to the same value as id
+        new_company.employerID = new_company.id
+
+        # Save the company again to update the employerID
+        new_company.save()
+
+        # Return success and company information
+        company_info = {
+            'company_name': new_company.company_name,
+            'company_email': new_company.company_email,
+            'location': new_company.location,
+            'website': new_company.website,
+            'scope': new_company.scope,
+            'overview': new_company.overview,
+            'join_us': new_company.join_us,
+            'profile_picture_path': new_company.profile_picture_path,
+            'cover_photo_path': new_company.cover_photo_path,
+            'employerID': new_company.employerID,
+        }
+
+        return JsonResponse({'success': True, 'message': 'Company added successfully', 'company': company_info})
+    except Exception as e:
+        # Return failure and error message
+        return JsonResponse({'success': False, 'message': str(e)})
+
+from .models import Company
+
+def get_company_data(request, company_id):
+    try:
+        # Retrieve the company data based on the provided company_id
+        company = Company.objects.get(id=company_id)
+
+        company_info = {
+            'company_name': company.company_name,
+            'company_email': company.company_email,
+            'location': company.location,
+            'website': company.website,
+            'scope': company.scope,
+            'overview': company.overview,
+            'join_us': company.join_us,
+            'profile_picture_path': company.profile_picture_path,
+            'cover_photo_path': company.cover_photo_path,
+        }
+
+        return JsonResponse({'success': True, 'company': company_info})
+    except Company.DoesNotExist:
+        return JsonResponse({'success': False, 'message': f'Company with id={company_id} not found'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+@csrf_exempt
+@require_POST
+def update_company_profile(request, company_id):
+    try:
+        company = Company.objects.get(employerID=company_id)
+    except Company.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Company not found'}, status=404)
+
+    # Exclude 'employerID' from the form fields
+    form = CompanyForm(request.POST, instance=company)
+    if form.is_valid():
+        # Set 'employerID' manually before saving the form
+        form.instance.employerID = company_id
+        form.save()
+        return JsonResponse({'success': True, 'message': 'Company profile updated successfully'})
     else:
-        form = CompanyForm()
+        # Return validation errors as part of the response
+        return JsonResponse({'success': False, 'message': 'Form validation failed', 'errors': form.errors}, status=400)
 
-    context = {
-        'title': 'Add Company Profile',
-        'form': form,
-    }
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Company
+
+# @csrf_exempt
+# def update_profile_picture(request):
+    # if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    #     try:
+    #         company_id = int(request.POST.get('company_id'))
+    #         company = Company.objects.get(employerID=company_id)
+
+    #         profile_picture = request.FILES.get('profile_picture')
+    #         if profile_picture:
+    #             # Save the file to the desired folder
+                
+    #             profile_picture_path = f'employer/static/resources/profile_picture/profile_picture_{company_id}.png'
+    #             profile_picture_name = f'profile_picture_{company_id}.png'
+    #             with open(profile_picture_path, 'wb') as file:
+    #                 for chunk in profile_picture.chunks():
+    #                     file.write(chunk)
+
+    #             # Update the profile_picture_path for the Company instance
+    #             company.profile_picture_path = profile_picture_name
+    #             company.save()
+
+    #             return JsonResponse({'success': True, 'message': 'Profile picture updated successfully'})
+    #         else:
+    #             return JsonResponse({'success': False, 'message': 'No file provided'})
+    #     except Exception as e:
+    #         return JsonResponse({'success': False, 'message': str(e)})
+
+    # return JsonResponse({'success': False, 'message': 'Invalid request'})
+
+
+@csrf_exempt
+def update_profile_picture(request):
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        try:
+            company_id = int(request.POST.get('company_id'))
+            company = Company.objects.get(employerID=company_id)
+
+            profile_picture = request.FILES.get('profile_picture')
+            if profile_picture:
+                # Determine the file extension dynamically
+                file_extension = profile_picture.name.split('.')[-1]
+                
+                # Save the file to the desired folder
+                profile_picture_path = f'employer/static/resources/profile_picture/profile_picture_{company_id}.png'
+                profile_picture_name = f'profile_picture_{company_id}.png'
+                
+                with open(profile_picture_path, 'wb') as file:
+                    for chunk in profile_picture.chunks():
+                        file.write(chunk)
+
+                # Update the profile_picture_path for the Company instance
+                company.profile_picture_path = profile_picture_name
+                company.save()
+
+                return JsonResponse({'success': True, 'message': 'Profile picture updated successfully'})
+            else:
+                return JsonResponse({'success': False, 'message': 'No file provided'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
     return render(request, 'company_profile.html', context)
 
 

@@ -88,7 +88,8 @@
                             <div class="container-fluid">
                                 <div id="alert-error-add"></div>
 
-
+                                <input type="text" name="company" id="company" value="{{request.session.company}}"
+                                    readonly hidden>
                                 <div class="row gap-1">
                                     <div class="col-6 mb-1 p-0">
                                         <div class="form-floating">
@@ -227,6 +228,7 @@
                         <table id="job_list" class="table table-hover text-center">
                             <thead>
                                 <tr>
+                                    <th>Company Name</th>
                                     <th>Job Title</th>
                                     <th>Number of People</th>
                                     <th>Salary</th>
@@ -241,8 +243,9 @@
                             </thead>
                             <tbody>
                                 {% for job in jobs %}
-                                {% if job.status == 'Open' %}
+                                {% if job.status == 'Open' and job.company == request.session.company %}
                                 <tr>
+                                    <td>{{ job.company }}</td>
                                     <td>{{ job.title }}</td>
                                     <td>{{ job.number_of_people }}</td>
                                     <td>₱ {{ job.salary }}</td>
@@ -282,6 +285,7 @@
                     <table id="job_list_closed" class="table table-hover text-center">
                         <thead>
                             <tr>
+                                <th>Company Name</th>
                                 <th>Job Title</th>
                                 <th>Number of People</th>
                                 <th>Salary</th>
@@ -296,8 +300,9 @@
                         </thead>
                         <tbody>
                             {% for job in jobs %}
-                            {% if job.status == 'Closed' %}
+                            {% if job.status == 'Closed' and job.company == request.session.company %}
                             <tr>
+                                <td>{{ job.company }}</td>
                                 <td>{{ job.title }}</td>
                                 <td>{{ job.number_of_people }}</td>
                                 <td>₱ {{ job.salary }}</td>

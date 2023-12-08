@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Details(models.Model):
 
     first_name = models.CharField(max_length=50, default="")
@@ -16,13 +17,15 @@ class Details(models.Model):
     def __str__(self):
         return self.first_name
 
+
 class JobStatus(models.TextChoices):
     OPEN = 'Open', 'Open'
     CLOSED = 'Closed', 'Closed'
 
+
 class Job(models.Model):
+    company = models.CharField(max_length=255, default="")
     title = models.CharField(max_length=255, default="")
-    # Set a valid default numerical value
     number_of_people = models.IntegerField(default=0)
     salary = models.CharField(max_length=255, default="")
     category = models.CharField(max_length=255, default="")
@@ -61,13 +64,16 @@ class Applicant(models.Model):
 
 
 class Company(models.Model):
-    company_name = models.CharField(max_length=255)
-    company_email = models.EmailField()
-    location = models.CharField(max_length=255)
-    website = models.URLField()
-    scope = models.CharField(max_length=255)
-    overview = models.TextField()
-    join_us = models.TextField()
+    company_name = models.CharField(max_length=255, default='-', blank=False)
+    company_email = models.EmailField(default='-', blank=False)
+    location = models.CharField(max_length=255, default='-', blank=False)
+    website = models.URLField(default='-', blank=False)
+    scope = models.CharField(max_length=255, default='-', blank=False)
+    overview = models.TextField(default='-', blank=False)
+    join_us = models.TextField(default='-', blank=False)
+    profile_picture_path = models.CharField(max_length=255, default='', blank=True)
+    cover_photo_path = models.CharField(max_length=255, default='', blank=True)
+    employerID = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.company_name
