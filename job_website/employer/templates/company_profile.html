@@ -72,7 +72,7 @@
 
                         // Set the src of the image
                         var profilePicturePath = data.company.profile_picture_path;
-                        if (profilePicturePath || profilePicturePath !== "-") {
+                        if (profilePicturePath && profilePicturePath !== "-") {
                             // If profile_picture_path is not "-" or falsy, use the provided path
                             var timestamp = new Date().getTime(); // Get the current timestamp
                             $('#display-profile-picture').attr('src', `./static/resources/profile_picture/${profilePicturePath}?timestamp=${timestamp}`);
@@ -86,8 +86,14 @@
                         // Set the background-image of the display-cover div
                         var coverPhotoPath = data.company.cover_photo_path;
                         if (coverPhotoPath && coverPhotoPath !== "-") {
+                            var timestamp = new Date().getTime(); // Get the current timestamp
                             // If cover_photo_path is not "-" or falsy, use the provided path
-                            $('#display-cover').css('background-image', 'url(' + coverPhotoPath + ')');
+                            $('#display-cover').css('background-image', `url(./static/resources/cover_photo/` + coverPhotoPath + `?timestamp=${timestamp})`);
+
+                            // If profile_picture_path is not "-" or falsy, use the provided path
+
+                            // $('#display-cover').attr('src', `./static/resources/cover_photo/${coverPhotoPath}?timestamp=${timestamp}`);
+                            console.log("Meron laman cover" + data.company.cover_photo_path);
                         } else {
                             // If cover_photo_path is "-" or falsy, use the default path
                             $('#display-cover').css('background-image', 'url(./static/resources/default_cover.png)');
@@ -135,8 +141,13 @@
             });
         }
 
-        function hidePreviewProfile(){
+        function hidePreviewProfile() {
             $('#preview-image').hide();
+            $('#cover-photo').val('');
+        }
+
+        function hidePreviewCover() {
+            $('#preview-cover').hide();
             $('#profile').val('');
         }
 
@@ -150,6 +161,54 @@
 
         function editCompanyProfile() {
             var companyId = $("#edit-company-id").val();
+
+            // Validate form fields
+            var validationPassed = true;
+
+            // Email validation function
+            function isValidEmail(email) {
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            // Website URL validation function
+            function isValidURL(url) {
+                var urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+                return urlRegex.test(url);
+            }
+
+            // Loop through each form field
+            $(".edit-profile").each(function () {
+                var fieldValue = $(this).val().trim();
+
+                // Check if the field is empty
+                if (fieldValue === "") {
+                    $('#edit-alert').show();
+                    $("#edit-alert").text("All fields must be filled out").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if any field is empty
+                }
+
+                // Validate email
+                if ($(this).attr("id") === "company_email" && !isValidEmail(fieldValue)) {
+                    $('#edit-alert').show();
+                    $("#edit-alert").text("Please enter a valid email address").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if email is invalid
+                }
+
+                // Validate website URL
+                if ($(this).attr("id") === "website" && !isValidURL(fieldValue)) {
+                    $('#edit-alert').show();
+                    $("#edit-alert").text("Please enter a valid website URL").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if website URL is invalid
+                }
+            });
+
+            if (!validationPassed) {
+                return; // Exit the function if validation fails
+            }
 
             // Collect data from form
             var formData = {
@@ -211,6 +270,28 @@
                 </div>
             </div>
 
+            <div id="success-cover-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Successfully change cover photo.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+
+            <div id="failed-cover-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to change cover photo.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+
             <div id="success-profile-toast" class="toast align-items-center text-bg-success border-0" role="alert"
                 aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
@@ -226,7 +307,7 @@
                 aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
-                        Failed to edit company profile.
+                        Failed to change profile picture.
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                         aria-label="Close"></button>
@@ -373,7 +454,9 @@
                         <div class="modal-body">
                             <div class="d-grid gap-2">
                                 <button type="button" class="btn btn-purple" data-bs-toggle="modal"
-                                    data-bs-target="#edit-company-picture" onclick="hideProfileAlert(), hidePreviewProfile()"><i class="bi bi-camera2 me-1"></i>Profile
+                                    data-bs-target="#edit-company-picture"
+                                    onclick="hideProfileAlert(), hidePreviewProfile()"><i
+                                        class="bi bi-camera2 me-1"></i>Profile
                                     Picture</button>
                                 <button type="button" class="btn btn-purple" data-bs-toggle="modal"
                                     data-bs-target="#edit-company-cover"><i class="bi bi-image me-1"></i>Cover
@@ -383,8 +466,7 @@
                                         class="bi bi-info-circle me-1" onclick="hideEditAlert()"></i>Company
                                     Details</button>
                                 <button type="button" class="btn btn-purple" data-bs-toggle="modal"
-                                    data-bs-target="#add-company-profile" ><i
-                                        class="bi bi-info-circle me-1"></i>Add
+                                    data-bs-target="#add-company-profile"><i class="bi bi-info-circle me-1"></i>Add
                                     Company</button>
                             </div>
                         </div>
@@ -407,6 +489,11 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
+                                <div class="col-12">
+                                    <div style="display: none;" class="alert alert-danger" role="alert"
+                                        id="cover-alert">
+                                    </div>
+                                </div>
                                 <div class="col-12 mb-3">
                                     <!-- Inside the modal body -->
                                     <div id="image-cover-preview" style="display: none;">
@@ -416,8 +503,8 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-3">
-                                        <label for="profile-picture" class="form-label">Profile Picture</label>
-                                        <input class="form-control" type="file" id="profile-picture"
+                                        <label for="profile-picture" class="form-label">Cover Photo </label>
+                                        <input class="form-control" type="file" id="cover-photo"
                                             onchange="handleCover(event)">
                                     </div>
                                 </div>
@@ -426,7 +513,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                 onclick="closePreview()">Close</button>
-                            <button type="button" class="btn btn-purple">Save Cover</button>
+                            <button type="button" class="btn btn-purple" onclick="saveCoverPhoto(5)">Save Cover</button>
                         </div>
                     </form>
 
@@ -493,7 +580,7 @@
                                 reader.onload = function (e) {
                                     const previewElement = document.getElementById("preview-image");
 
-                                   
+
 
                                     // Check the file type
                                     if (file.type.includes("image")) {
@@ -557,6 +644,44 @@
                             });
                         }
 
+                        function saveCoverPhoto(companyId) {
+                            var formData = new FormData();
+                            formData.append('cover_photo', document.getElementById('cover-photo').files[0]);
+                            formData.append('company_id', companyId);
+                            console.log(document.getElementById('cover-photo').files[0]);
+                            $.ajax({
+                                type: 'POST',
+                                url: '/update_cover_photo/',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function (data) {
+                                    console.log(data);
+                                    if (data.success) {
+                                        console.log('Cover photo updated successfully');
+                                        // Add any additional logic or UI updates here
+                                        const success_edit_toast = document.getElementById('success-cover-toast');
+                                        bootstrap.Toast.getOrCreateInstance(success_edit_toast).show();
+                                        $('#edit-company-cover').modal('hide');
+                                        hidePreviewCover();
+                                    } else {
+                                        $('#cover-alert').show();
+                                        $("#cover-alert").text(response.message).show();
+                                        console.log('Failed to update cover photo: ' + data.message);
+                                        const failed_edit_toast = document.getElementById('failed-cover-toast');
+                                        bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
+                                        hidePreviewCover();
+                                    }
+                                    fetchCompanyData(5);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log('Failed to update cover photo: ' + error);
+                                    const failed_edit_toast = document.getElementById('failed-cover-toast');
+                                    bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
+                                }
+                            });
+                        }
+
                     </script>
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Edit Company Picture</h1>
@@ -612,50 +737,50 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="company_name" name="company_name"
-                                        placeholder="" required>
+                                    <input type="text" class="form-control edit-profile" id="company_name"
+                                        name="company_name" placeholder="" required>
                                     <label for="companyName">Company Name</label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="company_email" name="company_email"
-                                        placeholder="" required>
+                                    <input type="email" class="form-control edit-profile" id="company_email"
+                                        name="company_email" placeholder="" required>
                                     <label for="companyEmail">Company Email</label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="location" name="location" placeholder=""
-                                        required>
+                                    <input type="text" class="form-control edit-profile" id="location" name="location"
+                                        placeholder="" required>
                                     <label for="location">Location</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="url" class="form-control" id="website" name="website" placeholder=""
-                                        required>
+                                    <input type="url" class="form-control edit-profile" id="website" name="website"
+                                        placeholder="" required>
                                     <label for="website">Website</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="scope" name="scope" placeholder=""
-                                        required>
+                                    <input type="text" class="form-control edit-profile" id="scope" name="scope"
+                                        placeholder="" required>
                                     <label for="scope">Scope</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <textarea style="height: 100px;" class="form-control" id="overview" name="overview"
-                                        placeholder="" required></textarea>
+                                    <textarea style="height: 100px;" class="form-control edit-profile" id="overview"
+                                        name="overview" placeholder="" required></textarea>
                                     <label for="overview">Overview</label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <textarea style="height: 100px;" class="form-control" id="join_us" name="join_us"
-                                        placeholder="" required></textarea>
+                                    <textarea style="height: 100px;" class="form-control edit-profile" id="join_us"
+                                        name="join_us" placeholder="" required></textarea>
                                     <label for="joinUs">Why Join Us?</label>
                                 </div>
                             </div>
