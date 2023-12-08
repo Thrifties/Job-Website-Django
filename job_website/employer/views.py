@@ -32,6 +32,7 @@ def to_login(request):
                 request.session['first_name'] = user.first_name
                 request.session['last_name'] = user.last_name
                 request.session['company'] = user.company
+                request.session['phone'] = user.phone
                 return render(request, 'dashboard.html')
             else:
                 return redirect('login')
@@ -142,10 +143,48 @@ def add_employer(request):
 def profile_settings(request):
 
     template = 'profile_settings.html'
+    user_id = request.session.get('id')
+    user = Details.objects.get(id=user_id)
     context = {
-        'title': 'Profile Settings Page'
+        'title': 'Profile Settings Page',
+        'user': user
     }
     return render(request, template, context)
+
+
+def edit_profile(request):
+    if request.method == 'POST':
+        # Retrieve form data
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        company = request.POST.get('company_name')  # Correct field name
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+
+        # Update user profile
+        user_id = request.session.get('id')  # Get user ID from session
+        try:
+            # Fetch user from Details model
+            user = Details.objects.get(id=user_id)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.company = company
+            user.email = email
+            user.phone = phone
+            user.save()
+
+            # Display success message
+            messages.success(request, 'Profile updated successfully!')
+
+            # Redirect back to the profile settings page
+            return redirect('profile_settings')
+        except Details.DoesNotExist:
+            # Handle if the user doesn't exist
+            messages.error(request, 'User does not exist!')
+            return redirect('profile_settings')
+
+    # If it's a GET request or form not valid, render the form again
+    return render(request, 'profile_settings.html')
 
 
 def post_job(request):
@@ -532,3 +571,4 @@ def reject_applicant(request, applicant_id):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'status': 'error'})
+    

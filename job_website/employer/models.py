@@ -11,7 +11,7 @@ class Details(models.Model):
     company = models.CharField(max_length=50, default="")
     address = models.CharField(max_length=100, default="")
     email = models.EmailField(max_length=50, default="")
-    phone = models.CharField(max_length=10, default="")
+    phone = models.CharField(max_length=11, default="")
     password = models.CharField(max_length=128, default="")
 
     def __str__(self):
