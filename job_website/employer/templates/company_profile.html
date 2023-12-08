@@ -25,7 +25,8 @@
     <script>
 
         $(document).ready(function () {
-            fetchCompanyData(5);
+            console.log("{{request.session.id}}");
+            fetchCompanyData("{{request.session.id}}");
 
 
             $("#add-company-btn").click(function () {
@@ -49,7 +50,7 @@
             // Bind the fetchCompanyData function to the button click event
             $("#edit-company-profile-btn").click(function () {
                 // Specify the desired company ID (in this case, 5)
-                assignCompanyData(5);
+                assignCompanyData("{{request.session.id}}");
             });
         });
 
@@ -246,7 +247,7 @@
                         bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
                     }
 
-                    fetchCompanyData(5);
+                    fetchCompanyData("{{request.session.id}}");
                 },
                 error: function (error) {
                     // Handle AJAX error
@@ -513,7 +514,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                 onclick="closePreview()">Close</button>
-                            <button type="button" class="btn btn-purple" onclick="saveCoverPhoto(5)">Save Cover</button>
+                            <button type="button" class="btn btn-purple" onclick="saveCoverPhoto('{{request.session.id}}')">Save Cover</button>
                         </div>
                     </form>
 
@@ -634,7 +635,7 @@
                                         bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
                                         hidePreviewProfile();
                                     }
-                                    fetchCompanyData(5);
+                                    fetchCompanyData("{{request.session.id}}");
                                 },
                                 error: function (xhr, status, error) {
                                     console.log('Failed to update profile picture: ' + error);
@@ -672,7 +673,7 @@
                                         bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
                                         hidePreviewCover();
                                     }
-                                    fetchCompanyData(5);
+                                    fetchCompanyData("{{request.session.id}}");
                                 },
                                 error: function (xhr, status, error) {
                                     console.log('Failed to update cover photo: ' + error);
@@ -712,7 +713,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             onclick="closePreview()">Close</button>
-                        <button type="button" class="btn btn-purple" onclick="saveProfilePicture(5)">Save
+                        <button type="button" class="btn btn-purple" onclick="saveProfilePicture('{{request.session.id}}')">Save
                             picture</button>
                     </div>
 
@@ -730,7 +731,7 @@
                     <div class="modal-body">
                         <div class="row">
 
-                            <input type="hidden" id="edit-company-id" name="company_id" value="5">
+                            <input type="hidden" id="edit-company-id" name="company_id" value="{{request.session.id}}">
                             <div class="col-12">
                                 <div style="display: none;" class="alert alert-danger" role="alert" id="edit-alert">
                                 </div>
