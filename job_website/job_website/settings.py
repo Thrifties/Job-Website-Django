@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'employer.apps.EmployerConfig',
+    'job_website_admin.apps.JobWebsiteAdminConfig'
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             "/job_website/employer/templates"
+            "/job_website/job_website_admin/templates"
         ],
         'APP_DIRS': True,
         'OPTIONS': {
