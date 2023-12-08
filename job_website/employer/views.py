@@ -89,7 +89,7 @@ def add_employer(request):
         password = request.POST.get('password')
         # hashed_password = make_password(password)
 
-        Details.objects.create(
+        employerId = Details.objects.create(
             first_name=first_name,
             last_name=last_name,
             company=company,
@@ -98,6 +98,38 @@ def add_employer(request):
             phone=phone,
             password=password
         )
+        
+        new_company = Company.objects.create(
+            company_name=company,
+            company_email=email,
+            location=address,
+            website="-",
+            scope="-",
+            overview="-",
+            join_us="-",
+            profile_picture_path="-",
+            cover_photo_path="-",
+        )
+
+        # Update the employerID to the same value as id
+        new_company.employerID = employerId.id
+
+        # Save the company again to update the employerID
+        new_company.save()
+
+        # Return success and company information
+        company_info = {
+            'company_name': new_company.company_name,
+            'company_email': new_company.company_email,
+            'location': new_company.location,
+            'website': new_company.website,
+            'scope': new_company.scope,
+            'overview': new_company.overview,
+            'join_us': new_company.join_us,
+            'profile_picture_path': new_company.profile_picture_path,
+            'cover_photo_path': new_company.cover_photo_path,
+            'employerID': new_company.employerID,
+        }
 
         return redirect('register')
 
@@ -356,7 +388,7 @@ from .models import Company
 def get_company_data(request, company_id):
     try:
         # Retrieve the company data based on the provided company_id
-        company = Company.objects.get(id=company_id)
+        company = Company.objects.get(employerID=company_id)
 
         company_info = {
             'company_name': company.company_name,
