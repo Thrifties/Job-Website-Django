@@ -1,4 +1,4 @@
-{% load 'static' %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +8,15 @@
         <meta name="description" content="">
 
         <title>{{title}}</title>
+        {% include 'includes/header-cdn.html' %}
 
     </head>
 
     <body>
 
-        Hello World
+        {% include 'includes/admin_navbar.html' %}
 
+        {% include 'includes/js-cdn.html'%}
     </body>
 
 </html>

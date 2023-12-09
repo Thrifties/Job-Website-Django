@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from employer.models import Job
 
 # Create your views here.
-
+def dashboard_admin(request):
+    template = 'dashboard_admin.html'
+    return render(request, template)
 
 def admin_list_of_jobs(request):
     template = 'admin_list_of_jobs.html'
@@ -49,3 +51,7 @@ def delete_job(request, job_id):
 
     # Redirect back to the rejected jobs page
     return redirect('admin_list_of_jobs')
+
+def index(request):
+    template = 'index.html'
+    return render(request, template)
