@@ -19,5 +19,3 @@ class CompanyForm(forms.ModelForm):
         model = Company
         fields = '__all__'
         
-        
-

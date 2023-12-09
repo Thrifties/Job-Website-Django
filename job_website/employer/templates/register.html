@@ -15,6 +15,8 @@
         <!-- Custom fonts for this template -->
         {% include 'includes/header-cdn.html' %}
 
+        
+
     </head>
 
     <body>
@@ -28,51 +30,62 @@
             <div class="row justify-content-center">
                 <div class="col-md-6" id="formContainer">
                     <h2 class="mb-4 text-center" id="registration-heading">Register as an <span>employer</span></h2>
-                    <form class="align-items-center justify-content-center" action="{% url 'add_employer' %}" method="post">
+                    <form class="align-items-center justify-content-center needs-validation" action="{% url 'add_employer' %}" method="post" novalidate>
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="first_name" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="first_name" name="first_name" required>
+                                <div id="validation_firstName">
+                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="last_name" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="last_name" name="last_name" required>
+                                <div id="validation_lastName"></div>
                             </div>
                         </div>
                         
                         <div class="mb-3">
                             <label for="company" class="form-label">Company Name</label>
                             <input type="text" class="form-control" id="company" name="company" required>
+                            <div class="invalid-feedback" id="validation_company"></div>
                         </div>
                         <div class="mb-3">
                             <label for="company_address" class="form-label">Company Address</label>
                             <input type="text" class="form-control" id="company_address" name="company_address" required>
+                            <div class="invalid-feedback" id="validation_companyAdress"></div>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email Address</label>
                             <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="invalid-feedback" id="validation_email"></div>
                         </div>
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone Number</label>
                             <input type="tel" class="form-control" id="phone" name="phone" required>
+                            <div class="invalid-feedback" id="validation_phone"></div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="invalid-feedback" id="validation_password"></div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="confirmPassword" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                            </div>
+                            <div class="invalid-feedback" id="validation_confirmPassword">
                             </div>
                         </div>
                         <div class="form-check mb-3 text-center">
                             <input type="checkbox" class="form-check-input" id="termsCheck" name="termsCheck" required>
                             <label class="form-check-label" for="termsCheck">I agree to the <span>Terms of Service</span> and <span>Privacy Policy</span></label>
+                            <div class="invalid-feedback" id="validation_terms"></div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="submit" class="btn btn-primary" id="registerBtn" disabled>Register</button>
                         </div>
                         <div class="text-center mt-1">
                             <p>Already have an account? <a href="#"><span>Login</span></a></p>
@@ -84,6 +97,211 @@
 
 
         {% include 'includes/js-cdn.html' %}
+        <script>
+            let first_name = document.querySelector('#first_name');
+            let last_name = document.querySelector('#last_name');
+            let company = document.querySelector('#company');
+            let company_address = document.querySelector('#company_address');
+            let email = document.querySelector('#email');
+            let phone = document.querySelector('#phone');
+            let password = document.querySelector('#password');
+            let confirmPassword = document.querySelector('#confirmPassword');
+            let validation_firstName = document.querySelector('#validation_firstName');
+            let validation_lastName = document.querySelector('#validation_lastName');
+            let validation_company = document.querySelector('#validation_company');
+            let validation_companyAddress = document.querySelector('#validation_companyAddress');
+            let validation_email = document.querySelector('#validation_email');
+            let validation_phone = document.querySelector('#validation_phone');
+            let validation_password = document.querySelector('#validation_password');
+            let validation_confirmPassword = document.querySelector('#validation_confirmPassword');
+            let termsCheck = document.querySelector('#termsCheck');
+            let validation_terms = document.querySelector('#validation_terms');
+
+            function validateFirstName(){
+                if (first_name.value === '') {
+                    first_name.classList.add('is-invalid');
+                    validation_firstName.classList.add('invalid-feedback');
+                    validation_firstName.innerHTML = 'First name is required';
+                } else if (first_name.value.length < 2) {
+                    first_name.classList.add('is-invalid');
+                    validation_firstName.classList.add('invalid-feedback');
+                    validation_firstName.innerHTML = 'First name must be at least 2 characters';
+                } else if (first_name.value.length > 50) {
+                    first_name.classList.add('is-invalid');
+                    validation_firstName.classList.add('invalid-feedback');
+                    validation_firstName.innerHTML = 'First name must be less than 50 characters';
+                } else if (!first_name.value.match(/^[a-zA-Z\s]+$/)) {
+                    first_name.classList.add('is-invalid');
+                    validation_firstName.classList.add('invalid-feedback');
+                    validation_firstName.innerHTML = 'First name must only contain letters';
+                } else {
+                    first_name.classList.remove('is-invalid');
+                    first_name.classList.add('is-valid');
+                    validation_firstName.classList.remove('invalid-feedback');
+                    validation_firstName.innerHTML = '';
+                }
+            }
+
+            function validateLastName(){
+                if (last_name.value === '') {
+                    last_name.classList.add('is-invalid');
+                    validation_lastName.classList.add('invalid-feedback');
+                    validation_lastName.innerHTML = 'Last name is required';
+                } else if (last_name.value.length < 2) {
+                    last_name.classList.add('is-invalid');
+                    validation_lastName.classList.add('invalid-feedback');
+                    validation_lastName.innerHTML = 'Last name must be at least 2 characters';
+                } else if (last_name.value.length > 50) {
+                    last_name.classList.add('is-invalid');
+                    validation_lastName.classList.add('invalid-feedback');
+                    validation_lastName.innerHTML = 'Last name must be less than 50 characters';
+                } else if (!last_name.value.match(/^[a-zA-Z\s]+$/)) {
+                    last_name.classList.add('is-invalid');
+                    validation_lastName.classList.add('invalid-feedback');
+                    validation_lastName.innerHTML = 'Last name must only contain letters';
+                } else {
+                    last_name.classList.remove('is-invalid');
+                    last_name.classList.add('is-valid');
+                    validation_lastName.classList.remove('invalid-feedback');
+                    validation_lastName.innerHTML = '';
+                }
+            }
+
+            function validateCompany(){
+                if (company.value === '') {
+                    company.classList.add('is-invalid');
+                    validation_company.classList.add('invalid-feedback');
+                    validation_company.innerHTML = 'Company name is required';
+                } else {
+                    company.classList.remove('is-invalid');
+                    company.classList.add('is-valid');
+                    validation_company.classList.remove('invalid-feedback');
+                    validation_company.innerHTML = '';
+                }
+            }
+            
+            function validateCompanyAddress(){
+                if (company_address.value === '') {
+                    company_address.classList.add('is-invalid');
+                    validation_companyAddress.classList.add('invalid-feedback');
+                    validation_companyAddress.innerHTML = 'Company address is required';
+                } else {
+                    company_address.classList.remove('is-invalid');
+                    company_address.classList.add('is-valid');
+                    validation_companyAddress.classList.remove('invalid-feedback');
+                    validation_companyAddress.innerHTML = '';
+                }
+            }
+
+            function validateEmail(){
+                if (email.value === '') {
+                    email.classList.add('is-invalid');
+                    validation_email.classList.add('invalid-feedback');
+                    validation_email.innerHTML = 'Email address is required';
+                } else if (!email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+                    email.classList.add('is-invalid');
+                    validation_email.classList.add('invalid-feedback');
+                    validation_email.innerHTML = 'Email address is invalid';
+                } else {
+                    email.classList.remove('is-invalid');
+                    email.classList.add('is-valid');
+                    validation_email.classList.remove('invalid-feedback');
+                    validation_email.innerHTML = '';
+                }
+            }
+
+            function validatePhone(){
+                if (phone.value === '') {
+                    phone.classList.add('is-invalid');
+                    validation_phone.classList.add('invalid-feedback');
+                    validation_phone.innerHTML = 'Phone number is required';
+                } else if (!phone.value.match(/^[0-9]{11}$/)) {
+                    phone.classList.add('is-invalid');
+                    validation_phone.classList.add('invalid-feedback');
+                    validation_phone.innerHTML = 'Phone number must be 11 digits';
+                } else {
+                    phone.classList.remove('is-invalid');
+                    phone.classList.add('is-valid');
+                    validation_phone.classList.remove('invalid-feedback');
+                    validation_phone.innerHTML = '';
+                }
+            }
+
+            function validatePassword(){
+                if (password.value === '') {
+                    password.classList.add('is-invalid');
+                    validation_password.classList.add('invalid-feedback');
+                    validation_password.innerHTML = 'Password is required';
+                } else if (password.value.length < 8) {
+                    password.classList.add('is-invalid');
+                    validation_password.classList.add('invalid-feedback');
+                    validation_password.innerHTML = 'Password must be at least 8 characters';
+                } else if (password.value.length > 50) {
+                    password.classList.add('is-invalid');
+                    validation_password.classList.add('invalid-feedback');
+                    validation_password.innerHTML = 'Password must be less than 50 characters';
+                } else if (!password.value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)) {
+                    password.classList.add('is-invalid');
+                    validation_password.classList.add('invalid-feedback');
+                    validation_password.innerHTML = 'Password must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number';
+                } else {
+                    password.classList.remove('is-invalid');
+                    password.classList.add('is-valid');
+                    validation_password.classList.remove('invalid-feedback');
+                    validation_password.innerHTML = '';
+                }
+            }
+
+            function validateConfirmPassword(){
+                if (confirmPassword.value === '') {
+                    confirmPassword.classList.add('is-invalid');
+                    validation_confirmPassword.classList.add('invalid-feedback');
+                    validation_confirmPassword.innerHTML = 'Confirm password is required';
+                } else if (confirmPassword.value !== password.value) {
+                    confirmPassword.classList.add('is-invalid');
+                    validation_confirmPassword.classList.add('invalid-feedback');
+                    validation_confirmPassword.innerHTML = 'Confirm password must match password';
+                } else {
+                    confirmPassword.classList.remove('is-invalid');
+                    confirmPassword.classList.add('is-valid');
+                    validation_confirmPassword.classList.remove('invalid-feedback');
+                    validation_confirmPassword.innerHTML = '';
+                }
+            }
+
+            function validateTerms(){
+                if (!termsCheck.checked) {
+                    termsCheck.classList.add('is-invalid');
+                    validation_terms.classList.add('invalid-feedback');
+                    validation_terms.innerHTML = 'You must agree to the terms and conditions';
+                } else {
+                    termsCheck.classList.remove('is-invalid');
+                    termsCheck.classList.add('is-valid');
+                    validation_terms.classList.remove('invalid-feedback');
+                    validation_terms.innerHTML = '';
+                }
+            }
+
+            first_name.addEventListener('keyup', validateFirstName);
+            last_name.addEventListener('keyup', validateLastName);
+            company.addEventListener('keyup', validateCompany);
+            company_address.addEventListener('keyup', validateCompanyAddress);
+            email.addEventListener('keyup', validateEmail);
+            phone.addEventListener('keyup', validatePhone);
+            password.addEventListener('keyup', validatePassword);
+            confirmPassword.addEventListener('keyup', validateConfirmPassword);
+            termsCheck.addEventListener('click', validateTerms);
+
+            document.addEventListener('oninput', function(){
+                let registerBtn = document.querySelector('#registerBtn');
+
+                if (first_name.contains('is-valid') && last_name.contains('is-valid') && company.contains('is-valid') && company_address.contains('is-valid') && email.contains('is-valid') && phone.contains('is-valid') && password.contains('is-valid') && confirmPassword.contains('is-valid') && termsCheck.contains('is-valid')) {
+                    registerBtn.disabled = false;
+                } else {
+                    registerBtn.disabled = true;
+                }
+            });
+        </script>
 
     </body>
 
