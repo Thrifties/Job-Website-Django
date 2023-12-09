@@ -50,6 +50,9 @@ def dashboard(request):
     }
     return render(request, template, context)
 
+def dashboardStats(request):
+    
+
 
 def register(request):
 
@@ -72,6 +75,11 @@ def login(request):
 def logout(request):
     try:
         del request.session['id']
+        del request.session['email']
+        del request.session['first_name']
+        del request.session['last_name']
+        del request.session['company']
+        del request.session['phone']
     except KeyError:
         pass
     return redirect('login')
@@ -131,7 +139,7 @@ def add_employer(request):
             'employerID': new_company.employerID,
         }
 
-        return redirect('register')
+        return redirect('dashboard')
 
     context = {
         'title': 'Register Page',
@@ -572,3 +580,4 @@ def reject_applicant(request, applicant_id):
     else:
         return JsonResponse({'status': 'error'})
     
+

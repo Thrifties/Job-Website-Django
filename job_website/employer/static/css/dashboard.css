@@ -1,0 +1,32 @@
+.banner {
+    /* background: linear-gradient(0deg, rgba(18, 81, 40, 0.7), rgba(18, 81, 40, 0.7)), url('./img/BSU FRONT 2.jpg'); */
+    background: url('/static/resources/banner.png'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; 
+    position: relative;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: end;
+    color: white;
+    padding: 5px 5px 5px 10px;
+}
+
+.dashboard_header {
+font-family: sans-serif;
+  line-height: 1.15;
+  color: rgba(20, 20, 20, 0.822);
+  font-weight: bolder;
+}
+
+.purple-line {
+    border-left: 3px solid rgb(163, 43, 163); 
+    height: 50px;
+    padding-left: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center; 
+}

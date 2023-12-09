@@ -75,8 +75,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="confirmPassword" class="form-label">Confirm Password</label>
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                            </div>
-                            <div class="invalid-feedback" id="validation_confirmPassword">
+                                <div class="invalid-feedback" id="validation_confirmPassword"></div>
                             </div>
                         </div>
                         <div class="form-check mb-3 text-center">
@@ -257,15 +256,16 @@
                     confirmPassword.classList.add('is-invalid');
                     validation_confirmPassword.classList.add('invalid-feedback');
                     validation_confirmPassword.innerHTML = 'Confirm password is required';
-                } else if (confirmPassword.value !== password.value) {
-                    confirmPassword.classList.add('is-invalid');
-                    validation_confirmPassword.classList.add('invalid-feedback');
-                    validation_confirmPassword.innerHTML = 'Confirm password must match password';
-                } else {
+                } else if (confirmPassword.value === password.value) {
                     confirmPassword.classList.remove('is-invalid');
                     confirmPassword.classList.add('is-valid');
                     validation_confirmPassword.classList.remove('invalid-feedback');
                     validation_confirmPassword.innerHTML = '';
+                } else {
+                    confirmPassword.classList.add('is-invalid');
+                    validation_confirmPassword.classList.add('invalid-feedback');
+                    validation_confirmPassword.innerHTML = 'Confirm password must match password';
+                   
                 }
             }
 
@@ -292,10 +292,18 @@
             confirmPassword.addEventListener('keyup', validateConfirmPassword);
             termsCheck.addEventListener('click', validateTerms);
 
-            document.addEventListener('oninput', function(){
-                let registerBtn = document.querySelector('#registerBtn');
-
-                if (first_name.contains('is-valid') && last_name.contains('is-valid') && company.contains('is-valid') && company_address.contains('is-valid') && email.contains('is-valid') && phone.contains('is-valid') && password.contains('is-valid') && confirmPassword.contains('is-valid') && termsCheck.contains('is-valid')) {
+            document.addEventListener('input', function(){
+                if (
+                    first_name.classList.contains('is-valid') &&
+                    last_name.classList.contains('is-valid') &&
+                    company.classList.contains('is-valid') &&
+                    company_address.classList.contains('is-valid') &&
+                    email.classList.contains('is-valid') &&
+                    phone.classList.contains('is-valid') &&
+                    password.classList.contains('is-valid') &&
+                    confirmPassword.classList.contains('is-valid') &&
+                    termsCheck.classList.contains('is-valid')
+                ) {
                     registerBtn.disabled = false;
                 } else {
                     registerBtn.disabled = true;
