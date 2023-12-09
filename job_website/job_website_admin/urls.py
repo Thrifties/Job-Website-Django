@@ -9,4 +9,5 @@ urlpatterns = [
     path('approve_job/<int:job_id>/', views.approve_job, name='approve_job'),
     path('reject_job/<int:job_id>/', views.reject_job, name='reject_job'),
     path('delete_job/<int:job_id>/', views.delete_job, name='delete_job'),
+    path('index', views.index, name='index'),
 ]
