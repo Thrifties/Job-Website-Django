@@ -4,7 +4,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('dashboard_admin', views.dashboard_admin, name='dashboard_admin'),
     path('admin_list_of_jobs', views.admin_list_of_jobs, name='admin_list_of_jobs'),
     path('approve_job/<int:job_id>/', views.approve_job, name='approve_job'),
     path('reject_job/<int:job_id>/', views.reject_job, name='reject_job'),
