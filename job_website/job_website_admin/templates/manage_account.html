@@ -1,0 +1,500 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ title }}</title>
+    <!-- Custom fonts for this template (assuming it's loading fonts) -->
+    {% include 'includes/header-cdn.html' %}
+    {% csrf_token %}
+
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <!-- DATATABLES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- Your custom CSS file -->
+    <link rel="stylesheet" href="{% static 'css/post_job.css' %}">
+    <link rel="stylesheet" href="{% static 'css/company_profile.css' %}">
+
+    <style>
+        /* Center align DataTables header and content */
+        #user_list.dataTable thead th,
+        #user_list.dataTable tbody td {
+            text-align: center;
+        }
+
+        /* Ensure proper alignment for DataTables wrapper */
+        #user_list_wrapper {
+            text-align: center;
+        }
+
+        /* Left-align length data and info data in DataTables */
+        #user_list_info,
+        #user_list_length {
+            text-align: left;
+        }
+
+        #employer_list.dataTable thead th,
+        #employer_list.dataTable tbody td {
+            text-align: center;
+        }
+
+        /* Ensure proper alignment for DataTables wrapper */
+        #employer_list_wrapper {
+            text-align: center;
+        }
+
+        /* Left-align length data and info data in DataTables */
+        #employer_list_info,
+        #employer_list_length {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            
+
+            <div id="success-delete-employer" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Successfully deleted employer account.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+            <div id="failed-delete-employer" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to delete employer account.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+
+            <div id="success-edit-employer" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Successfully edited employer account.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+            <div id="failed-edit-employer" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Failed to edit employer account.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+
+        </div>
+
+        {% include 'includes/admin_navbar.html' %}
+
+        <div class="banner d-flex justify-content-end align-items-center">
+        </div>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <nav class="m-3">
+                <div class="nav nav-underline fw-bold" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-user"
+                        type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                        <i class="bi bi-person me-1"></i>User
+                    </button>
+                    <button class="nav-link" id="nav-employer-tab" data-bs-toggle="tab" data-bs-target="#nav-employer"
+                        type="button" role="tab" aria-controls="nav-employer" aria-selected="false">
+                        <i class="bi bi-person-vcard me-1"></i>Employer
+                    </button>
+                </div>
+            </nav>
+
+
+            <div class="modal fade" id="edit-employer-account" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Edit Account</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <input type="hidden" id="edit-employer-id" name="employer_id">
+                                <div class="col-12">
+                                    <div style="display: none;" class="alert alert-danger" role="alert" id="edit-alert">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control edit-employer" id="first_name"
+                                            name="first_name" placeholder="" required>
+                                        <label for="first_name">First Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control edit-employer" id="last_name"
+                                            name="last_name" placeholder="" required>
+                                        <label for="last_name">Last Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control edit-employer" id="address"
+                                            name="address" placeholder="" required>
+                                        <label for="address">Address</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control edit-employer" id="email" name="email"
+                                            placeholder="" required readonly>
+                                        <label for="email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control edit-employer" id="pass" name="pass"
+                                            placeholder="" required>
+                                        <label for="pass">Password</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control edit-employer" id="re-type"
+                                            name="re-type" placeholder="" required>
+                                        <label for="scope">Re-type Password</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-purple" onclick="editEmployerAccount()">Save
+                                profile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content mt-4">
+                <!-- Tab for OPEN jobs -->
+                <div class="tab-pane fade show active" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab"
+                    tabindex="0">
+                    <div class="table-responsive">
+                        <table id="user_list" class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>First name123</th>
+                                    <th>Last name</th>
+                                    <th>Address</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <!-- Tab for CLOSED jobs -->
+                <div class="tab-pane fade" id="nav-employer" role="tabpanel" aria-labelledby="nav-employer-tab"
+                    tabindex="0">
+                    <div class="container-fluid">
+                        <table id="employer_list" class="table table-hover text-center ">
+                            <thead>
+                                <tr>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Address</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <!-- End of Main Content -->
+
+
+
+        {% include 'includes/js-cdn.html' %}
+        <!-- DATA TABLE -->
+        <script src=" https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                fetchEmployerData();
+                console.log("TITE");
+            });
+
+            function hideEditAlert() {
+            $('#edit-alert').hide();
+        }
+
+            function assignEmployerData(employerID) {
+                // Make an Ajax request to fetch employer data
+                $.ajax({
+                    type: "GET",
+                    url: `get_specific_employer_data/${employerID}/`,  // Update with your actual URL
+                    success: function (data) {
+                        if (data.success) {
+                            // Assuming data.data is an array with a single element for the specified employer
+                            let employer = data.data[0];
+
+                            // Populate input fields with fetched data
+                            $('#edit-employer-id').val(employer.id);
+                            $('#first_name').val(employer.first_name);
+                            $('#last_name').val(employer.last_name);
+                            $('#address').val(employer.address);
+                            $('#email').val(employer.email);
+                            $('#phone').val(employer.phone);
+                            $('#pass').val(employer.password);
+                            $('#re-type').val(employer.password);
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error fetching employer data:", error);
+                    }
+                });
+            }
+
+            function deleteEmployerAccount(employerID) {
+                // Make AJAX request
+                $.ajax({
+                    type: "POST",
+                    url: "delete_employer_account/" + employerID + "/",
+                    data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    success: function (response) {
+                        if (response.success) {
+                            const success_delete_toast = document.getElementById('success-delete-employer');
+                            bootstrap.Toast.getOrCreateInstance(success_delete_toast).show();
+                        } else {
+                            // Handle error response
+                            console.error(response.message);
+                            const failed_delete_toast = document.getElementById('failed-delete-employer');
+                            bootstrap.Toast.getOrCreateInstance(failed_delete_toast).show();
+                        }
+
+                        fetchEmployerData();
+                    },
+                    error: function (error) {
+                        // Handle AJAX error
+                        console.log("AJAX Error:", error);
+                    }
+                });
+            }
+
+
+
+            function editEmployerAccount() {
+                var employerID = $("#edit-employer-id").val();
+
+                // Validate form fields
+                var validationPassed = true;
+
+                // Email validation function
+                function isValidEmail(email) {
+                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailRegex.test(email);
+                }
+
+                // Password validation function
+                function doPasswordsMatch(password, retypePassword) {
+                    return password === retypePassword;
+                }
+
+                // Loop through each form field
+                $(".edit-employer").each(function () {
+                    var fieldValue = $(this).val().trim();
+
+                    // Check if the field is empty
+                    if (fieldValue === "") {
+                        $('#edit-alert').show();
+                        $("#edit-alert").text("All fields must be filled out").show();
+                        validationPassed = false;
+                        return false; // Exit the loop early if any field is empty
+                    }
+
+                    // Validate email
+                    if ($(this).attr("id") === "email" && !isValidEmail(fieldValue)) {
+                        $('#edit-alert').show();
+                        $("#edit-alert").text("Please enter a valid email address").show();
+                        validationPassed = false;
+                        return false; // Exit the loop early if email is invalid
+                    }
+
+                    // Validate passwords
+                    if ($(this).attr("id") === "pass") {
+                        var retypedPassword = $("#re-type").val().trim();
+                        if (!doPasswordsMatch(fieldValue, retypedPassword)) {
+                            $('#edit-alert').show();
+                            $("#edit-alert").text("Passwords do not match").show();
+                            validationPassed = false;
+                            return false; // Exit the loop early if passwords do not match
+                        }
+                    }
+                });
+
+                if (!validationPassed) {
+                    return; // Exit the function if validation fails
+                }
+
+                // Collect data from form
+                var formData = {
+                    first_name: $("#first_name").val(),
+                    last_name: $("#last_name").val(),
+                    address: $("#address").val(),
+                    email: $("#email").val(),
+                    pass: $("#pass").val(),
+                };
+
+                // Make AJAX request
+                $.ajax({
+                    type: "POST",  // Use POST or PUT based on your server implementation
+                    url: "update_employer_account/" + employerID + "/",
+                    data: formData,
+                    success: function (response) {
+
+                        if (response.success) {
+                            // Handle successful response (if needed)
+                            console.log(response.message);
+                            // Close the modal or perform other actions
+                            $('#edit-employer-account').modal('hide');
+                            const success_edit_toast = document.getElementById('success-edit-employer');
+                            bootstrap.Toast.getOrCreateInstance(success_edit_toast).show();
+                        } else {
+                            // Handle error response
+                            console.error(response.message);
+                            $('#edit-alert').show();
+                            $("#edit-alert").text(response.message).show();
+                            // You can display an error message to the user or take other actions
+                            const failed_edit_toast = document.getElementById('failed-edit-employer');
+                            bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
+                        }
+
+                        fetchEmployerData();
+                    },
+                    error: function (error) {
+                        // Handle AJAX error
+                        console.log("AJAX Error:", error);
+                    }
+                });
+            }
+
+
+            function fetchEmployerData() {
+                // Make an Ajax request to fetch employer data
+                console.log("TITE");
+                $.ajax({
+                    type: "GET",
+                    url: "get_employer_data/",  // Update with your actual URL
+                    success: function (data) {
+                        console.log(data);
+                        if (data.success) {
+                            // Clear existing table rows
+                            $("#employer_list tbody").empty();
+
+                            // Iterate through the fetched data and append rows to the table
+                            for (let i = 0; i < data.data.length; i++) {
+                                let employer = data.data[i];
+                                $("#employer_list tbody").append(`
+                                    <tr>
+                                        <td>${employer.first_name}</td>
+                                        <td>${employer.last_name}</td>
+                                        <td>${employer.address}</td>
+                                        <td>${employer.phone}</td>
+                                        <td>${employer.email}</td>
+                                        <td>
+                                            <div>
+                                                <div class="modal" id="deleteEmployer${employer.id}" tabindex="-1">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Delete Account</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure you want to ${employer.first_name}'s Account?.</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteEmployerAccount(${employer.id})">Delete</button>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    
+
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="assignEmployerData(${employer.id}), hideEditAlert()" data-bs-target="#edit-employer-account">
+                                                    <i class="bi bi-pencil-square me-1"></i>Edit
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteEmployer${employer.id}">
+                                                    <i class="bi bi-trash me-1"></i>Delete
+                                                </button>
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                `);
+                            }
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                        $('#user_list, #employer_list').DataTable();
+                    },
+                    error: function (error) {
+                        
+                        console.error("Error fetching employer data:", error);
+                    }
+                });
+            }
+
+
+        </script>
+
+
+    </div>
+
+</body>
+
+</html>

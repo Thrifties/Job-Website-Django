@@ -33,7 +33,7 @@
                 // Make an Ajax request to the Django endpoint
                 $.ajax({
                     type: "GET",
-                    url: "add_company_profile",  // Update with your actual URL
+                    url: "employer/add_company_profile",  // Update with your actual URL
                     success: function (data) {
                         if (data.success) {
                             console.log(data.message);
@@ -58,7 +58,7 @@
             // Make an Ajax request to fetch company data
             $.ajax({
                 type: "GET",
-                url: `/get_company_data/${companyId}/`,  // Update with your actual URL
+                url: `/employer/get_company_data/${companyId}/`,  // Update with your actual URL
                 success: function (data) {
                     console.log(data);
                     if (data.success) {
@@ -76,11 +76,11 @@
                         if (profilePicturePath && profilePicturePath !== "-") {
                             // If profile_picture_path is not "-" or falsy, use the provided path
                             var timestamp = new Date().getTime(); // Get the current timestamp
-                            $('#display-profile-picture').attr('src', `./static/resources/profile_picture/${profilePicturePath}?timestamp=${timestamp}`);
+                            $('#display-profile-picture').attr('src', `../static/resources/profile_picture/${profilePicturePath}?timestamp=${timestamp}`);
                             console.log("Meron laman" + data.company.profile_picture_path);
                         } else {
                             // If profile_picture_path is "-" or falsy, use the default path
-                            $('#display-profile-picture').attr('src', './static/resources/default_profile.png');
+                            $('#display-profile-picture').attr('src', '../static/resources/default_profile.png');
                             console.log("Wala laman");
                         }
 
@@ -89,7 +89,7 @@
                         if (coverPhotoPath && coverPhotoPath !== "-") {
                             var timestamp = new Date().getTime(); // Get the current timestamp
                             // If cover_photo_path is not "-" or falsy, use the provided path
-                            $('#display-cover').css('background-image', `url(./static/resources/cover_photo/` + coverPhotoPath + `?timestamp=${timestamp})`);
+                            $('#display-cover').css('background-image', `url(../static/resources/cover_photo/` + coverPhotoPath + `?timestamp=${timestamp})`);
 
                             // If profile_picture_path is not "-" or falsy, use the provided path
 
@@ -97,7 +97,7 @@
                             console.log("Meron laman cover" + data.company.cover_photo_path);
                         } else {
                             // If cover_photo_path is "-" or falsy, use the default path
-                            $('#display-cover').css('background-image', 'url(./static/resources/default_cover.png)');
+                            $('#display-cover').css('background-image', 'url(../static/resources/default_cover.png)');
                         }
                     } else {
                         alert("Error: " + data.message);
@@ -113,7 +113,7 @@
             // Make an Ajax request to fetch company data
             $.ajax({
                 type: "GET",
-                url: `/get_company_data/${companyId}/`,  // Update with your actual URL
+                url: `/employer/get_company_data/${companyId}/`,  // Update with your actual URL
                 success: function (data) {
                     if (data.success) {
                         // Populate input fields with fetched data
@@ -226,7 +226,7 @@
             // Make AJAX request
             $.ajax({
                 type: "POST",  // Use POST or PUT based on your server implementation
-                url: "/update_company_profile/" + companyId + "/",  // Replace with your API endpoint
+                url: "/employer/update_company_profile/" + companyId + "/",  // Replace with your API endpoint
                 data: formData,
                 success: function (response) {
 
@@ -614,7 +614,7 @@
                             console.log(document.getElementById('profile').files[0]);
                             $.ajax({
                                 type: 'POST',
-                                url: '/update_profile_picture/',
+                                url: '/employer/update_profile_picture/',
                                 data: formData,
                                 contentType: false,
                                 processData: false,
@@ -652,7 +652,7 @@
                             console.log(document.getElementById('cover-photo').files[0]);
                             $.ajax({
                                 type: 'POST',
-                                url: '/update_cover_photo/',
+                                url: '/employer/update_cover_photo/',
                                 data: formData,
                                 contentType: false,
                                 processData: false,
