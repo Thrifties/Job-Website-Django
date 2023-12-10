@@ -18,6 +18,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+import csv
+from django.http import HttpResponse
 
 
 # Create your views here.
@@ -62,6 +64,19 @@ def dashboard(request):
         'approved_applicants_count': approved_applicants_count,
     }
     return render(request, template, context)
+
+def generate_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="applicant.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Name', 'Email', 'Phone', 'Address', 'Resume', 'Status'])
+
+    applicants = Applicant.objects.all().values_list('name', 'email', 'phone', 'address', 'resume', 'status')
+    for applicant in applicants:
+        writer.writerow(applicant)
+
+    return response
     
 def register(request):
     template = 'register.html'

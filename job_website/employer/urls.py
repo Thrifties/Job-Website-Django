@@ -34,6 +34,7 @@ urlpatterns = [
     path('approve_applicant/<int:applicant_id>/', approve_applicant, name='approve_applicant'),
     path('reject_applicant/<int:applicant_id>/', reject_applicant, name='reject_applicant'),
     path('logout', views.logout, name='logout'),
+    path('generate_csv', views.generate_csv, name='generate_csv'),
 ]
 
 if settings.DEBUG:
