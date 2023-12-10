@@ -1,4 +1,5 @@
 from .models import Company
+import time
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from .models import Job, JobStatus
@@ -183,6 +184,7 @@ def edit_profile(request):
             messages.success(request, 'Profile updated successfully!')
 
             # Redirect back to the profile settings page
+            time.sleep(3)
             return redirect('profile_settings')
         except Details.DoesNotExist:
             # Handle if the user doesn't exist
@@ -567,4 +569,5 @@ def reject_applicant(request, applicant_id):
         applicant.save()
         return JsonResponse({'status': 'success'})
     else:
+        return JsonResponse({'status': 'error'})
         return JsonResponse({'status': 'error'})
