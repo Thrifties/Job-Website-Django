@@ -39,28 +39,38 @@
                         <div class="col-md-6 mb-3">
                             <label for="first_name" class="form-label">First Name</label>
                             <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                            <div id="validation_firstName">
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="last_name" class="form-label">Last Name</label>
                             <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                            <div id="validation_lastName">
+                            </div>
                         </div>
                     </div>
                     
                     <div class="mb-3">
                         <label for="company_name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="company_name" name="company_name"
+                        <input type="text" class="form-control" id="company" name="company_name"
                             value="{{ user.company }}" required>
+                        <div id="validation_company">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
                         <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                        <div id="validation_email">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
                         <input type="tel" class="form-control" id="phone" name="phone" value="{{ user.phone }}" required>
+                        <div id="validation_phone">
+                        </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary me-1">UPDATE</button>
+                        <button type="submit" class="btn btn-primary me-1" id="updateBtn">UPDATE</button>
                         <button type="button" class="btn btn-secondary">
                             CANCEL
                         </button>
@@ -105,7 +115,193 @@
             </div>
         </div>
 
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+            <div id="updateToast" class="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-body">
+                    Your account has been updated successfully!
+                </div>
+            </div>
+        </div>
+
         {% include 'includes/js-cdn.html' %}
+
+        <script>
+            let first_name = document.querySelector('#first_name');
+                let last_name = document.querySelector('#last_name');
+                let company = document.querySelector('#company');
+                let email = document.querySelector('#email');
+                let phone = document.querySelector('#phone');
+                let validation_firstName = document.querySelector('#validation_firstName');
+                let validation_lastName = document.querySelector('#validation_lastName');
+                let validation_company = document.querySelector('#validation_company');
+                let validation_email = document.querySelector('#validation_email');
+                let validation_phone = document.querySelector('#validation_phone');
+                let registerBtn = document.querySelector('#updateBtn');
+
+                function validateFirstName() {
+                    if (first_name.value === '') {
+                        first_name.classList.add('is-invalid');
+                        validation_firstName.classList.add('invalid-feedback');
+                        validation_firstName.innerHTML = 'First name is required';
+                    } else if (first_name.value.length < 2) {
+                        first_name.classList.add('is-invalid');
+                        validation_firstName.classList.add('invalid-feedback');
+                        validation_firstName.innerHTML = 'First name must be at least 2 characters';
+                    } else if (first_name.value.length > 50) {
+                        first_name.classList.add('is-invalid');
+                        validation_firstName.classList.add('invalid-feedback');
+                        validation_firstName.innerHTML = 'First name must be less than 50 characters';
+                    } else if (!first_name.value.match(/^[a-zA-Z\s]+$/)) {
+                        first_name.classList.add('is-invalid');
+                        validation_firstName.classList.add('invalid-feedback');
+                        validation_firstName.innerHTML = 'First name must only contain letters';
+                    } else {
+                        first_name.classList.remove('is-invalid');
+                        first_name.classList.add('is-valid');
+                        validation_firstName.classList.remove('invalid-feedback');
+                        validation_firstName.innerHTML = '';
+                    }
+                }
+
+                function validateLastName() {
+                    if (last_name.value === '') {
+                        last_name.classList.add('is-invalid');
+                        validation_lastName.classList.add('invalid-feedback');
+                        validation_lastName.innerHTML = 'Last name is required';
+                    } else if (last_name.value.length < 2) {
+                        last_name.classList.add('is-invalid');
+                        validation_lastName.classList.add('invalid-feedback');
+                        validation_lastName.innerHTML = 'Last name must be at least 2 characters';
+                    } else if (last_name.value.length > 50) {
+                        last_name.classList.add('is-invalid');
+                        validation_lastName.classList.add('invalid-feedback');
+                        validation_lastName.innerHTML = 'Last name must be less than 50 characters';
+                    } else if (!last_name.value.match(/^[a-zA-Z\s]+$/)) {
+                        last_name.classList.add('is-invalid');
+                        validation_lastName.classList.add('invalid-feedback');
+                        validation_lastName.innerHTML = 'Last name must only contain letters';
+                    } else {
+                        last_name.classList.remove('is-invalid');
+                        last_name.classList.add('is-valid');
+                        validation_lastName.classList.remove('invalid-feedback');
+                        validation_lastName.innerHTML = '';
+                    }
+                }
+
+                function validateCompany() {
+                    if (company.value === '') {
+                        company.classList.add('is-invalid');
+                        validation_company.classList.add('invalid-feedback');
+                        validation_company.innerHTML = 'Company name is required';
+                    } else {
+                        company.classList.remove('is-invalid');
+                        company.classList.add('is-valid');
+                        validation_company.classList.remove('invalid-feedback');
+                        validation_company.innerHTML = '';
+                    }
+                }
+
+                function validateEmail() {
+                    if (email.value === '') {
+                        email.classList.add('is-invalid');
+                        validation_email.classList.add('invalid-feedback');
+                        validation_email.innerHTML = 'Email address is required';
+                    } else if (!email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+                        email.classList.add('is-invalid');
+                        validation_email.classList.add('invalid-feedback');
+                        validation_email.innerHTML = 'Email address is invalid';
+                    } else {
+                        email.classList.remove('is-invalid');
+                        email.classList.add('is-valid');
+                        validation_email.classList.remove('invalid-feedback');
+                        validation_email.innerHTML = '';
+                    }
+                }
+
+                function validatePhone() {
+                    if (phone.value === '') {
+                        phone.classList.add('is-invalid');
+                        validation_phone.classList.add('invalid-feedback');
+                        validation_phone.innerHTML = 'Phone number is required';
+                    } else if (!phone.value.match(/^[0-9]+$/)) {
+                        phone.classList.add('is-invalid');
+                        validation_phone.classList.add('invalid-feedback');
+                        validation_phone.innerHTML = 'Phone number must only contain numbers';
+                    } else if (phone.value.length < 10) {
+                        phone.classList.add('is-invalid');
+                        validation_phone.classList.add('invalid-feedback');
+                        validation_phone.innerHTML = 'Phone number must be at least 10 digits';
+                    } else if (phone.value.length > 12) {
+                        phone.classList.add('is-invalid');
+                        validation_phone.classList.add('invalid-feedback');
+                        validation_phone.innerHTML = 'Phone number must be less than 12 digits';
+                    } else {
+                        phone.classList.remove('is-invalid');
+                        phone.classList.add('is-valid');
+                        validation_phone.classList.remove('invalid-feedback');
+                        validation_phone.innerHTML = '';
+                    }
+                }
+
+                first_name.addEventListener('keyup', validateFirstName);
+                last_name.addEventListener('keyup', validateLastName);
+                company.addEventListener('keyup', validateCompany);
+                email.addEventListener('keyup', validateEmail);
+                phone.addEventListener('keyup', validatePhone);
+
+                document.addEventListener('keyup', function () {
+                    if (
+                        first_name.value !== '' &&
+                        last_name.value !== '' &&
+                        company.value !== '' &&
+                        email.value !== '' &&
+                        phone.value !== '' &&
+                        first_name.value.length >= 2 &&
+                        first_name.value.length <= 50 &&
+                        last_name.value.length >= 2 &&
+                        last_name.value.length <= 50 &&
+                        first_name.value.match(/^[a-zA-Z\s]+$/) &&
+                        last_name.value.match(/^[a-zA-Z\s]+$/) &&
+                        email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/) &&
+                        phone.value.match(/^[0-9]+$/) &&
+                        phone.value.length >= 10 &&
+                        phone.value.length <= 12
+                    ) {
+                        registerBtn.disabled = false;
+                    } else {
+                        registerBtn.disabled = true;
+                    }
+                });
+
+                registerBtn.addEventListener('click', function () {
+                    if (
+                        first_name.value !== '' &&
+                        last_name.value !== '' &&
+                        company.value !== '' &&
+                        email.value !== '' &&
+                        phone.value !== '' &&
+                        first_name.value.length >= 2 &&
+                        first_name.value.length <= 50 &&
+                        last_name.value.length >= 2 &&
+                        last_name.value.length <= 50 &&
+                        first_name.value.match(/^[a-zA-Z\s]+$/) &&
+                        last_name.value.match(/^[a-zA-Z\s]+$/) &&
+                        email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/) &&
+                        phone.value.match(/^[0-9]+$/) &&
+                        phone.value.length >= 10 &&
+                        phone.value.length <= 12
+                    ) {
+                        let myToast = new bootstrap.Toast(document.querySelector('#updateToast'), {
+                            delay: 2000,
+                            animation: true,
+                        });
+
+                        myToast.show();
+                    }
+                });
+
+                
+        </script>
 
     </body>
 
