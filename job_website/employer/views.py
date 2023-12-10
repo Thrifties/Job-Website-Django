@@ -18,6 +18,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
+
 # Create your views here.
 
 
@@ -44,15 +45,47 @@ def to_login(request):
 
 
 def dashboard(request):
+    
+    company = request.session.get('company')
+
+    open_jobs_count = Job.objects.filter(status=JobStatus.OPEN).count()
+    pending_applicants_count = Applicant.objects.filter(status='Pending').count()
+    approved_applicants_count = Applicant.objects.filter(status='Accepted').count()
 
     template = 'dashboard.html'
     context = {
-        'title': 'Dashboard Page'
+        'title': 'Dashboard Page',
+        'company': company,
+        'open_jobs_count': open_jobs_count,
+        'pending_applicants_count': pending_applicants_count,
+        'approved_applicants_count': approved_applicants_count,
     }
     return render(request, template, context)
+
+
+""" def generate_report(request):
+    # Get data required for the report
+    data = {
+        'company': request.session.get('company'),
+        'open_jobs_count': Job.objects.filter(status=JobStatus.OPEN).count(),
+        'pending_applicants_count': Applicant.objects.filter(status='Pending').count(),
+        'approved_applicants_count': Applicant.objects.filter(status='Accepted').count(),
+        'list_of_applicants': Applicant.objects.all(),
+    }
+
+    # Render template with data
+    template = get_template('report_template.html')
+    html_content = template.render(data)
+
+    # Generate PDF using WeasyPrint
+    pdf_file = HTML(string=html_content).write_pdf()
+
+    # Serve PDF as a downloadable file
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    return response """
     
 def register(request):
-
     template = 'register.html'
     context = {
         'title': 'Register Page'

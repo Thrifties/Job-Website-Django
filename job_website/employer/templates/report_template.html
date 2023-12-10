@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+
+        <title>{{title}}</title>
+
+        <!-- Custom fonts for this template -->
+        {% include 'includes/header-cdn.html' %}
+
+        <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    </head>
+
+    <body id="page-top">
+
+        <div class="report-content">
+            <h1 class="report-header">{{ company }} report</h1>
+            
+            <table>
+                <tr>
+                    <th></th>
+                </tr>
+            </table>
+
+        </div>
+
+
+        {% include 'includes/js-cdn.html' %}
+
+
+
+    </body>
+
+</html>
