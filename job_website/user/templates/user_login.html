@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- <link href="{% static 'css/login.css' %}" rel="stylesheet" /> -->
+
+        <title>{{title}}</title>
+
+        <!-- Custom fonts for this template -->
+        {% include 'includes/header-cdn.html' %}
+
+        <style>
+            .login {
+                min-height: 100vh;
+            }
+
+            .bg-image {
+                background-image: url('{% static "img/Login_BG.png" %}');
+                background-size: cover;
+                background-position: center;
+            }
+
+            .login-heading {
+                font-weight: 300;
+            }
+
+            .btn-login {
+                font-size: 0.9rem;
+                letter-spacing: 0.05rem;
+                padding: 0.75rem 1rem;
+
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        <div>
+            <div class="container-fluid ps-md-0">
+                <div class="row g-0">
+                    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+                    <div class="col-md-8 col-lg-6">
+                        <div class="login d-flex align-items-center py-5">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-9 col-lg-8 mx-auto">
+                                        <div class="mb-4" style="color: #782EF6;">
+                                            <h4 class="login-heading fw-bold mb-1 mt-1">LOGIN</h4>
+                                            <span>Enter your account details</span>
+                                        </div>
+                                        <!-- Sign In Form -->
+                                        <form class="align-items-center justify-content-center"
+                                            action="{% url 'to_login' %}" method="post">
+                                            {% csrf_token %}
+
+                                            <div class="form-floating mb-3">
+                                                <input type="email" class="form-control" id="floatingEmail" name="email"
+                                                    placeholder="name@email.com" required>
+                                                <label for="floatingEmail">Email address</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="password" class="form-control" id="floatingPassword"
+                                                    name="password" placeholder="password" required>
+                                                <label for="floatingPassword">Password</label>
+                                                <!-- Add the eye icon for password visibility -->
+                                                <i id="toggle-password"
+                                                    class="bi bi-eye position-absolute top-50 translate-middle"
+                                                    style="right: 10px; cursor: pointer;"
+                                                    onclick="togglePasswordVisibility()"></i>
+                                            </div>
+                                            <button class="w-100 btn btn-lg btn-primary" type="submit" id="submitBtn"
+                                                style="background-color: #782EF6;">LOGIN</button>
+
+                                            <div class="text-center mt-4">
+                                                <span>Not Register Yet? <a class="" href="{% url 'register' %}">Register
+                                                        Here
+                                                    </a></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- <script type="text/javascript" src="../js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/login.js"></script> -->
+        </div>
+        {% include 'includes/js-cdn.html' %}
+
+        <script>
+            let submit = document.getElementById("submitBtn");
+            submit.addEventListener("click", function () {
+                let email = document.getElementById("floatingEmail").value;
+                let password = document.getElementById("floatingPassword").value;
+                console.log(email);
+                console.log(password);
+            });
+
+
+            function togglePasswordVisibility() {
+                const passwordInput = document.getElementById('floatingPassword');
+                const toggleIcon = document.getElementById('toggle-password');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleIcon.classList.remove('bi-eye');
+                    toggleIcon.classList.add('bi-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    toggleIcon.classList.remove('bi-eye-slash');
+                    toggleIcon.classList.add('bi-eye');
+                }
+            }
+        </script>
+
+    </body>
+
+</html>

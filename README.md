@@ -25,3 +25,13 @@ ADMIN
     - Approval of Job Post from Employer
     - Manage User Accounts
     - Report Generation
+
+
+Todo: 
+
+- Register/Login
+- Graduate Tracer
+- Job List sa User
+
+User Details:
+- 
