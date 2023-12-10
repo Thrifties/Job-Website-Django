@@ -1,3 +1,4 @@
+from .models import Company
 import time
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
@@ -61,29 +62,6 @@ def dashboard(request):
         'approved_applicants_count': approved_applicants_count,
     }
     return render(request, template, context)
-
-
-""" def generate_report(request):
-    # Get data required for the report
-    data = {
-        'company': request.session.get('company'),
-        'open_jobs_count': Job.objects.filter(status=JobStatus.OPEN).count(),
-        'pending_applicants_count': Applicant.objects.filter(status='Pending').count(),
-        'approved_applicants_count': Applicant.objects.filter(status='Accepted').count(),
-        'list_of_applicants': Applicant.objects.all(),
-    }
-
-    # Render template with data
-    template = get_template('report_template.html')
-    html_content = template.render(data)
-
-    # Generate PDF using WeasyPrint
-    pdf_file = HTML(string=html_content).write_pdf()
-
-    # Serve PDF as a downloadable file
-    response = HttpResponse(pdf_file, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-    return response """
     
 def register(request):
     template = 'register.html'
@@ -136,7 +114,7 @@ def add_employer(request):
             phone=phone,
             password=password
         )
-        
+
         new_company = Company.objects.create(
             company_name=company,
             company_email=email,
@@ -379,9 +357,6 @@ def company_profile(request):
     return render(request, template, context)
 
 
-from django.http import JsonResponse
-from .models import Company
-
 def add_company_profile(request):
     try:
         # Create a new company with default values
@@ -422,7 +397,6 @@ def add_company_profile(request):
         # Return failure and error message
         return JsonResponse({'success': False, 'message': str(e)})
 
-from .models import Company
 
 def get_company_data(request, company_id):
     try:
@@ -448,9 +422,6 @@ def get_company_data(request, company_id):
         return JsonResponse({'success': False, 'message': str(e)})
 
 
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-
 @csrf_exempt
 @require_POST
 def update_company_profile(request, company_id):
@@ -471,38 +442,34 @@ def update_company_profile(request, company_id):
         return JsonResponse({'success': False, 'message': 'Form validation failed', 'errors': form.errors}, status=400)
 
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Company
-
 # @csrf_exempt
 # def update_profile_picture(request):
-    # if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-    #     try:
-    #         company_id = int(request.POST.get('company_id'))
-    #         company = Company.objects.get(employerID=company_id)
+   # if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+   #     try:
+   #         company_id = int(request.POST.get('company_id'))
+   #         company = Company.objects.get(employerID=company_id)
 
-    #         profile_picture = request.FILES.get('profile_picture')
-    #         if profile_picture:
-    #             # Save the file to the desired folder
-                
-    #             profile_picture_path = f'employer/static/resources/profile_picture/profile_picture_{company_id}.png'
-    #             profile_picture_name = f'profile_picture_{company_id}.png'
-    #             with open(profile_picture_path, 'wb') as file:
-    #                 for chunk in profile_picture.chunks():
-    #                     file.write(chunk)
+   #         profile_picture = request.FILES.get('profile_picture')
+   #         if profile_picture:
+   #             # Save the file to the desired folder
 
-    #             # Update the profile_picture_path for the Company instance
-    #             company.profile_picture_path = profile_picture_name
-    #             company.save()
+   #             profile_picture_path = f'employer/static/resources/profile_picture/profile_picture_{company_id}.png'
+   #             profile_picture_name = f'profile_picture_{company_id}.png'
+   #             with open(profile_picture_path, 'wb') as file:
+   #                 for chunk in profile_picture.chunks():
+   #                     file.write(chunk)
 
-    #             return JsonResponse({'success': True, 'message': 'Profile picture updated successfully'})
-    #         else:
-    #             return JsonResponse({'success': False, 'message': 'No file provided'})
-    #     except Exception as e:
-    #         return JsonResponse({'success': False, 'message': str(e)})
+   #             # Update the profile_picture_path for the Company instance
+   #             company.profile_picture_path = profile_picture_name
+   #             company.save()
 
-    # return JsonResponse({'success': False, 'message': 'Invalid request'})
+   #             return JsonResponse({'success': True, 'message': 'Profile picture updated successfully'})
+   #         else:
+   #             return JsonResponse({'success': False, 'message': 'No file provided'})
+   #     except Exception as e:
+   #         return JsonResponse({'success': False, 'message': str(e)})
+
+   # return JsonResponse({'success': False, 'message': 'Invalid request'})
 
 
 @csrf_exempt
@@ -516,11 +483,12 @@ def update_profile_picture(request):
             if profile_picture:
                 # Determine the file extension dynamically
                 file_extension = profile_picture.name.split('.')[-1]
-                
+
                 # Save the file to the desired folder
-                profile_picture_path = f'employer/static/resources/profile_picture/profile_picture_{company_id}.png'
+                profile_picture_path = f'employer/static/resources/profile_picture/profile_picture_{
+                    company_id}.png'
                 profile_picture_name = f'profile_picture_{company_id}.png'
-                
+
                 with open(profile_picture_path, 'wb') as file:
                     for chunk in profile_picture.chunks():
                         file.write(chunk)
@@ -550,11 +518,12 @@ def update_cover_photo(request):
             if cover_photo:
                 # Determine the file extension dynamically
                 file_extension = cover_photo.name.split('.')[-1]
-                
+
                 # Save the file to the desired folder
-                cover_photo_path = f'employer/static/resources/cover_photo/cover_photo_{company_id}.png'
+                cover_photo_path = f'employer/static/resources/cover_photo/cover_photo_{
+                    company_id}.png'
                 cover_photo_name = f'cover_photo_{company_id}.png'
-                
+
                 with open(cover_photo_path, 'wb') as file:
                     for chunk in cover_photo.chunks():
                         file.write(chunk)
@@ -610,5 +579,4 @@ def reject_applicant(request, applicant_id):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'status': 'error'})
-    
-
+        return JsonResponse({'status': 'error'})
