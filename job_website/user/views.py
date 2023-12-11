@@ -6,7 +6,8 @@ from .models import User, Employee
 
 from django.shortcuts import render, get_object_or_404
 from employer.models import Job
-from employer.models import Company
+from employer.models import Company, Applicant
+from user.models import Employee
 from django.views import View
 from django.db.models import Q
 # Create your views here.
@@ -45,7 +46,6 @@ def company_profile(request, id):
     }
 
     return render(request, 'company_profile.html', context)
-
 
 def add_user(request):
     if request.method == 'POST':
@@ -97,6 +97,7 @@ def user_toLogin(request):
 
         user = Employee.objects.get(email=email)
         if check_password(password, user.password):
+            request.session['email'] = user.email
             return redirect('homepage')
         else:
             return redirect('user_login')
@@ -119,14 +120,45 @@ def job_detail(request, job_id):
     return render(request, template, context)
 
 
-def user_application_process(request):
+def user_application_process(request, id):
     template = 'user_application_process.html'
+    job = get_object_or_404(Job, id=id)
+    employee = Employee.objects.get(email='kenshin.sayson@gmail.com')
     context = {
-        'title': 'User Application Process',
+        'title': f'Apply for {job.title}',
+        'job': job,
+        'employee': employee,
     }
     return render(request, template, context)
-
-
+        
+def user_apply_job(request):
+    if request.method == 'POST':
+        job_title = request.POST.get('job_title')
+        job_company = request.POST.get('job_company')
+        employee_name = request.POST.get('employee_name')
+        employee_email = request.POST.get('employee_email')
+        employee_phone = request.POST.get('employee_phone_number')
+        employee_address = request.POST.get('employee_address')
+        employee_cv = request.POST.get('cvUpload')
+        
+        Applicant.objects.create(
+            job=job_title,
+            company=job_company,
+            name=employee_name,
+            email=employee_email,
+            phone=employee_phone,
+            address=employee_address,
+            resume=employee_cv,
+        )
+        
+        return redirect('homepage')
+    else:
+        return redirect('homepage')
+    
+    
+        
+        
+        
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 

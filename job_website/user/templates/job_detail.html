@@ -21,7 +21,7 @@
             <h5>{{ job.company }}</h5>
             <div class="text-center">
                 <button class="btn my-2 my-sm-0 w-50" type="button"
-                    style="background-color: #1E2F96; color:white">Apply</button>
+                    style="background-color: #1E2F96; color:white"><a href="{% url 'user_application_process' id=job.id %}">Apply</a></button>
             </div>
         </div>
     </div>

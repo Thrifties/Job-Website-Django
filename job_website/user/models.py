@@ -12,5 +12,9 @@ class User(models.Model):
 class Employee(models.Model):
     email = models.EmailField(max_length=255, unique=True, default="email@email.com")
     password = models.CharField(max_length=255, default='password')
+    first_name = models.CharField(max_length=255, default='first_name')
+    last_name = models.CharField(max_length=255, default='last_name')
+    phone_number = models.CharField(max_length=255, default='phone_number')
+    address = models.CharField(max_length=255, default='address')
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.email
