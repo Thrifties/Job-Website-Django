@@ -1,0 +1,39 @@
+:root {
+    --primary: #1e2f96;
+    --secondary: #9f2efd;    
+    --tertiary: #d86dfc;
+    --accent: #4371f6;
+    --dark: #7146fd;
+    --text: #545454;
+}
+
+nav {
+    background-color: #fff;
+}
+
+.nav-link {
+    color: var(--text);
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover, #user_navlink:hover, .dropdown-item:hover{
+    color: var(--tertiary);
+}
+
+.nav-link.active, #user_navlink.active {
+    color: var(--secondary);
+}
+
+.bi-caret-down-fill {
+    font-size: small;
+}
+
+#user_navlink:visited {
+    color: var(--text);
+}
+
+.dropdown-menu, .dropdown-item {
+    color: var(--text);
+    transition: color 0.3s ease-in-out;
+}
