@@ -13,8 +13,8 @@ urlpatterns = [
     path('user_login', views.user_login, name='user_login'),
     path('user_toLogin', views.user_toLogin, name='user_toLogin'),
     path('user_toLogout', views.user_toLogout, name='user_toLogout'),
-    path('user_application_process', views.user_application_process,
-         name='user_application_process'),
+    path('user_application_process/<int:id>/', views.user_application_process,name='user_application_process'),
+    path('user_apply_job', views.user_apply_job, name='user_apply_job'),
 ]
 
 

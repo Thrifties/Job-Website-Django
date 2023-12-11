@@ -31,4 +31,12 @@ class Employee(models.Model):
     password = models.CharField(max_length=255, default='password')
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.email
+    
+class MyJobs(models.Model):
+    name = models.CharField(max_length=255, default='name')
+    job = models.CharField(max_length=255, default='job')
+    company = models.CharField(max_length=255, default='company')
+    
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name

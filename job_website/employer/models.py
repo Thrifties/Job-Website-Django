@@ -52,7 +52,7 @@ class Applicant(models.Model):
     email = models.EmailField(max_length=50, default="")
     phone = models.CharField(max_length=11, default="")
     address = models.CharField(max_length=100, default="")
-    resume = models.FileField(upload_to='employer/applicants/resume/')
+    resume = models.FileField(upload_to='employer/applicants/resume')
     company = models.CharField(max_length=50, default="")
     job = models.CharField(max_length=50, default=" ")
     application_status = [
