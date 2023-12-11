@@ -1,0 +1,14 @@
+.banner {
+    /* background: linear-gradient(0deg, rgba(18, 81, 40, 0.7), rgba(18, 81, 40, 0.7)), url('./img/BSU FRONT 2.jpg'); */
+    background: url('/static/resources/banner.png'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; 
+    position: relative;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: end;
+    color: white;
+    padding: 5px 5px 5px 10px;
+  }

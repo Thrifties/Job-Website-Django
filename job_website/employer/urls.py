@@ -31,8 +31,8 @@ urlpatterns = [
     path('add_job', views.add_job, name="add_job"),
     path('applicants/', applicant_list, name="applicant_list"),
     path('applicants/resume/<str:resume_filename>/', view_resume, name='view_resume'),
-    path('approve_applicant/<int:applicant_id>/', approve_applicant, name='approve_applicant'),
-    path('reject_applicant/<int:applicant_id>/', reject_applicant, name='reject_applicant'),
+    path('applicants/approve_applicant/<int:applicant_id>/', views.approve_applicant, name='approve_applicant'),
+    path('applicants/reject_applicant/<int:applicant_id>/', views.reject_applicant, name='reject_applicant'),
     path('logout', views.logout, name='logout'),
     path('generate_csv', views.generate_csv, name='generate_csv'),
 ]

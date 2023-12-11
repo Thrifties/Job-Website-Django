@@ -1,7 +1,14 @@
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User, Employee
+from django.shortcuts import render, get_object_or_404
+from employer.models import Job
+from django.views import View
+from django.db.models import Q
+# Create your views here.
+
 
 def user_register(request):
     template = 'user_register.html'
@@ -29,10 +36,21 @@ def add_user(request):
     
 def user_login(request):
     template = 'user_login.html'
+
+
+def homepage(request):
+    # Fetch all jobs from the Job model
+    jobs = Job.objects.all()
+
+    # Search functionality
+    search_query = request.GET.get('search', '')
+    if search_query:
+        jobs = jobs.filter(Q(title__icontains=search_query))
     context = {
-        'title' : 'User Login',
+        'title': 'Homepage',
+        'jobs': jobs,
     }
-    return render(request, template, context)
+
 
 def user_toLogin(request):
     if request.method == 'POST':
@@ -51,11 +69,12 @@ def user_toLogout(request):
     template = 'user_login.html'
     return render(request, template)
 
-def homepage(request):
-    template = 'user_homepage.html'
+def job_detail(request, job_id):
+    # Retrieve the job details using the job_id
+    job = get_object_or_404(Job, id=job_id)
     context = {
-        'title' : 'Homepage',
-    }
+        'title': f'{job.title} - Job Detail',
+        'job': job,
     return render(request, template, context)
 
 def user_application_process(request):
@@ -64,3 +83,4 @@ def user_application_process(request):
         'title' : 'User Application Process',
     }
     return render(request, template, context)
+
