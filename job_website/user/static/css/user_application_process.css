@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #1e2f96;
+    --secondary: #9f2efd;    
+    --tertiary: #d86dfc;
+    --accent: #4371f6;
+    --dark: #7146fd;
+    --text: #545454;
+}
+
+body {
+ color: var(--text);
+}
+
+
+.accent {
+    color: var(--accent);
+    cursor: pointer;
+}
+
+#viewJob {
+    color: var(--text);
+}

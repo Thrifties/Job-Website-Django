@@ -36,6 +36,10 @@ def add_user(request):
     
 def user_login(request):
     template = 'user_login.html'
+    context = {
+        'title' : 'User Login',
+    }
+    return render(request, template, context)
 
 
 def homepage(request):
@@ -71,10 +75,11 @@ def user_toLogout(request):
 
 def job_detail(request, job_id):
     # Retrieve the job details using the job_id
+    template = 'job_detail.html'
     job = get_object_or_404(Job, id=job_id)
-    context = {
-        'title': f'{job.title} - Job Detail',
-        'job': job,
+    context = { 
+        'title': f'{job.title} - Job Detail','job': job,
+    }
     return render(request, template, context)
 
 def user_application_process(request):
