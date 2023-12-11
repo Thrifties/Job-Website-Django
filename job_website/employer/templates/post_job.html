@@ -293,55 +293,58 @@
                 <!-- Tab for CLOSED jobs -->
                 <div class="tab-pane fade" id="nav-closed" role="tabpanel" aria-labelledby="nav-profile-tab"
                     tabindex="0">
-                    <table id="job_list_closed" class="table table-hover text-center">
-                        <thead>
-                            <tr>
-                                <th>Company Name</th>
-                                <th>Job Title</th>
-                                <th>Number of People</th>
-                                <th>Salary</th>
-                                <th>Category</th>
-                                <th>Location</th>
-                                <th>Description</th>
-                                <th>Job Requirements</th>
-                                <th>Application Deadline</th>
-                                <th>Job Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for job in jobs %}
-                            {% if job.status == 'Closed' and job.company == request.session.company %}
-                            <tr>
-                                <td>{{ job.company }}</td>
-                                <td>{{ job.title }}</td>
-                                <td>{{ job.number_of_people }}</td>
-                                <td>₱ {{ job.salary }}</td>
-                                <td>{{ job.category }}</td>
-                                <td>{{ job.location }}</td>
-                                <td>{{ job.description|linebreaksbr|safe }}</td>
-                                <td>{{ job.requirements|linebreaksbr|safe }}</td>
-                                <td>{{ job.date }}</td>
-                                <td class="text-danger font-weight-bold">{{ job.status }}</td>
-                                <td>
-                                    <div class="input-group-append">
-                                        <button class="btn edit-closed me-2 text-light" type="button"
-                                            data-bs-toggle="modal" data-bs-target="#editClosed"
-                                            data-jobid="{{ job.id }}" style="background-color: rgb(99, 146, 233);">
-                                            Edit
-                                        </button>
-                                        <button class="btn delete text-light" type="button"
-                                            data-bs-target="#deleteModal{{ job.id }}" data-jobid="{{ job.id }}"
-                                            style="background-color: rgb(223, 123, 209);">
-                                            Delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endif %}
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="job_list_closed" class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Job Title</th>
+                                    <th>Number of People</th>
+                                    <th>Salary</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Description</th>
+                                    <th>Job Requirements</th>
+                                    <th>Application Deadline</th>
+                                    <th>Job Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job in jobs %}
+                                {% if job.status == 'Closed' and job.company == request.session.company %}
+                                <tr>
+                                    <td>{{ job.company }}</td>
+                                    <td>{{ job.title }}</td>
+                                    <td>{{ job.number_of_people }}</td>
+                                    <td>₱ {{ job.salary }}</td>
+                                    <td>{{ job.category }}</td>
+                                    <td>{{ job.location }}</td>
+                                    <td>{{ job.description|linebreaksbr|safe }}</td>
+                                    <td>{{ job.requirements|linebreaksbr|safe }}</td>
+                                    <td>{{ job.date }}</td>
+                                    <td class="text-danger font-weight-bold">{{ job.status }}</td>
+                                    <td>
+                                        <div class="input-group-append">
+                                            <button class="btn edit-closed me-2 text-light" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#editClosed"
+                                                data-jobid="{{ job.id }}" style="background-color: rgb(99, 146, 233);">
+                                                Edit
+                                            </button>
+                                            <button class="btn delete text-light" type="button"
+                                                data-bs-target="#deleteModal{{ job.id }}" data-jobid="{{ job.id }}"
+                                                style="background-color: rgb(223, 123, 209);">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
 
@@ -567,9 +570,9 @@
                                     <div class="row gap-1">
                                         <div class="col-12 mb-2 p-0">
                                             <div class="form-floating position-relative">
-                                                <input type="text" name="edit-closed-requirements"
+                                                <textarea type="text" name="edit-closed-requirements"
                                                     id="edit-closed-requirements" class="form-control" required
-                                                    placeholder="" />
+                                                    placeholder="" style="height: 100px" rows="4">> </textarea>
                                                 <label class="form-label" for="edit-requirements">Job Requirements<span
                                                         class="text-danger"> *</span></label>
                                             </div>
@@ -650,14 +653,7 @@
     <script>
 
         $(document).ready(function () {
-            $('#job_list, #job_list_closed').DataTable({
-                "columnDefs": [
-                    {
-                        "targets": [6, 7], // Indices of the "Description" and "Job Requirements" columns
-                        "width": "2000px !important", // Set your desired width for these columns
-                    }
-                ]
-            });
+            $('#job_list, #job_list_closed').DataTable();
             // Open Edit Modal for Open Jobs
             $('.edit-open').on('click', function () {
                 var jobId = $(this).data('jobid');

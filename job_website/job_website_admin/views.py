@@ -1,11 +1,20 @@
+from django.http import JsonResponse
+from employer.models import Details
+from django.views import View
 from django.shortcuts import render, redirect
 from employer.models import Job
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
+
+
 def dashboard_admin(request):
     template = 'dashboard_admin.html'
-    return render(request, template)
+    context = {
+        'title': 'Admin Dashboard'
+    }
+    return render(request, template, context)
+
 
 def manage_account(request):
 
@@ -14,6 +23,7 @@ def manage_account(request):
         'title': 'Manage Account'
     }
     return render(request, template, context)
+
 
 def admin_list_of_jobs(request):
     template = 'admin_list_of_jobs.html'
@@ -61,13 +71,11 @@ def delete_job(request, job_id):
     # Redirect back to the rejected jobs page
     return redirect('admin_list_of_jobs')
 
+
 def index(request):
     template = 'index.html'
     return render(request, template)
 
-from django.http import JsonResponse
-from django.views import View
-from employer.models import Details
 
 class GetEmployerDataView(View):
     def get(self, request, *args, **kwargs):
@@ -82,7 +90,7 @@ class GetEmployerDataView(View):
             return JsonResponse({'success': True, 'data': employer_data_list})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
-        
+
 
 class GetSpecificEmployerDataView(View):
     def get(self, request, employer_id, *args, **kwargs):
@@ -101,10 +109,7 @@ class GetSpecificEmployerDataView(View):
             return JsonResponse({'success': True, 'data': employer_data_list})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
-        
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example; consider using csrf protection in production
 def update_employer_account(request, employer_id):
@@ -132,7 +137,6 @@ def update_employer_account(request, employer_id):
 
     # Return an error response if the request method is not POST
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
-
 
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example; consider using csrf protection in production

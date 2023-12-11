@@ -16,31 +16,24 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="{% url 'dashboard' %}">
+        <a class="nav-link" href="{% url 'dashboard_admin' %}">
             <i class="bi bi-grid-1x2-fill"></i>
             <span>Dashboard</span></a>
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'post_job'%}">
+        <a class="nav-link collapsed" href="{% url 'admin_list_of_jobs'%}">
             <i class="bi bi-briefcase-fill"></i>
-            <span>Jobs</span>
+            <span>Jobs Approval</span>
         </a>
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'applicant_list' %}">
+        <a class="nav-link" href="{% url 'manage_account' %}">
             <i class="bi bi-people-fill"></i>
-            <span>Applicants</span>
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'company_profile' %}">
-            <i class="bi bi-person-workspace"></i>
-            <span>Company Profile</span>
+            <span>Manage User Account</span>
         </a>
     </li>
 </ul>
@@ -251,13 +244,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
                         <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
                     </div>
                 </div>
