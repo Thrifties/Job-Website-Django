@@ -15,14 +15,14 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
+    <li class="nav-item {% if request.path == '/job_website_admin/dashboard_admin' %}active{% endif %} ">
         <a class="nav-link" href="{% url 'dashboard_admin' %}">
             <i class="bi bi-grid-1x2-fill"></i>
             <span>Dashboard</span></a>
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    <li class="nav-item  {% if request.path == '/job_website_admin/admin_list_of_jobs' %}active{% endif %}">
         <a class="nav-link collapsed" href="{% url 'admin_list_of_jobs'%}">
             <i class="bi bi-briefcase-fill"></i>
             <span>Jobs Approval</span>
@@ -30,7 +30,7 @@
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
+    <li class="nav-item  {% if request.path == '/job_website_admin/manage_account' %}active{% endif %}">
         <a class="nav-link" href="{% url 'manage_account' %}">
             <i class="bi bi-people-fill"></i>
             <span>Manage User Account</span>

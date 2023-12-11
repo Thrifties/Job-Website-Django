@@ -15,29 +15,29 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
+    <li class="nav-item  {% if request.path == '/employer/dashboard' %}active{% endif %}">
         <a class="nav-link" href="{% url 'dashboard' %}">
             <i class="bi bi-grid-1x2-fill"></i>
             <span>Dashboard</span></a>
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'post_job'%}">
-            <i class="bi bi-briefcase-fill"></i>
+    <li class="nav-item {% if request.path == '/employer/post_job' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'post_job' %}">
+            <i class="fas fa-fw fa-briefcase"></i>
             <span>Jobs</span>
         </a>
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
+    <li class="nav-item {% if request.path == '/employer/applicants/' %}active{% endif %} ">
         <a class="nav-link" href="{% url 'applicant_list' %}">
             <i class="bi bi-people-fill"></i>
             <span>Applicants</span>
         </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item {% if request.path == 'employer/company_profile' %}active{% endif %}">
         <a class="nav-link" href="{% url 'company_profile' %}">
             <i class="bi bi-person-workspace"></i>
             <span>Company Profile</span>
