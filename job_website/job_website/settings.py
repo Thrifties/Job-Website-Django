@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'employer.apps.EmployerConfig',
-    'job_website_admin.apps.JobWebsiteAdminConfig'
+    'job_website_admin.apps.JobWebsiteAdminConfig',
+    'user.apps.UserConfig'
 ]
 
 MIDDLEWARE = [
