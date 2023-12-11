@@ -100,6 +100,7 @@
 
                                 <input type="text" name="company" id="company" value="{{request.session.company}}"
                                     readonly hidden>
+
                                 <div class="row gap-1">
                                     <div class="col-6 mb-1 p-0">
                                         <div class="form-floating">
@@ -156,7 +157,8 @@
                                     <div class="col-12 mb-1 p-0">
                                         <div class="form-floating mb-2">
                                             <textarea class="form-control" name="description" id="description"
-                                                style="height: 100px" rows="4" placeholder="" required></textarea>
+                                                style="height: 100px" rows="4" placeholder=""
+                                                required>{{ request.POST.description|safe }}</textarea>
                                             <label class="form-label" for="description">Job Description<span
                                                     class="text-danger"> *</span></label>
                                         </div>
@@ -167,8 +169,9 @@
                                 <div class="row gap-1">
                                     <div class="col-12 mb-2 p-0">
                                         <div class="form-floating position-relative">
-                                            <input type="text" name="requirements" id="requirements"
-                                                class="form-control" placeholder="" required />
+                                            <textarea type="text" name="requirements" id="requirements"
+                                                class="form-control" style="height: 100px" rows="1" placeholder=""
+                                                required>{{ request.POST.requirements|safe }}</textarea>
                                             <label class="form-label" for="requirements">Job Requirements<span
                                                     class="text-danger"> *</span></label>
                                         </div>
@@ -259,8 +262,8 @@
                                     <td>₱ {{ job.salary }}</td>
                                     <td>{{ job.category }}</td>
                                     <td>{{ job.location }}</td>
-                                    <td>{{ job.description }}</td>
-                                    <td>{{ job.requirements }}</td>
+                                    <td>{{ job.description|linebreaksbr|safe }}</td>
+                                    <td>{{ job.requirements|linebreaksbr|safe }}</td>
                                     <td>{{ job.date }}</td>
                                     <td class="text-success font-weight-bold">{{ job.status }}</td>
                                     <td>
@@ -316,8 +319,8 @@
                                 <td>₱ {{ job.salary }}</td>
                                 <td>{{ job.category }}</td>
                                 <td>{{ job.location }}</td>
-                                <td>{{ job.description }}</td>
-                                <td>{{ job.requirements }}</td>
+                                <td>{{ job.description|linebreaksbr|safe }}</td>
+                                <td>{{ job.requirements|linebreaksbr|safe }}</td>
                                 <td>{{ job.date }}</td>
                                 <td class="text-danger font-weight-bold">{{ job.status }}</td>
                                 <td>
@@ -418,7 +421,7 @@
                                             <div class="form-floating mb-2">
                                                 <textarea class="form-control" name="edit-description"
                                                     id="edit-description" style="height: 100px" rows="4"
-                                                    required></textarea>
+                                                    required>{{ request.POST.description|safe }}</textarea>
                                                 <label class="form-label" for="edit-description">Job Description</label>
                                             </div>
 
@@ -428,8 +431,9 @@
                                     <div class="row gap-1">
                                         <div class="col-12 mb-2 p-0">
                                             <div class="form-floating position-relative">
-                                                <input type="text" name="edit-requirements" id="edit-requirements"
-                                                    class="form-control" required placeholder="" />
+                                                <textarea type="text" name="edit-requirements" id="edit-requirements"
+                                                    class="form-control" required placeholder="" style="height: 100px"
+                                                    rows="4">{{ request.POST.requirements|safe }}</textarea>
                                                 <label class="form-label" for="edit-requirements">Job Requirements<span
                                                         class="text-danger"> *</span></label>
                                             </div>
@@ -646,8 +650,14 @@
     <script>
 
         $(document).ready(function () {
-            $('#job_list, #job_list_closed').DataTable();
-
+            $('#job_list, #job_list_closed').DataTable({
+                "columnDefs": [
+                    {
+                        "targets": [6, 7], // Indices of the "Description" and "Job Requirements" columns
+                        "width": "2000px !important", // Set your desired width for these columns
+                    }
+                ]
+            });
             // Open Edit Modal for Open Jobs
             $('.edit-open').on('click', function () {
                 var jobId = $(this).data('jobid');
@@ -955,6 +965,7 @@
                 let alertError = document.getElementById('alert-error-add');
                 alertError.innerHTML = '';
 
+
                 var title = document.getElementById('title').value;
                 var numberOfPeople = document.getElementById('number_of_people').value;
                 var salary = document.getElementById('salary').value;
@@ -969,6 +980,10 @@
                 const day = currentDate.getDate().toString().padStart(2, '0');
                 const year = currentDate.getFullYear();
                 const formattedDate = `${month}/${day}/${year}`;
+
+                // Replace <br> tags with newline characters
+                description = description.replace(/<br>/g, '\n');
+                requirements = requirements.replace(/<br>/g, '\n');
 
                 if (!title || !numberOfPeople || !salary || !category || !location || !description || !requirements) {
                     alertError.innerHTML = '<div class="alert alert-danger" role="alert">All fields are required.</div>';

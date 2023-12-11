@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'employer.apps.EmployerConfig',
-    'job_website_admin.apps.JobWebsiteAdminConfig'
+    'job_website_admin.apps.JobWebsiteAdminConfig',
+    'user.apps.UserConfig'
 ]
 
 MIDDLEWARE = [
@@ -114,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
