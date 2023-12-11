@@ -2,25 +2,60 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <title>{{title}}</title>
-        <!-- Custom fonts for this template -->
-        {% include 'includes/user_cdn.html' %}
+    <title>{{title}}</title>
+    <!-- Custom fonts for this template -->
+    {% include 'includes/user_cdn.html' %}
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
 
-    </head>
+</head>
 
-    <body id="page-top">
-        {% include 'includes/user_navbar.html' %}
+<body id="page-top">
+    {% include 'includes/user_navbar.html' %}
+    <div class="banner d-flex justify-content-center align-items-center">
+        <div class="d-flex flex-column w-25">
+            <div>Search Job</div>
+            <form class="d-flex flex-row form-inline my-2 my-lg-0" method="get" action="{% url 'homepage' %}">
+                <input class="form-control mr-sm-2 me-2" type="search" placeholder="Search" name="search"
+                    value="{{ request.GET.search }}">
+                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
 
-        <h1>Home Page</h1>
-        
-        {% include 'includes/user_js_cdn.html' %}
-    </body>
+    <div class="container">
+        {% if jobs %}
+        <div class="job mt-5 p-4">
+            {% for job in jobs %}
+            {% if job.status == 'Open' %}
+            <div class="mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-0">{{ job.title }}</h5>
+                        <p class="card-text mb-0">{{ job.company }} - {{ job.date_posted }} </p> <br>
+                        <p class="card-text mb-0">Description: {{ job.description|linebreaksbr|safe }} <a
+                                href="{% url 'job_detail' job_id=job.id %}">See more</a></p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center mt-3">
+            <p>No jobs available.</p>
+        </div>
+
+        {% endif %}
+    </div>
+
+    {% include 'includes/user_js_cdn.html' %}
+</body>
 
 </html>

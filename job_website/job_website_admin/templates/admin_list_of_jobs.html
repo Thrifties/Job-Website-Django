@@ -114,8 +114,8 @@
                                     <td>₱ {{ job.salary }}</td>
                                     <td>{{ job.category }}</td>
                                     <td>{{ job.location }}</td>
-                                    <td>{{ job.description }}</td>
-                                    <td>{{ job.requirements }}</td>
+                                    <td>{{ job.description|linebreaksbr|safe }}</td>
+                                    <td>{{ job.requirements|linebreaksbr|safe }}</td>
                                     <td>{{ job.date }}</td>
                                     <td class="text-primary font-weight-bold">{{ job.status }}</td>
                                     <td>
@@ -173,8 +173,8 @@
                                 <td>₱ {{ job.salary }}</td>
                                 <td>{{ job.category }}</td>
                                 <td>{{ job.location }}</td>
-                                <td>{{ job.description }}</td>
-                                <td>{{ job.requirements }}</td>
+                                <td>{{ job.description|linebreaksbr|safe }}</td>
+                                <td>{{ job.requirements|linebreaksbr|safe }}</td>
                                 <td>{{ job.date }}</td>
                                 <td class="text-danger font-weight-bold">{{ job.status }}</td>
                                 <td>
