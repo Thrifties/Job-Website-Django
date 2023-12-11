@@ -10,7 +10,6 @@ def user_register(request):
     }
     return render(request, template, context)
 
-
 def add_user(request):
     if request.method == 'POST':
         email = request.POST.get('email')
