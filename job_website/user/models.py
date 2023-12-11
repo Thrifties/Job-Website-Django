@@ -18,3 +18,11 @@ class Employee(models.Model):
     address = models.CharField(max_length=255, default='address')
     def __str__(self):
         return self.email
+    
+class MyJobs(models.Model):
+    name = models.CharField(max_length=255, default='name')
+    job = models.CharField(max_length=255, default='job')
+    company = models.CharField(max_length=255, default='company')
+    
+    def __str__(self):
+        return self.job

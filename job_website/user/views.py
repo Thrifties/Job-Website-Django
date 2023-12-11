@@ -139,7 +139,7 @@ def user_apply_job(request):
         employee_email = request.POST.get('employee_email')
         employee_phone = request.POST.get('employee_phone_number')
         employee_address = request.POST.get('employee_address')
-        employee_cv = request.POST.get('cvUpload')
+        employee_cv = request.FILES.get('cvUpload')
         
         Applicant.objects.create(
             job=job_title,
