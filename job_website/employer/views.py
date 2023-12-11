@@ -521,7 +521,6 @@ def update_profile_picture(request):
     return JsonResponse({'success': False, 'message': 'Invalid request'})
     return render(request, 'company_profile.html', context)
 
-
 @csrf_exempt
 def update_cover_photo(request):
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -555,7 +554,6 @@ def update_cover_photo(request):
     return JsonResponse({'success': False, 'message': 'Invalid request'})
     return render(request, 'company_profile.html', context)
 
-
 def applicant_list(request):
 
     applicants = Applicant.objects.all()
@@ -566,14 +564,13 @@ def applicant_list(request):
     }
     return render(request, template, context)
 
-
 def view_resume(request, resume_filename):
 
     applicant = get_object_or_404(Applicant, resume=resume_filename)
     file_path = applicant.resume.path
     return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
 
-
+@csrf_exempt
 @require_POST
 def approve_applicant(request, applicant_id):
     applicant = get_object_or_404(Applicant, id=applicant_id)
@@ -582,16 +579,14 @@ def approve_applicant(request, applicant_id):
     applicant.save()
     return JsonResponse({'status': 'success'})
 
-
 @csrf_exempt
+@require_POST
 def reject_applicant(request, applicant_id):
     applicant = get_object_or_404(Applicant, id=applicant_id)
     rejection_reason = request.POST.get('rejection_reason', '')
-    if request.method == 'POST':
-        applicant.status = 'Rejected'
-        applicant.rejection_reason = rejection_reason
-        applicant.save()
-        return JsonResponse({'status': 'success'})
-    else:
-        return JsonResponse({'status': 'error'})
-        return JsonResponse({'status': 'error'})
+    
+    applicant.status = 'Rejected'
+    applicant.rejection_reason = rejection_reason
+    applicant.save()
+
+    return JsonResponse({'status': 'success'})

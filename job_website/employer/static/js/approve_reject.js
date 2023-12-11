@@ -34,7 +34,6 @@
     
             function handleApproval(applicantId) {
                 var csrf_token = $("[name=csrfmiddlewaretoken]").val();
-    
                 $.ajax({
                     type: 'POST',
                     url: '/approve_applicant/' + applicantId + '/',
