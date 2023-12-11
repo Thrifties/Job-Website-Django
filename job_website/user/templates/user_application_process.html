@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{{title}}</title>
+        <!-- Custom fonts for this template -->
+        {% include 'includes/user_cdn.html' %}
+
+        <link rel="stylesheet" href="{% static 'css/user_application_process.css' %}">
+
+        <!-- Custom styles for this template -->
+
+    </head>
+
+    <body id="page-top">
+        {% include 'includes/user_navbar.html' %}
+
+        <div class="container row mx-auto p-5">
+            <div class="row">
+                <h5 class="fw-normal">Applying for</h5>
+                <h1><strong>EMAIL & BACK OFFICE SUPPORT • 100% NON-VOICE</strong></h1>
+                <h5 class="fw-normal">Company Name</h5>
+                <a href="" class="text-decoration-underline" id="viewJob">View job descriptions</a>
+            </div>
+
+            <div class="row mt-3">
+                <h5><span>Please review your application</span></h5>
+                <div class="row mt-3">
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <h6>Contact Information</h6>
+                        </div>
+                        <div class="col">
+                            <strong><span class="accent">Edit</span></strong>
+                        </div>
+                    </div>
+                    <h3><strong>JOHN DOE</strong></h3>
+                    <label for="email"><small>Email Address</small></label>
+                    <p class="email"><strong>johnDoe@email.com</strong></p>
+                    <label for="phone"><small>Phone Number</small></label>
+                    <p class="phone"><strong>123456789</strong></p>
+                    <label for="address"><small>Address</small></le>
+                    <p class="address"><strong>1234, Street Name, City, State, Country</strong></p>
+                </div>
+            </div>
+    
+            <div class="row mt-3">
+                <h5><span>Curriculum Vitae</span></h5>
+                <div class="row">
+                    <label for="formFile" class="form-label">Upload your CV<span class="text-danger">*</span></label>
+                    <div class="input-group mb-3 w-50">
+                        <input type="file" class="form-control" id="cvUpload">
+                        <label class="input-group-text" for="cvUpload">Upload</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="formFile" class="form-label">Upload your Cover Letter<span class="text-danger">*</span></label>
+                    <div class="input-group mb-3 w-50">
+                        <input type="file" class="form-control" id="clUpload">
+                        <label class="input-group-text" for="clUpload">Upload</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3 w-50">
+                <p><strong>Note:</strong> When you apply for a job, your Acquirer Profile and any verified credentials are part of your application.</p>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-primary w-25">Submit Application</button>
+            </div>
+
+            
+
+        </div>
+        {% include 'includes/user_js_cdn.html' %}
+    </body>
+
+</html>
