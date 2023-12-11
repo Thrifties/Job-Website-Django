@@ -14,6 +14,7 @@ nav {
 .nav-link {
     color: var(--text);
     font-weight: bold;
+    transition: color 0.3s ease-in-out;
 }
 
 .nav-link:hover, #user_navlink:hover, .dropdown-item:hover{
@@ -34,4 +35,5 @@ nav {
 
 .dropdown-menu, .dropdown-item {
     color: var(--text);
+    transition: color 0.3s ease-in-out;
 }
