@@ -21,10 +21,16 @@
 <body id="page-top">
     {% include 'includes/user_navbar.html' %}
     <div id="banner" style="min-height: 200px;" class="d-flex justify-content-center align-items-center">
-        <div style="max-width: 350px;" class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search companies" aria-describedby="button-addon2">
-            <button class="btn btn-purple" type="button" id=""><i class="bi bi-search"></i></button>
+        <div>
+            <div class="w-100 text-white d-inline">
+                <h3 class="mb-2 fw-bold">Find great places to work</h3>
+            </div>
+            <div style="max-width: 350px;" class="input-group mb-3 w-100">
+                <input type="text" class="form-control" placeholder="Search companies" aria-describedby="button-addon2">
+                <button class="btn btn-purple" type="button" id=""><i class="bi bi-search"></i></button>
+            </div>
         </div>
+
     </div>
 
     <div class="container mt-5">
@@ -45,18 +51,28 @@
                 </a>
 
             </div> -->
-
             {% for company in companies %}
             <div class="col">
-                <a href="{% url 'company_profile' id=company.id %}" class="text-decoration-none">
+                <a href="{% url 'user_company_profile' id=company.id %}" class="text-decoration-none">
                     <div class="card">
-                        <img src="{% static 'resources/cover_photo/cover_photo_'|add:company.id|stringformat:" d.png"
-                            %}" class="card-img-top" alt="...">
+                        {% if company.cover_photo_path and company.cover_photo_path != "-" %}
+                        <img style="height: 100px;"
+                            src="../../static/resources/cover_photo/{{ company.cover_photo_path }}" class="card-img-top"
+                            alt="Company Cover Photo">
+                        {% else %}
+                        <img style="height: 100px;" src="../../static/resources/default_cover.png" class="card-img-top"
+                            alt="Default Cover Photo">
+                        {% endif %}
                         <div class="card-body">
                             <div class="d-flex justify-content-center">
+                                {% if company.profile_picture_path and company.profile_picture_path != "-" %}
                                 <img style="width: 50px; height: 50px;"
-                                    src="{% static 'resources/profile_picture/profile_picture_'|add:company.id|stringformat:"
-                                    d.png" %}" alt="...">
+                                    src="../../static/resources/profile_picture/{{ company.profile_picture_path }}"
+                                    alt="Profile Picture">
+                                {% else %}
+                                <img style="width: 50px; height: 50px;" src="../../static/resources/default_profile.png"
+                                    alt="Default Profile Image">
+                                {% endif %}
                             </div>
                             <h5 class="card-title text-center mt-2">{{ company.company_name }}</h5>
                         </div>
@@ -64,6 +80,10 @@
                 </a>
             </div>
             {% endfor %}
+
+
+
+
 
         </div>
     </div>

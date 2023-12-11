@@ -3,9 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User, Employee
-from employers.models import Company
+
 from django.shortcuts import render, get_object_or_404
 from employer.models import Job
+from employer.models import Company
 from django.views import View
 from django.db.models import Q
 # Create your views here.
@@ -17,6 +18,33 @@ def user_register(request):
         'title': 'User Register',
     }
     return render(request, template, context)
+
+
+def company(request):
+    # Fetch all companies from the Company model
+    companies = Company.objects.all()
+
+    # Pass the list of companies to the template
+    context = {
+        'title': 'Company',
+        'companies': companies,
+    }
+
+    # Render the template with the provided context
+    return render(request, 'company.html', context)
+
+from django.shortcuts import render
+
+def company_profile(request, id):
+    # Your view logic here...
+    # Retrieve the company details using the 'id' parameter
+
+    context = {
+        'title': 'Company Profile',
+        # Other context variables...
+    }
+
+    return render(request, 'company_profile.html', context)
 
 
 def add_user(request):
@@ -98,6 +126,20 @@ def user_application_process(request):
     }
     return render(request, template, context)
 
-def your_view(request):
-    companies = Company.objects.all()
-    return render(request, 'company.html', {'companies': companies})
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import Http404
+
+def user_company_profile(request, id):
+    try:
+        company = get_object_or_404(Company, id=id)
+    except Http404:
+        # Handle the case where no matching company is found
+        return redirect('company')  # Redirect to the company list or another page
+
+    context = {
+        'title': 'User Company Profile',
+        'company': company,
+    }
+
+    return render(request, 'user_company_profile.html', context)

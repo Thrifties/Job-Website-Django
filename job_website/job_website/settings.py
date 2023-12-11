@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
     'employer.apps.EmployerConfig',
     'job_website_admin.apps.JobWebsiteAdminConfig',
     'user.apps.UserConfig'

@@ -1,11 +1,13 @@
 from django.urls import path
 from . import views
-
+from .views import company
+from .views import user_company_profile
 
 urlpatterns = [
     path('homepage', views.homepage, name='homepage'),
     path('job_detail/<int:job_id>/', views.job_detail, name='job_detail'),
-    path('company', views.company, name='company'),
+    path('company/', company, name='company'),
+    path('user_company_profile/<int:id>/', user_company_profile, name='user_company_profile'),
     path('user_register', views.user_register, name='user_register'),
     path('add_user', views.add_user, name='add_user'),
     path('user_login', views.user_login, name='user_login'),
@@ -14,3 +16,5 @@ urlpatterns = [
     path('user_application_process', views.user_application_process,
          name='user_application_process'),
 ]
+
+
