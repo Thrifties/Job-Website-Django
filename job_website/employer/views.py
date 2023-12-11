@@ -574,7 +574,9 @@ def view_resume(request, resume_filename):
 @require_POST
 def approve_applicant(request, applicant_id):
     applicant = get_object_or_404(Applicant, id=applicant_id)
-    # Perform approval logic here
+    approval_reason = request.POST.get('approval_reason', '')
+    applicant.rejection_reason = None
+    applicant.approval_reason = approval_reason
     applicant.status = 'Approved'
     applicant.save()
     return JsonResponse({'status': 'success'})
@@ -584,7 +586,7 @@ def approve_applicant(request, applicant_id):
 def reject_applicant(request, applicant_id):
     applicant = get_object_or_404(Applicant, id=applicant_id)
     rejection_reason = request.POST.get('rejection_reason', '')
-    
+    applicant.approval_reason    = None
     applicant.status = 'Rejected'
     applicant.rejection_reason = rejection_reason
     applicant.save()
