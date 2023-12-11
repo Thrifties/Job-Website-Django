@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <base href="http://127.0.0.1:8000/">
 
     <title>{{title}}</title>
     <!-- Custom fonts for this template -->
@@ -25,8 +26,9 @@
     <script>
 
         $(document).ready(function () {
+            console.log("TITE");
             console.log("{{request.session.id}}");
-            fetchCompanyData("{{request.session.id}}");
+            fetchCompanyData("1");
 
 
             $("#add-company-btn").click(function () {
@@ -56,6 +58,7 @@
 
         function fetchCompanyData(companyId) {
             // Make an Ajax request to fetch company data
+            console.log(companyId);
             $.ajax({
                 type: "GET",
                 url: `/employer/get_company_data/${companyId}/`,  // Update with your actual URL
@@ -80,7 +83,7 @@
                             console.log("Meron laman" + data.company.profile_picture_path);
                         } else {
                             // If profile_picture_path is "-" or falsy, use the default path
-                            $('#display-profile-picture').attr('src', '../static/resources/default_profile.png');
+                            $('#display-profile-picture').attr('src', '/static/resources/default_profile.png');
                             console.log("Wala laman");
                         }
 
@@ -97,7 +100,7 @@
                             console.log("Meron laman cover" + data.company.cover_photo_path);
                         } else {
                             // If cover_photo_path is "-" or falsy, use the default path
-                            $('#display-cover').css('background-image', 'url(../static/resources/default_cover.png)');
+                            $('#display-cover').css('background-image', 'url(/static/resources/default_cover.png)');
                         }
                     } else {
                         alert("Error: " + data.message);

@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="{% static 'css/company.css' %}">
+
+    <title>{{title}}</title>
+    <!-- Custom fonts for this template -->
+    {% include 'includes/user_cdn.html' %}
+
+    <!-- Custom styles for this template -->
+
+</head>
+
+<body id="page-top">
+    {% include 'includes/user_navbar.html' %}
+    <div id="banner" style="min-height: 200px;" class="d-flex justify-content-center align-items-center">
+        <div style="max-width: 350px;" class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search companies" aria-describedby="button-addon2">
+            <button class="btn btn-purple" type="button" id=""><i class="bi bi-search"></i></button>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-6 g-4">
+            <!-- <div class="col">
+                <a href="company_profile.html" class="text-decoration-none">
+                    <div class="card">
+                        <img src="{% static 'resources/cover_photo/cover_photo_(idnumber).png' %}" class="card-img-top"
+                            alt="...">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <img style="width: 50px; height: 50px;"
+                                    src="{% static 'resources/profile_picture/profile_picture_(idnumber).png' %}" alt="...">
+                            </div>
+                            <h5 class="card-title text-center mt-2">Company name</h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div> -->
+
+            {% for company in companies %}
+            <div class="col">
+                <a href="{% url 'company_profile' id=company.id %}" class="text-decoration-none">
+                    <div class="card">
+                        <img src="{% static 'resources/cover_photo/cover_photo_'|add:company.id|stringformat:" d.png"
+                            %}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <img style="width: 50px; height: 50px;"
+                                    src="{% static 'resources/profile_picture/profile_picture_'|add:company.id|stringformat:"
+                                    d.png" %}" alt="...">
+                            </div>
+                            <h5 class="card-title text-center mt-2">{{ company.company_name }}</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+
+
+    {% include 'includes/user_js_cdn.html' %}
+</body>
+
+</html>

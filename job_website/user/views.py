@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User, Employee
+from employers.models import Company
 
 def user_register(request):
     template = 'user_register.html'
@@ -55,3 +56,7 @@ def homepage(request):
         'title' : 'Homepage',
     }
     return render(request, template, context)
+
+def your_view(request):
+    companies = Company.objects.all()
+    return render(request, 'company.html', {'companies': companies})

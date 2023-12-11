@@ -1,0 +1,40 @@
+#banner {
+    background: #654ea3;
+    background: linear-gradient(to right, #e96443, #904e95);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.text-purple {
+    color: #8834FC;
+}
+
+.nav-link {
+    color: #8834FC;
+}
+
+.nav-link.active {
+    color: #000000;
+    font-weight: bold;
+}
+
+.nav-link:focus,
+.nav-link:hover {
+    color: #8834FC;
+}
+
+.nav-underline .nav-link:focus,
+.nav-underline .nav-link:hover {
+    border-bottom-color: #8834FC;
+}
+
+.input-group .btn-purple {
+    background-color: #8834FC;
+    color: #FFFFFF;
+}
+
+.input-group .btn-purple:hover {
+    background-color: #712cd2;
+    color: #FFFFFF;
+}
+
