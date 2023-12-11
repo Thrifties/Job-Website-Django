@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{{title}}</title>
+        <!-- Custom fonts for this template -->
+        {% include 'includes/user_cdn.html' %}
+
+        <!-- Custom styles for this template -->
+        <link href="{% static 'css/user_register.css' %}" rel="stylesheet" />
+
+    </head>
+
+    <body id="page-top">
+        <navbar class="register-navbar">
+            <img src="{% static 'resources/aq3.png' %}" alt="logo" class="logo" />
+            <div class="banner"></div>
+        </navbar>
+
+
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6" id="formContainer">
+                    <h2 class="mb-4 text-center" id="registration-heading">Register as an <span>employee</span></h2>
+                    <form class="align-items-center justify-content-center needs-validation" action="{% url 'add_user' %}"
+                        method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="invalid-feedback" id="validation_email"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="invalid-feedback" id="validation_password"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    required>
+                                <div class="invalid-feedback" id="validation_confirmPassword"></div>
+                            </div>
+                        </div>
+                        <div class="form-check mb-3 text-center">
+                            <input type="checkbox" class="form-check-input" id="termsCheck" name="termsCheck" required>
+                            <label class="form-check-label" for="termsCheck">I agree to the <span>Terms of Service</span>
+                                and <span>Privacy Policy</span></label>
+                            <div class="invalid-feedback" id="validation_terms"></div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary" id="registerBtn" disabled>Register</button>
+                        </div>
+                        <div class="text-center mt-1">
+                            <p>Already have an account? <a href="{% url 'login' %}"><span>Login</span></a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            
+            let email = document.querySelector('#email');
+            let password = document.querySelector('#password');
+            let confirmPassword = document.querySelector('#confirmPassword');
+ 
+            let validation_email = document.querySelector('#validation_email');
+            let validation_password = document.querySelector('#validation_password');
+            let validation_confirmPassword = document.querySelector('#validation_confirmPassword');
+            let termsCheck = document.querySelector('#termsCheck');
+            let validation_terms = document.querySelector('#validation_terms');
+
+            function validateEmail() {
+                if (email.value === '') {
+                    email.classList.add('is-invalid');
+                    validation_email.classList.add('invalid-feedback');
+                    validation_email.innerHTML = 'Email address is required';
+                } else if (!email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)) {
+                    email.classList.add('is-invalid');
+                    validation_email.classList.add('invalid-feedback');
+                    validation_email.innerHTML = 'Email address is invalid';
+                } else {
+                    email.classList.remove('is-invalid');
+                    email.classList.add('is-valid');
+                    validation_email.classList.remove('invalid-feedback');
+                    validation_email.innerHTML = '';
+                }
+            }
+
+            function validatePassword() {
+                if (password.value === '') {
+                    password.classList.add('is-invalid');
+                    validation_password.classList.add('invalid-feedback');
+                    validation_password.innerHTML = 'Password is required';
+                } else if (password.value.length < 8) {
+                    password.classList.add('is-invalid');
+                    validation_password.classList.add('invalid-feedback');
+                    validation_password.innerHTML = 'Password must be at least 8 characters';
+                } else if (password.value.length > 50) {
+                    password.classList.add('is-invalid');
+                    validation_password.classList.add('invalid-feedback');
+                    validation_password.innerHTML = 'Password must be less than 50 characters';
+                } else if (!password.value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)) {
+                    password.classList.add('is-invalid');
+                    validation_password.classList.add('invalid-feedback');
+                    validation_password.innerHTML = 'Password must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number';
+                } else {
+                    password.classList.remove('is-invalid');
+                    password.classList.add('is-valid');
+                    validation_password.classList.remove('invalid-feedback');
+                    validation_password.innerHTML = '';
+                }
+            }
+
+            function validateConfirmPassword() {
+                if (confirmPassword.value === '') {
+                    confirmPassword.classList.add('is-invalid');
+                    validation_confirmPassword.classList.add('invalid-feedback');
+                    validation_confirmPassword.innerHTML = 'Confirm password is required';
+                } else if (confirmPassword.value === password.value) {
+                    confirmPassword.classList.remove('is-invalid');
+                    confirmPassword.classList.add('is-valid');
+                    validation_confirmPassword.classList.remove('invalid-feedback');
+                    validation_confirmPassword.innerHTML = '';
+                } else {
+                    confirmPassword.classList.add('is-invalid');
+                    validation_confirmPassword.classList.add('invalid-feedback');
+                    validation_confirmPassword.innerHTML = 'Confirm password must match password';
+
+                }
+            }
+
+            function validateTerms() {
+                if (!termsCheck.checked) {
+                    termsCheck.classList.add('is-invalid');
+                    validation_terms.classList.add('invalid-feedback');
+                    validation_terms.innerHTML = 'You must agree to the terms and conditions';
+                } else {
+                    termsCheck.classList.remove('is-invalid');
+                    termsCheck.classList.add('is-valid');
+                    validation_terms.classList.remove('invalid-feedback');
+                    validation_terms.innerHTML = '';
+                }
+            }
+
+            email.addEventListener('keyup', validateEmail);
+            password.addEventListener('keyup', validatePassword);
+            confirmPassword.addEventListener('keyup', validateConfirmPassword);
+            termsCheck.addEventListener('click', validateTerms);
+
+            document.addEventListener('input', function () {
+                if (
+                    email.classList.contains('is-valid') &&
+                    password.classList.contains('is-valid') &&
+                    confirmPassword.classList.contains('is-valid') &&
+                    termsCheck.classList.contains('is-valid')
+                ) {
+                    registerBtn.disabled = false;
+                } else {
+                    registerBtn.disabled = true;
+                }
+            });
+        </script>
+        
+    </body>
+
+</html>

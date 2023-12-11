@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'employer.apps.EmployerConfig',
-    'job_website_admin.apps.JobWebsiteAdminConfig',
-    'user.apps.UserConfig'
+    'job_website_admin.apps.JobWebsiteAdminConfig'
 ]
 
 MIDDLEWARE = [
@@ -64,7 +63,6 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / "job_website_admin/templates",
             BASE_DIR / "employer/templates",
-            BASE_DIR / "user/templates",
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -141,4 +139,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Media files (uploads)
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'

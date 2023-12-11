@@ -57,7 +57,7 @@
                                         </div>
                                         <!-- Sign In Form -->
                                         <form class="align-items-center justify-content-center"
-                                            action="{% url 'to_login' %}" method="post">
+                                            action="{% url 'user_toLogin' %}" method="post">
                                             {% csrf_token %}
 
                                             <div class="form-floating mb-3">
@@ -79,7 +79,7 @@
                                                 style="background-color: #782EF6;">LOGIN</button>
 
                                             <div class="text-center mt-4">
-                                                <span>Not Register Yet? <a class="" href="{% url 'register' %}">Register
+                                                <span>Not Register Yet? <a class="" href="{% url 'user_register' %}">Register
                                                         Here
                                                     </a></span>
                                             </div>

@@ -9,7 +9,18 @@
                 // Function to handle approval
                 $('.approve-button').on('click', function () {
                     var applicantId = $(this).data('applicant-id');
-                    handleApproval(applicantId);
+                    $('#confirmApproval').data('applicant-id', applicantId);
+                    $('#approvalModal').modal('show');
+                    return false;
+                });
+
+                // Function to handle confirm rejection button click
+                $('#confirmApproval').on('click', function () {
+                    var applicantId = $(this).data('applicant-id');
+                    var approvalReason = $('#approvalReason').val();
+                    handleApproval(applicantId, approvalReason);
+                    $('#approvalModal').modal('hide');
+                    return false; // Prevent default form submission
                 });
     
                 // Function to handle rejection button click and open modal
@@ -32,46 +43,50 @@
                 console.error('#applicant_table not found.');
             }
     
-            function handleApproval(applicantId) {
+            function handleApproval(applicantId, approvalReason) {
                 var csrf_token = $("[name=csrfmiddlewaretoken]").val();
-    
-                $.ajax({
-                    type: 'POST',
-                    url: '/approve_applicant/' + applicantId + '/',
-                    data: {
-                        csrfmiddlewaretoken: csrf_token,
-                    },
-                    success: function (data) {
-                        console.log('Approval success:', data);
-                        if (data.status === 'success' && dataTable) {
-                            console.log('Reloading DataTable...');
-                            dataTable.ajax.reload();
-                        } else {
-                            console.error('Error approving applicant.');
+            
+                if (approvalReason) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'approve_applicant/' + applicantId + '/',
+                        data: {
+                            csrfmiddlewaretoken: csrf_token,
+                            'approval_reason': approvalReason,
+                        },
+                        success: function (data) {
+                            console.log('Approval success:', data);
+                            if (data.status === 'success' && dataTable) {
+                                console.log('Reloading DataTable...');
+                                location.reload();
+                            } else {
+                                console.error('Error approving applicant.');
+                            }
+                        },
+                        error: function () {
+                            console.error('Error approving applicant. Please try again.');
                         }
-                    },
-                    error: function () {
-                        console.error('Error approving applicant. Please try again.');
-                    }
-                });
+                    });
+                } else {
+                    alert('Approval reason cannot be empty.');
+                }
             }
-    
+            
             function handleRejection(applicantId, rejectionReason) {
-                var csrf_token = $("[name=csrfmiddlewaretoken]").val();
     
                 if (rejectionReason) {
                     $.ajax({
                         type: 'POST',
-                        url: '/reject_applicant/' + applicantId + '/',
+                        url: 'reject_applicant/' + applicantId + '/',
                         data: {
-                            csrfmiddlewaretoken: csrf_token,
+                            csrfmiddlewaretoken: '{% csrf_token %}',
                             'rejection_reason': rejectionReason
                         },
                         success: function (data) {
                             console.log('Rejection success:', data);
                             if (data.status === 'success' && dataTable) {
                                 console.log('Reloading DataTable...');
-                                dataTable.ajax.reload();
+                                location.reload();
                             } else {
                                 console.error('Error: Unexpected response');
                                 alert('Error: Unexpected response');

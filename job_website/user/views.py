@@ -1,7 +1,13 @@
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User as AuthUser
+from django.contrib.auth.hashers import make_password, check_password
+from .models import User, Employee
 from django.shortcuts import render, get_object_or_404
 from employer.models import Job
 from django.views import View
 from django.db.models import Q
+# Create your views here.
 
 
 def homepage(request):
