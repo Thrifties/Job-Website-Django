@@ -10,7 +10,6 @@ def user_register(request):
     }
     return render(request, template, context)
 
-
 def add_user(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -35,7 +34,6 @@ def user_login(request):
     }
     return render(request, template, context)
 
-
 def user_toLogin(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -48,10 +46,21 @@ def user_toLogin(request):
             return redirect('user_login')
     else:
         return redirect('user_login')
+    
+def user_toLogout(request):
+    template = 'user_login.html'
+    return render(request, template)
 
 def homepage(request):
     template = 'user_homepage.html'
     context = {
         'title' : 'Homepage',
+    }
+    return render(request, template, context)
+
+def user_application_process(request):
+    template = 'user_application_process.html'
+    context = {
+        'title' : 'User Application Process',
     }
     return render(request, template, context)
