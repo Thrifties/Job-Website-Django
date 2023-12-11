@@ -47,18 +47,50 @@ def company_profile(request, id):
     return render(request, 'company_profile.html', context)
 
 
+# def add_user(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+
+#         auth_user = AuthUser.objects.create_user(
+#             username=email, email=email, password=password)
+#         auth_user.save()
+
+#         Employee.objects.create(
+#             email=email,
+#             password=make_password(password),
+#         )
+
+#         return redirect('user_login')
+#     else:
+#         return redirect('user_register')
+
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import redirect
+
 def add_user(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
+        # Creating an AuthUser instance
         auth_user = AuthUser.objects.create_user(
             username=email, email=email, password=password)
         auth_user.save()
 
+        # Creating an Employee instance with default values
         Employee.objects.create(
             email=email,
             password=make_password(password),
+            first_name='user',  # Default value for first_name
+            middle_name='',      # Blank value for middle_name
+            birthdate=None,      # Blank value for birthdate
+            civil_status='',     # Blank value for civil_status
+            contact_number='',   # Blank value for contact_number
+            permanent_address='',  # Blank value for permanent_address
+            region_of_origin='',   # Blank value for region_of_origin
+            province='',           # Blank value for province
+            location_of_residence='',  # Blank value for location_of_residence
         )
 
         return redirect('user_login')
