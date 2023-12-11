@@ -20,6 +20,7 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.http import HttpResponse
+from django.utils import timezone
 
 
 # Create your views here.
@@ -48,12 +49,14 @@ def to_login(request):
 
 
 def dashboard(request):
-    
+
     company = request.session.get('company')
 
     open_jobs_count = Job.objects.filter(status=JobStatus.OPEN).count()
-    pending_applicants_count = Applicant.objects.filter(status='Pending').count()
-    approved_applicants_count = Applicant.objects.filter(status='Accepted').count()
+    pending_applicants_count = Applicant.objects.filter(
+        status='Pending').count()
+    approved_applicants_count = Applicant.objects.filter(
+        status='Accepted').count()
 
     template = 'dashboard.html'
     context = {
@@ -65,6 +68,7 @@ def dashboard(request):
     }
     return render(request, template, context)
 
+
 def generate_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="applicant.csv"'
@@ -72,12 +76,14 @@ def generate_csv(request):
     writer = csv.writer(response)
     writer.writerow(['Name', 'Email', 'Phone', 'Address', 'Resume', 'Status'])
 
-    applicants = Applicant.objects.all().values_list('name', 'email', 'phone', 'address', 'resume', 'status')
+    applicants = Applicant.objects.all().values_list(
+        'name', 'email', 'phone', 'address', 'resume', 'status')
     for applicant in applicants:
         writer.writerow(applicant)
 
     return response
-    
+
+
 def register(request):
     template = 'register.html'
     context = {
@@ -242,6 +248,7 @@ def post_job(request):
 
 def add_job(request):
     if request.method == 'POST':
+        date_posted = timezone.now()
         company = request.POST.get('company')
         title = request.POST.get('title')
         number_of_people = request.POST.get('number_of_people')
@@ -255,6 +262,7 @@ def add_job(request):
 
         # Create a new Job instance and save to the database
         Job.objects.create(
+            date_posted=date_posted,
             company=company,
             title=title,
             number_of_people=number_of_people,
@@ -574,7 +582,9 @@ def view_resume(request, resume_filename):
 @require_POST
 def approve_applicant(request, applicant_id):
     applicant = get_object_or_404(Applicant, id=applicant_id)
-    # Perform approval logic here
+    approval_reason = request.POST.get('approval_reason', '')
+    applicant.rejection_reason = None
+    applicant.approval_reason = approval_reason
     applicant.status = 'Approved'
     applicant.save()
     return JsonResponse({'status': 'success'})
@@ -584,7 +594,7 @@ def approve_applicant(request, applicant_id):
 def reject_applicant(request, applicant_id):
     applicant = get_object_or_404(Applicant, id=applicant_id)
     rejection_reason = request.POST.get('rejection_reason', '')
-    
+    applicant.approval_reason    = None
     applicant.status = 'Rejected'
     applicant.rejection_reason = rejection_reason
     applicant.save()
