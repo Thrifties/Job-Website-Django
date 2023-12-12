@@ -1,4 +1,9 @@
 
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.hashers import make_password, check_password
@@ -34,7 +39,6 @@ def company(request):
     # Render the template with the provided context
     return render(request, 'company.html', context)
 
-from django.shortcuts import render
 
 def company_profile(request, id):
     # Your view logic here...
@@ -46,8 +50,6 @@ def company_profile(request, id):
     }
 
     return render(request, 'company_profile.html', context)
-
-<<<<<<< HEAD
 
 # def add_user(request):
 #     if request.method == 'POST':
@@ -67,11 +69,7 @@ def company_profile(request, id):
 #     else:
 #         return redirect('user_register')
 
-from django.contrib.auth.hashers import make_password
-from django.shortcuts import redirect
 
-=======
->>>>>>> 30158fbd6f0953d6f3e8cf729e0ee432f86b1283
 def add_user(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -159,14 +157,15 @@ def job_detail(request, job_id):
 def user_application_process(request, id):
     template = 'user_application_process.html'
     job = get_object_or_404(Job, id=id)
-    employee = Employee.objects.get(email='kenshin.sayson@gmail.com')
+    employee = Employee.objects.get(email='paulosregalado@gmail.com')
     context = {
         'title': f'Apply for {job.title}',
         'job': job,
         'employee': employee,
     }
     return render(request, template, context)
-        
+
+
 def user_apply_job(request):
     if request.method == 'POST':
         job_title = request.POST.get('job_title')
@@ -176,7 +175,7 @@ def user_apply_job(request):
         employee_phone = request.POST.get('employee_phone_number')
         employee_address = request.POST.get('employee_address')
         employee_cv = request.FILES.get('cvUpload')
-        
+
         Applicant.objects.create(
             job=job_title,
             company=job_company,
@@ -186,24 +185,19 @@ def user_apply_job(request):
             address=employee_address,
             resume=employee_cv,
         )
-        
+
         return redirect('homepage')
     else:
         return redirect('homepage')
-    
-    
-        
-        
-        
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import Http404
+
 
 def user_company_profile(request, id):
     try:
         company = get_object_or_404(Company, id=id)
     except Http404:
         # Handle the case where no matching company is found
-        return redirect('company')  # Redirect to the company list or another page
+        # Redirect to the company list or another page
+        return redirect('company')
 
     context = {
         'title': 'User Company Profile',
