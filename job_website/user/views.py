@@ -1,4 +1,9 @@
 
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.hashers import make_password, check_password
@@ -36,7 +41,6 @@ def company(request):
     # Render the template with the provided context
     return render(request, 'company.html', context)
 
-from django.shortcuts import render
 
 def company_profile(request, id):
     # Your view logic here...
@@ -49,18 +53,48 @@ def company_profile(request, id):
 
     return render(request, 'company_profile.html', context)
 
+# def add_user(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+
+#         auth_user = AuthUser.objects.create_user(
+#             username=email, email=email, password=password)
+#         auth_user.save()
+
+#         Employee.objects.create(
+#             email=email,
+#             password=make_password(password),
+#         )
+
+#         return redirect('user_login')
+#     else:
+#         return redirect('user_register')
+
+
 def add_user(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
+        # Creating an AuthUser instance
         auth_user = AuthUser.objects.create_user(
             username=email, email=email, password=password)
         auth_user.save()
 
+        # Creating an Employee instance with default values
         Employee.objects.create(
             email=email,
             password=make_password(password),
+            first_name='user',  # Default value for first_name
+            middle_name='',      # Blank value for middle_name
+            birthdate=None,      # Blank value for birthdate
+            civil_status='',     # Blank value for civil_status
+            contact_number='',   # Blank value for contact_number
+            permanent_address='',  # Blank value for permanent_address
+            region_of_origin='',   # Blank value for region_of_origin
+            province='',           # Blank value for province
+            location_of_residence='',  # Blank value for location_of_residence
         )
 
         return redirect('user_login')
@@ -151,7 +185,8 @@ def user_application_process(request, id):
         'employee': employee,
     }
     return render(request, template, context)
-        
+
+
 def user_apply_job(request):
     if request.method == 'POST':
         job_title = request.POST.get('job_title')
@@ -161,7 +196,7 @@ def user_apply_job(request):
         employee_phone = request.POST.get('employee_phone_number')
         employee_address = request.POST.get('employee_address')
         employee_cv = request.FILES.get('cvUpload')
-        
+
         Applicant.objects.create(
             job=job_title,
             company=job_company,
@@ -171,24 +206,19 @@ def user_apply_job(request):
             address=employee_address,
             resume=employee_cv,
         )
-        
+
         return redirect('homepage')
     else:
         return redirect('homepage')
-    
-    
-        
-        
-        
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import Http404
+
 
 def user_company_profile(request, id):
     try:
         company = get_object_or_404(Company, id=id)
     except Http404:
         # Handle the case where no matching company is found
-        return redirect('company')  # Redirect to the company list or another page
+        # Redirect to the company list or another page
+        return redirect('company')
 
     context = {
         'title': 'User Company Profile',
