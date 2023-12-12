@@ -15,6 +15,9 @@ urlpatterns = [
     path('user_toLogout', views.user_toLogout, name='user_toLogout'),
     path('user_application_process/<int:id>/', views.user_application_process,name='user_application_process'),
     path('user_apply_job', views.user_apply_job, name='user_apply_job'),
+    path('graduate_tracer', views.graduate_tracer, name='graduate_tracer'),
+    path('add_tracer', views.add_tracer, name='add_tracer'),
+    
 ]
 
 
