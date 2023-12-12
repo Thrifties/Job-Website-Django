@@ -8,6 +8,10 @@ from .views import update_employer_account
 from .views import delete_employer_account
 
 urlpatterns = [
+    path('admin_register', views.admin_register, name='admin_register'),
+    path('register/', views.register_admin, name='register_admin'),
+    path('admin_login', views.admin_login, name='admin_login'),
+    path('admin_toLogin', views.admin_toLogin, name='admin_toLogin'),
     path('admin_list_of_jobs', views.admin_list_of_jobs, name='admin_list_of_jobs'),
     path('dashboard_admin', views.dashboard_admin, name="dashboard_admin"),
     path('approve_job/<int:job_id>/', views.approve_job, name='approve_job'),
