@@ -4,8 +4,64 @@ from django.views import View
 from django.shortcuts import render, redirect
 from employer.models import Job
 from django.views.decorators.csrf import csrf_exempt
+from .models import Admin_Account
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password, check_password
 
 # Create your views here.
+
+
+def admin_register(request):
+    template = 'admin_register.html'
+    context = {
+        'title': 'Admin Register',
+    }
+    return render(request, template, context)
+
+
+def register_admin(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Hash the password before saving it
+        hashed_password = make_password(password)
+
+        # Create a new admin_account instance
+        admin = Admin_Account(email=email, password=hashed_password)
+
+        # Save the instance to the database
+        admin.save()
+
+        # You may want to add additional logic, such as redirecting to a login page
+
+    # Adjust the template path accordingly
+    return render(request, 'admin_login.html')
+
+
+def admin_login(request):
+    template = 'admin_login.html'
+    context = {
+        'title': 'Admin Login',
+    }
+    return render(request, template, context)
+
+
+def admin_toLogin(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user_admin = Admin_Account.objects.get(email=email)
+        if check_password(password, user_admin.password):
+            request.session['email'] = user_admin.email
+            return redirect('dashboard_admin')
+        else:
+            return redirect('admin_login')
+    else:
+        return redirect('admin_login')
 
 
 def dashboard_admin(request):
