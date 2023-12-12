@@ -22,6 +22,29 @@ from django.views import View
 from django.db.models import Q
 # Create your views here.
 
+def user_toLogin(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        try:
+            user = Employee.objects.get(email=email)
+        except ObjectDoesNotExist:
+            # Handle case where user does not exist
+            return redirect('user_login')
+
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+            request.session['id'] = user.id
+            request.session['email'] = email
+            return redirect('profile')
+        else:
+            # Handle case where password is incorrect
+            return redirect('user_login')
+    else:
+        return redirect('user_login')
+
 
 def user_register(request):
     template = 'user_register.html'
@@ -46,8 +69,8 @@ def company(request):
 
 def profile(request):
     template = 'profile.html'
-    userId = request.session.get('id')
-    employee = Employee.objects.get(id=userId)
+    email = request.session.get('email')
+    employee = Employee.objects.get(email=email)
     context = {
         'title': 'Profile',
         'employee': employee,
@@ -138,31 +161,6 @@ def homepage(request):
     }
     # Render the template with the provided context
     return render(request, 'user_homepage.html', context)
-
-
-def user_toLogin(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        try:
-            user = Employee.objects.get(email=email)
-        except ObjectDoesNotExist:
-            # Handle case where user does not exist
-            return redirect('user_login')
-
-        user = authenticate(request, username=email, password=password)
-        if user is not None:
-            login(request, user)
-            request.session['id'] = user.id
-            request.session['email'] = email
-            return redirect('homepage')
-        else:
-            # Handle case where password is incorrect
-            return redirect('user_login')
-    else:
-        return redirect('user_login')
-
 
 def user_toLogout(request):
     logout(request)

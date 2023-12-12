@@ -16,10 +16,10 @@
                     <a class="nav-link" href="{% url 'homepage' %}">Job Search</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My Profile</a>
+                    <a class="nav-link" href="{% url 'profile' %}">My Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Company Profiles</a>
+                    <a class="nav-link" href="{% url 'company' %}">Company Profiles</a>
                 </li>
             </ul>
 
@@ -27,13 +27,11 @@
                 <li class="nav-item">
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle" id="user_navlink" href="#" data-bs-toggle="dropdown">
-                            Welcome, User
+                            Welcome, {{ employee.first_name }} {{ employee.last_name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="user_navlink">
                             <li><a class="dropdown-item" href="{% url 'user_my_jobs' %}"><i class="bi bi-briefcase-fill me-3"></i>My Jobs</a>
                             </li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-person-fill-gear me-3"></i>Profile
-                                    Settings</a></li>
                             <hr class="dropdown-divider">
                             <li><a class="dropdown-item" href="{% url 'user_toLogout' %}"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
                             </li>

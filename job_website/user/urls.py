@@ -27,8 +27,8 @@ from .views import update_profile_picture
 urlpatterns = [
     path('homepage', views.homepage, name='homepage'),
     path('job_detail/<int:job_id>/', views.job_detail, name='job_detail'),
-    path('company/', company, name='company'),
-    path('profile/', profile, name='profile'),
+    path('company/', views.company, name='company'),
+    path('profile/', views.profile, name='profile'),
     path('get_employee_data/<int:employee_id>/', get_employee_data, name='get_employee_data'),
     path('update_employee_profile/<int:employee_id>/', UpdateEmployeeProfile.as_view(), name='update_employee_profile'),
     path('add_educational_background/', add_educational_background, name='add_educational_background'),
