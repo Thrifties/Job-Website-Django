@@ -57,7 +57,7 @@ def dashboard(request):
     pending_applicants_count = Applicant.objects.filter(
         status='Pending').count()
     approved_applicants_count = Applicant.objects.filter(
-        status='Accepted').count()
+        status='Approved').count()
 
     template = 'dashboard.html'
     context = {

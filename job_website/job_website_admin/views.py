@@ -5,11 +5,13 @@ from django.shortcuts import render, redirect
 from employer.models import Job
 from django.views.decorators.csrf import csrf_exempt
 from .models import Admin_Account
+from employer.models import Job, JobStatus, Details
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
-
+from django.http import HttpResponse
+import csv
 # Create your views here.
 
 
@@ -65,11 +67,37 @@ def admin_toLogin(request):
 
 
 def dashboard_admin(request):
+
+    open_jobs_count = Job.objects.filter(status=JobStatus.OPEN).count()
+    pending_jobs_count = Job.objects.filter(status=JobStatus.PENDING).count()
+    rejected_jobs_count = Job.objects.filter(status=JobStatus.REJECTED).count()
+    account_count = Details.objects.count()
     template = 'dashboard_admin.html'
     context = {
-        'title': 'Admin Dashboard'
+        'title': 'Admin Dashboard',
+        'open_jobs_count': open_jobs_count,
+        'pending_jobs_count': pending_jobs_count,
+        'rejected_jobs_count': rejected_jobs_count,
+        'account_count': account_count
     }
     return render(request, template, context)
+
+
+def generate_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="List of Approve Jobs.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Company', 'Job Title', 'Number of Employee',
+                    'Salary', 'Category', 'Location'])
+
+    open_jobs = Job.objects.filter(status=JobStatus.OPEN).values_list(
+        'company', 'title', 'number_of_people', 'salary', 'category', 'location')
+
+    for job in open_jobs:
+        writer.writerow(job)
+
+    return response
 
 
 def manage_account(request):

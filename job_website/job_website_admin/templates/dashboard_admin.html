@@ -38,16 +38,16 @@
             <div class="row">
 
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card border-left-success shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Posted Jobs</div>
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Approve Jobs</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ open_jobs_count }}</div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="bi bi-briefcase-fill fa-2x text-gray-300"></i>
+                                    <i class="bi bi-person-fill-check fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
@@ -55,13 +55,13 @@
                 </div>
 
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Pending Applicants</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_applicants_count }}
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Pending Jobs</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_jobs_count }}
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -73,28 +73,53 @@
                 </div>
 
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card border-left-danger shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                        Approved Applicants
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        Rejected Jobs
                                     </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                {{ approved_applicants_count }}
+                                                {{ rejected_jobs_count }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="bi bi-person-fill-check fa-2x text-gray-300"></i>
+                                    <i class="bi bi-person-fill-x fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Accounts
+                                    </div>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                {{account_count}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-person-lines-fill fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
             <!-- /.container-fluid -->

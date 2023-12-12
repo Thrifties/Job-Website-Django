@@ -1,12 +1,12 @@
 #banner {
     background: url('/static/resources/banner.png'); 
     min-height: 100vh;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 .banner {
-    /* background: linear-gradient(0deg, rgba(18, 81, 40, 0.7), rgba(18, 81, 40, 0.7)), url('./img/BSU FRONT 2.jpg'); */
-    background: url('/static/resources/banner.png');
+    background: linear-gradient(0deg, rgba(18, 81, 40, 0.7), rgba(18, 81, 40, 0.7)), url('./img/BSU FRONT 2.jpg'); */
+    /* background: url('/static/resources/banner.png'); */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -38,17 +38,17 @@ body {
 }
 
 .text-purple {
-    color: #8834FC;
+    color: #8834FC !important;
 }
 
 .btn-purple {
-    background-color: #8834FC;
-    color: #FFFFFF;
+    background-color: #8834FC !important;
+    color: #FFFFFF !important;
 }
 
 .btn-purple:hover {
-    background-color: #712cd2;
-    color: #FFFFFF;
+    background-color: #712cd2 !important;
+    color: #FFFFFF !important;
 }
 
 
@@ -83,6 +83,16 @@ body {
 
 .input-group .btn-purple:hover {
     background-color: #712cd2;
+    color: #FFFFFF;
+}
+
+.btn-purple {
+    background-color: #8834FC !important;
+    color: #FFFFFF;
+}
+
+.btn-purple:hover {
+    background-color: #712cd2 !important;
     color: #FFFFFF;
 }
 
