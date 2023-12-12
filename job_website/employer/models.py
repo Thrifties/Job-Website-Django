@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+
 
 # Create your models here.
 
@@ -26,15 +28,16 @@ class JobStatus(models.TextChoices):
 
 
 class Job(models.Model):
+    date_posted = models.DateField(default=timezone.now)
     company = models.CharField(max_length=255, default="")
     title = models.CharField(max_length=255, default="")
     number_of_people = models.IntegerField(default=0)
     salary = models.CharField(max_length=255, default="")
     category = models.CharField(max_length=255, default="")
     location = models.CharField(max_length=255, default="")
-    description = models.TextField(max_length=255, default="")
+    description = models.TextField(max_length=500, default="")
     date = models.DateField(default=None)  # Or set a default date if needed
-    requirements = models.CharField(max_length=255, default="")
+    requirements = models.TextField(max_length=500, default="")
     status = models.CharField(
         max_length=10,
         choices=JobStatus.choices,
@@ -49,7 +52,7 @@ class Applicant(models.Model):
     email = models.EmailField(max_length=50, default="")
     phone = models.CharField(max_length=11, default="")
     address = models.CharField(max_length=100, default="")
-    resume = models.FileField(upload_to='employer/applicants/resume/')
+    resume = models.FileField(upload_to='employer/applicants/resume')
     company = models.CharField(max_length=50, default="")
     job = models.CharField(max_length=50, default=" ")
     application_status = [

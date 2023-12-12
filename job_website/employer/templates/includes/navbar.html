@@ -15,29 +15,29 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
+    <li class="nav-item  {% if request.path == '/employer/dashboard' %}active{% endif %}">
         <a class="nav-link" href="{% url 'dashboard' %}">
             <i class="bi bi-grid-1x2-fill"></i>
             <span>Dashboard</span></a>
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'post_job'%}">
-            <i class="bi bi-briefcase-fill"></i>
+    <li class="nav-item {% if request.path == '/employer/post_job' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'post_job' %}">
+            <i class="fas fa-fw fa-briefcase"></i>
             <span>Jobs</span>
         </a>
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
+    <li class="nav-item {% if request.path == '/employer/applicants/' %}active{% endif %} ">
         <a class="nav-link" href="{% url 'applicant_list' %}">
             <i class="bi bi-people-fill"></i>
             <span>Applicants</span>
         </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item {% if request.path == 'employer/company_profile' %}active{% endif %}">
         <a class="nav-link" href="{% url 'company_profile' %}">
             <i class="bi bi-person-workspace"></i>
             <span>Company Profile</span>
@@ -215,8 +215,8 @@
 
                 <!-- Nav Item - User Information -->
                 <li class="nav-item dropdown no-arrow">
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                             Welcome,
                             {{request.session.first_name}} {{request.session.last_name}}
@@ -231,7 +231,8 @@
                             Profile
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'logout' %}" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <a class="dropdown-item" href="{% url 'logout' %}" data-bs-toggle="modal"
+                            data-bs-target="#logoutModal">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Logout
                         </a>
@@ -250,13 +251,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
                         <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
                     </div>
                 </div>

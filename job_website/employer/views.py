@@ -20,6 +20,8 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.http import HttpResponse
+from django.utils import timezone
+from user.models import MyJobs
 
 
 # Create your views here.
@@ -48,12 +50,14 @@ def to_login(request):
 
 
 def dashboard(request):
-    
+
     company = request.session.get('company')
 
     open_jobs_count = Job.objects.filter(status=JobStatus.OPEN).count()
-    pending_applicants_count = Applicant.objects.filter(status='Pending').count()
-    approved_applicants_count = Applicant.objects.filter(status='Accepted').count()
+    pending_applicants_count = Applicant.objects.filter(
+        status='Pending').count()
+    approved_applicants_count = Applicant.objects.filter(
+        status='Accepted').count()
 
     template = 'dashboard.html'
     context = {
@@ -65,6 +69,7 @@ def dashboard(request):
     }
     return render(request, template, context)
 
+
 def generate_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="applicant.csv"'
@@ -72,12 +77,14 @@ def generate_csv(request):
     writer = csv.writer(response)
     writer.writerow(['Name', 'Email', 'Phone', 'Address', 'Resume', 'Status'])
 
-    applicants = Applicant.objects.all().values_list('name', 'email', 'phone', 'address', 'resume', 'status')
+    applicants = Applicant.objects.all().values_list(
+        'name', 'email', 'phone', 'address', 'resume', 'status')
     for applicant in applicants:
         writer.writerow(applicant)
 
     return response
-    
+
+
 def register(request):
     template = 'register.html'
     context = {
@@ -162,7 +169,7 @@ def add_employer(request):
             'employerID': new_company.employerID,
         }
 
-        return redirect('dashboard')
+        return redirect('login')
 
     context = {
         'title': 'Register Page',
@@ -242,6 +249,7 @@ def post_job(request):
 
 def add_job(request):
     if request.method == 'POST':
+        date_posted = timezone.now()
         company = request.POST.get('company')
         title = request.POST.get('title')
         number_of_people = request.POST.get('number_of_people')
@@ -255,6 +263,7 @@ def add_job(request):
 
         # Create a new Job instance and save to the database
         Job.objects.create(
+            date_posted=date_posted,
             company=company,
             title=title,
             number_of_people=number_of_people,
@@ -521,6 +530,7 @@ def update_profile_picture(request):
     return JsonResponse({'success': False, 'message': 'Invalid request'})
     return render(request, 'company_profile.html', context)
 
+
 @csrf_exempt
 def update_cover_photo(request):
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -554,6 +564,7 @@ def update_cover_photo(request):
     return JsonResponse({'success': False, 'message': 'Invalid request'})
     return render(request, 'company_profile.html', context)
 
+
 def applicant_list(request):
 
     applicants = Applicant.objects.all()
@@ -564,11 +575,13 @@ def applicant_list(request):
     }
     return render(request, template, context)
 
+
 def view_resume(request, resume_filename):
 
     applicant = get_object_or_404(Applicant, resume=resume_filename)
     file_path = applicant.resume.path
     return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+
 
 @csrf_exempt
 @require_POST
@@ -581,12 +594,13 @@ def approve_applicant(request, applicant_id):
     applicant.save()
     return JsonResponse({'status': 'success'})
 
+
 @csrf_exempt
 @require_POST
 def reject_applicant(request, applicant_id):
     applicant = get_object_or_404(Applicant, id=applicant_id)
     rejection_reason = request.POST.get('rejection_reason', '')
-    applicant.approval_reason    = None
+    applicant.approval_reason = None
     applicant.status = 'Rejected'
     applicant.rejection_reason = rejection_reason
     applicant.save()

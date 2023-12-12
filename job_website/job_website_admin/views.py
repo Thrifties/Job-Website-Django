@@ -1,11 +1,76 @@
+from django.http import JsonResponse
+from employer.models import Details
+from django.views import View
 from django.shortcuts import render, redirect
 from employer.models import Job
 from django.views.decorators.csrf import csrf_exempt
+from .models import Admin_Account
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password, check_password
 
 # Create your views here.
+
+
+def admin_register(request):
+    template = 'admin_register.html'
+    context = {
+        'title': 'Admin Register',
+    }
+    return render(request, template, context)
+
+
+def register_admin(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Hash the password before saving it
+        hashed_password = make_password(password)
+
+        # Create a new admin_account instance
+        admin = Admin_Account(email=email, password=hashed_password)
+
+        # Save the instance to the database
+        admin.save()
+
+        # You may want to add additional logic, such as redirecting to a login page
+
+    # Adjust the template path accordingly
+    return render(request, 'admin_login.html')
+
+
+def admin_login(request):
+    template = 'admin_login.html'
+    context = {
+        'title': 'Admin Login',
+    }
+    return render(request, template, context)
+
+
+def admin_toLogin(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user_admin = Admin_Account.objects.get(email=email)
+        if check_password(password, user_admin.password):
+            request.session['email'] = user_admin.email
+            return redirect('dashboard_admin')
+        else:
+            return redirect('admin_login')
+    else:
+        return redirect('admin_login')
+
+
 def dashboard_admin(request):
     template = 'dashboard_admin.html'
-    return render(request, template)
+    context = {
+        'title': 'Admin Dashboard'
+    }
+    return render(request, template, context)
+
 
 def manage_account(request):
 
@@ -14,6 +79,7 @@ def manage_account(request):
         'title': 'Manage Account'
     }
     return render(request, template, context)
+
 
 def admin_list_of_jobs(request):
     template = 'admin_list_of_jobs.html'
@@ -61,13 +127,11 @@ def delete_job(request, job_id):
     # Redirect back to the rejected jobs page
     return redirect('admin_list_of_jobs')
 
+
 def index(request):
     template = 'index.html'
     return render(request, template)
 
-from django.http import JsonResponse
-from django.views import View
-from employer.models import Details
 
 class GetEmployerDataView(View):
     def get(self, request, *args, **kwargs):
@@ -82,7 +146,7 @@ class GetEmployerDataView(View):
             return JsonResponse({'success': True, 'data': employer_data_list})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
-        
+
 
 class GetSpecificEmployerDataView(View):
     def get(self, request, employer_id, *args, **kwargs):
@@ -101,10 +165,7 @@ class GetSpecificEmployerDataView(View):
             return JsonResponse({'success': True, 'data': employer_data_list})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
-        
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example; consider using csrf protection in production
 def update_employer_account(request, employer_id):
@@ -132,7 +193,6 @@ def update_employer_account(request, employer_id):
 
     # Return an error response if the request method is not POST
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
-
 
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example; consider using csrf protection in production

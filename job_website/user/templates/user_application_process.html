@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{{title}}</title>
+        <!-- Custom fonts for this template -->
+        {% include 'includes/user_cdn.html' %}
+
+        <link rel="stylesheet" href="{% static 'css/user_application_process.css' %}">
+
+        <!-- Custom styles for this template -->
+
+    </head>
+
+    <body id="page-top">
+        {% include 'includes/user_navbar.html' %}
+        <div id="job_detail" class="banner d-flex justify-content-center align-items-center">
+        </div>
+
+        <div class="container row mx-auto p-5">
+            <div class="row">
+                <h5 class="fw-normal">Applying for</h5>
+                <h1><strong>{{ job.title }}</strong></h1>
+                <h5 class="fw-normal">{{ job.company }}</h5>
+            </div>
+
+            <div class="row mt-3">
+                <h5><span>Please review your application</span></h5>
+                <div class="row mt-3">
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <h6>Contact Information</h6>
+                        </div>
+                        <div class="col">
+                            <strong><span class="accent">Edit</span></strong>
+                        </div>
+                    </div>
+                    <h3><strong>{{ employee.first_name }} {{ employee.last_name }}</strong></h3>
+                    <label for="email"><small>Email Address</small></label>
+                    <p class="email"><strong>{{ employee.email }}</strong></p>
+                    <label for="phone"><small>Phone Number</small></label>
+                    <p class="phone"><strong>{{ employee.contact_number }}</strong></p>
+                    <label for="address"><small>Address</small></le>
+                    <p class="address"><strong>{{ employee.permanent_address }}</strong></p>
+                </div>
+            </div>
+
+            <form action="{% url 'user_apply_job' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="job_title" value="{{ job.title }}">
+                <input type="hidden" name="job_company" value="{{ job.company }}">
+                <input type="hidden" name="employee_name" value="{{ employee.first_name }} {{ employee.last_name }}">
+                <input type="hidden" name="employee_email" value="{{ employee.email }}">
+                <input type="hidden" name="employee_phone_number" value="{{ employee.contact_number }}">
+                <input type="hidden" name="employee_address" value="{{ employee.permanent_address }}">
+            
+    
+            <div class="row mt-3">
+                <h5><span>Curriculum Vitae</span></h5>
+                <div class="row">
+                    <label for="formFile" class="form-label">Upload your CV<span class="text-danger">*</span></label>
+                    <div class="input-group mb-3 w-50">
+                        <input type="file" class="form-control" id="cvUpload" name="cvUpload">
+                        <label class="input-group-text" for="cvUpload">Upload</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3 w-50">
+                <p><strong>Note:</strong> When you apply for a job, your Acquirer Profile and any verified credentials are part of your application.</p>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary w-25">Submit Application</button>
+            </div>
+            </form>
+        </div>
+        {% include 'includes/user_js_cdn.html' %}
+    </body>
+
+</html>

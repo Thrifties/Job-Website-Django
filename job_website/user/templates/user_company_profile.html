@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="{% static 'css/company.css' %}">
+
+    <title>{{title}}</title>
+    <!-- Custom fonts for this template -->
+    {% include 'includes/user_cdn.html' %}
+
+    <!-- Custom styles for this template -->
+
+</head>
+
+<body id="page-top">
+    {% include 'includes/user_navbar.html' %}
+    <div id="banner" style="min-height: 200px;" class="d-flex justify-content-center align-items-center">
+        <div>
+            <div class="w-100 text-white d-inline">
+                <h3 class="mb-2 fw-bold">Find great places to work</h3>
+            </div>
+            <div style="max-width: 350px;" class="input-group mb-3 w-100">
+                <input type="text" class="form-control" placeholder="Search companies" aria-describedby="button-addon2">
+                <button class="btn btn-purple" type="button" id=""><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid p-0">
+        <div>
+            <div class="bg-white overflow-hidden">
+                <div id="display-cover" style="background-image: url('{% if company.cover_photo_path and company.cover_photo_path != '-' %}{% static 'resources/cover_photo/' %}{{ company.cover_photo_path }}{% else %}{% static 'resources/default_cover.png' %}{% endif %}');" class="px-4 pt-0 pb-4 cover">
+                    <div class="media align-items-end profile-head d-flex">
+                        <div class="profile mr-3">
+                            {% if company.profile_picture_path and company.profile_picture_path != "-" %}
+                            <img style="width: 130px; height: 130px;"
+                                src="{% static 'resources/profile_picture/' %}{{ company.profile_picture_path }}"
+                                class="rounded mb-2 img-thumbnail" width="130">
+                            {% else %}
+                            <img style="width: 130px; height: 130px;" src="{% static 'resources/default_profile.png' %}"
+                                class="rounded mb-2 img-thumbnail" width="130">
+                            {% endif %}
+    
+                            <!-- <img style="width: 130px; height: 130px;" src="./static/resources/default_cover.png"
+                                        id="display-profile-picture" alt="..." width="130"
+                                        class="rounded mb-2 img-thumbnail"> -->
+                        </div>
+                        <div class="media-body mb-5 text-white">
+                            <h2 class="mt-0 mb-3 ms-2 fw-bold text-purple" id="profile-company-name">{{ company.company_name }}
+                            </h2>
+                        </div>
+                    </div>
+    
+                </div>
+                <div style="height: 100px;" class="bg-light p-4 d-flex justify-content-end text-center">
+                </div>
+                <!-- ABOUT -->
+                <div class="p-5">
+                    <ul class="nav nav-underline mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link  active" id="pills-home-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-about" type="button" role="tab" aria-controls="pills-home"
+                                aria-selected="true">Home</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-jobs" type="button" role="tab" aria-controls="pills-profile"
+                                aria-selected="false">Profile</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-about" role="tabpanel"
+                            aria-labelledby="pills-about-tab" tabindex="0">
+                            <ul class="list-unstyled text-purple">
+                                <li class="mb-2"><i class="bi bi-envelope me-2"></i><span class="text-black fw-bold"
+                                        id="profile-email">{{ company.company_email }}</span>
+                                </li>
+                                <li class="mb-2"><i class="bi bi-geo-alt me-2"></i></i><span class="text-black fw-bold"
+                                        id="profile-location">{{ company.location }}</span></li>
+                                <li class="mb-2"><i class="bi bi-link-45deg me-2"></i><span class="text-black fw-bold"
+                                        id="profile-website">{{ company.website }}</span>
+                                </li>
+                                <li class="mb-2"><i class="bi bi-card-checklist me-2"></i><span class="text-black fw-bold"
+                                        id="profile-scope">{{ company.scope }}</span></li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="pills-jobs" role="tabpanel" aria-labelledby="pills-jobs-tab"
+                            tabindex="0">...</div>
+                    </div>
+                </div>
+                <!-- ABOUT -->
+            </div>
+        <!-- COMPANY OVERVIEW -->
+        <div class="px-4 mb-3">
+            <h4 class="text-purple fw-bold">Company Overview</h4>
+            <div class="border border-light-subtle rounded p-2">
+                <p id="profile-overview">{{ company.company_overview }}</p>
+            </div>
+        </div>
+
+        
+        <!-- COMPANY OVERVIEW -->
+        <!-- COMPANY OVERVIEW -->
+        <div class="px-4 mb-3">
+            <h4 class="text-purple fw-bold">Why Join us?</h4>
+            <div class="border border-light-subtle rounded p-2">
+                <p id="profile-join-us">{{ company.join_us }}</p>
+            </div>
+        </div>
+        <!-- COMPANY OVERVIEW -->
+
+        </div>
+    </div>
+
+    {% include 'includes/user_js_cdn.html' %}
+</body>
+
+</html>
