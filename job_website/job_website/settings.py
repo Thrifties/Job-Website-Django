@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'employer.apps.EmployerConfig',
-    'job_website_admin.apps.JobWebsiteAdminConfig'
+    'job_website_admin.apps.JobWebsiteAdminConfig',
+    'user.apps.UserConfig'
 ]
 
 MIDDLEWARE = [
@@ -139,4 +140,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Media files (uploads)
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = 'media/'
+MEDIA_URL = 'employer/media/'
