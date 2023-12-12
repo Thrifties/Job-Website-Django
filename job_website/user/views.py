@@ -8,6 +8,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User, Employee
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.shortcuts import render, get_object_or_404
 from employer.models import Job
@@ -129,17 +131,25 @@ def user_toLogin(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = Employee.objects.get(email=email)
-        if check_password(password, user.password):
-            request.session['email'] = user.email
+        try:
+            user = Employee.objects.get(email=email)
+        except ObjectDoesNotExist:
+            # Handle case where user does not exist
+            return redirect('user_login')
+
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
             return redirect('homepage')
         else:
+            # Handle case where password is incorrect
             return redirect('user_login')
     else:
         return redirect('user_login')
 
 
 def user_toLogout(request):
+    logout(request)
     template = 'user_login.html'
     return render(request, template)
 
@@ -156,8 +166,19 @@ def job_detail(request, job_id):
 
 def user_application_process(request, id):
     template = 'user_application_process.html'
+    email = request.session.get('email')
+
+    if not email:
+        return redirect('user_login')
+
     job = get_object_or_404(Job, id=id)
-    employee = Employee.objects.get(email='paulosregalado@gmail.com')
+
+    try:
+        employee = Employee.objects.get(email=email)
+    except ObjectDoesNotExist:
+        # Handle case where employee does not exist
+        return redirect('user_login')
+
     context = {
         'title': f'Apply for {job.title}',
         'job': job,
