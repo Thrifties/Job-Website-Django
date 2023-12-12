@@ -15,6 +15,5 @@ urlpatterns = [
     path('user_toLogout', views.user_toLogout, name='user_toLogout'),
     path('user_application_process/<int:id>/', views.user_application_process,name='user_application_process'),
     path('user_apply_job', views.user_apply_job, name='user_apply_job'),
+    path('user_my_jobs', views.user_my_jobs, name='user_my_jobs'),
 ]
-
-

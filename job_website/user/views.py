@@ -227,17 +227,17 @@ def user_company_profile(request, id):
 
     return render(request, 'user_company_profile.html', context)
 
-def userMyJobs(request):
-    # Fetch all jobs from the Job model
-    myJobs = Applicant.objects.get(email=request.session.get('email'))
-    template = 'user_application_process.html'
-    # Search functionality
-    search_query = request.GET.get('search', '')
-    if search_query:
-        myJobs = myJobs.filter(Q(title__icontains=search_query))
+
+def user_my_jobs(request):
+    # Fetch all applicants from the Applicant model
+    applicants = Applicant.objects.filter(email=request.session.get('email'))
+    # Create a list of tuples where each tuple contains an Applicant object and the corresponding Job object
+    applicant_jobs = [(applicant, Job.objects.get(title=applicant.job))
+                      for applicant in applicants]
+    template = 'user_my_jobs.html'
     context = {
         'title': 'My Jobs',
-        'myJobs': myJobs,
+        'applicant_jobs': applicant_jobs,
     }
     # Render the template with the provided context
     return render(request, template, context)

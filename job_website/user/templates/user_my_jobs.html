@@ -12,33 +12,61 @@
         <title>{{title}}</title>
         <!-- Custom fonts for this template -->
         {% include 'includes/user_cdn.html' %}
-        <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+        <link rel="stylesheet" href="{% static 'css/user_my_jobs.css' %}">
 
     </head>
 
     <body id="page-top">
         {% include 'includes/user_navbar.html' %}
         <div class="banner d-flex justify-content-center align-items-center">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-6 col-lg-4 mx-lg-auto">
-                        <div class="mb-3">Search Job</div>
-                        <form class="d-flex flex-row form-inline my-2 my-lg-0" method="get"
-                            action="{% url 'homepage' %}">
-                            <input class="form-control mr-sm-2 me-2" type="search" placeholder="Search" name="search"
-                                value="{{ request.GET.search }}">
-                            <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <div class="container">
-          
+        
+
+        <div class="container mt-3">
+            <h1>
+                <span class="text-accent">My Jobs</span>
+            </h1>
+            {% if applicant_jobs %}
+            <div class="job mt-3 p-4">
+                {% for applicant, job in applicant_jobs %}
+                <div class="mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title mb-0"><span class="text-accent">{{ applicant.job }}</span></h3>
+                            <div class="card-text text-muted mb-2">{{ applicant.company }}</div>
+                            <div class="card-text text-muted mb-2">Company Address: {{ job.location }}</div>
+                            <div class="card-text mb-2">Application Status: <span class="applicantStatus"
+                                    data-status="{{ applicant.status }}">{{ applicant.status }}</span></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center mt-3">
+                <p>No jobs available.</p>
+            </div>
+            {% endif %}
         </div>
 
         {% include 'includes/user_js_cdn.html' %}
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                    let applicationStatus = document.querySelectorAll('.applicantStatus');
+
+                    applicationStatus.forEach((status) => {
+                        let appStatus = status.getAttribute('data-status');
+                        if (appStatus === 'Approved') {
+                            status.style.color = 'green';
+                        } else if (appStatus === 'Rejected') {
+                            status.style.color = 'red';
+                        } else if (appStatus === 'Pending') {
+                            status.style.color = 'orange';
+                        }
+                    });
+                });
+        </script>
     </body>
 
 </html>
