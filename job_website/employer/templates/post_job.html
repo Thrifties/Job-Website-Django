@@ -24,7 +24,7 @@
         /* Center align DataTables header and content */
         #job_list.dataTable thead th,
         #job_list.dataTable tbody td {
-            text-align: center;
+            text-align: left;
         }
 
         /* Ensure proper alignment for DataTables wrapper */
@@ -40,7 +40,7 @@
 
         #job_list_closed.dataTable thead th,
         #job_list_closed.dataTable tbody td {
-            text-align: center;
+            text-align: left;
         }
 
         /* Ensure proper alignment for DataTables wrapper */
@@ -262,8 +262,8 @@
                                     <td>₱ {{ job.salary }}</td>
                                     <td>{{ job.category }}</td>
                                     <td>{{ job.location }}</td>
-                                    <td>{{ job.description|linebreaksbr|safe }}</td>
-                                    <td>{{ job.requirements|linebreaksbr|safe }}</td>
+                                    <td style="min-width: 300px;">{{ job.description|linebreaksbr|safe }}</td>
+                                    <td style="min-width: 300px;">{{ job.requirements|linebreaksbr|safe }}</td>
                                     <td>{{ job.date }}</td>
                                     <td class="text-success font-weight-bold">{{ job.status }}</td>
                                     <td>
@@ -320,8 +320,8 @@
                                     <td>₱ {{ job.salary }}</td>
                                     <td>{{ job.category }}</td>
                                     <td>{{ job.location }}</td>
-                                    <td>{{ job.description|linebreaksbr|safe }}</td>
-                                    <td>{{ job.requirements|linebreaksbr|safe }}</td>
+                                    <td style="min-width: 300px;">{{ job.description|linebreaksbr|safe }}</td>
+                                    <td style="min-width: 300px;">{{ job.requirements|linebreaksbr|safe }}</td>
                                     <td>{{ job.date }}</td>
                                     <td class="text-danger font-weight-bold">{{ job.status }}</td>
                                     <td>

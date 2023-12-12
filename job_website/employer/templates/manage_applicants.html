@@ -54,7 +54,7 @@
                             <td class="detail">{{ applicant.company }}</td>
                             <td class="detail">{{ applicant.job }}</td>
                             <td class="detail status {{ applicant.status|lower }}"> {{ applicant.status }}</td>
-                            <td class="detail"><a href="{{ applicant.resume.url }}" target="_blank">Download Resume</a></td>
+                            <td class="detail"><a href="{{ applicant.resume.url }}" target="_blank" download>Download Resume</a></td>
                             <td class="detail">
                                 <form id="applicantForm{{ applicant.id }}">
                                     <button class="action-button approve-button" data-applicant-id="{{ applicant.id }}">Approve</button>

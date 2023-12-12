@@ -24,7 +24,7 @@
         /* Center align DataTables header and content */
         #pending_list.dataTable thead th,
         #pending_list.dataTable tbody td {
-            text-align: center;
+            text-align: left;
         }
 
         /* Ensure proper alignment for DataTables wrapper */
@@ -40,7 +40,7 @@
 
         #rejected_list.dataTable thead th,
         #rejected_list.dataTable tbody td {
-            text-align: center;
+            text-align: left;
         }
 
         /* Ensure proper alignment for DataTables wrapper */
@@ -114,8 +114,8 @@
                                     <td>₱ {{ job.salary }}</td>
                                     <td>{{ job.category }}</td>
                                     <td>{{ job.location }}</td>
-                                    <td>{{ job.description|linebreaksbr|safe }}</td>
-                                    <td>{{ job.requirements|linebreaksbr|safe }}</td>
+                                    <td style="min-width: 300px;">{{ job.description|linebreaksbr|safe }}</td>
+                                    <td style="min-width: 300px;">{{ job.requirements|linebreaksbr|safe }}</td>
                                     <td>{{ job.date }}</td>
                                     <td class="text-primary font-weight-bold">{{ job.status }}</td>
                                     <td>
@@ -146,52 +146,56 @@
                 <!-- Tab for CLOSED jobs -->
                 <div class="tab-pane fade" id="nav-closed" role="tabpanel" aria-labelledby="nav-profile-tab"
                     tabindex="0">
-                    <table id="rejected_list" class="table table-hover text-center">
-                        <thead>
-                            <tr>
-                                <th>Company Name</th>
-                                <th>Job Title</th>
-                                <th>Number of People</th>
-                                <th>Salary</th>
-                                <th>Category</th>
-                                <th>Location</th>
-                                <th>Description</th>
-                                <th>Job Requirements</th>
-                                <th>Application Deadline</th>
-                                <th>Job Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table id="rejected_list" class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Job Title</th>
+                                    <th>Number of People</th>
+                                    <th>Salary</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Description</th>
+                                    <th>Job Requirements</th>
+                                    <th>Application Deadline</th>
+                                    <th>Job Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            {% for job in jobs %}
-                            {% if job.status == 'Rejected' %}
-                            <tr>
-                                <td>{{ job.company }}</td>
-                                <td>{{ job.title }}</td>
-                                <td>{{ job.number_of_people }}</td>
-                                <td>₱ {{ job.salary }}</td>
-                                <td>{{ job.category }}</td>
-                                <td>{{ job.location }}</td>
-                                <td>{{ job.description|linebreaksbr|safe }}</td>
-                                <td>{{ job.requirements|linebreaksbr|safe }}</td>
-                                <td>{{ job.date }}</td>
-                                <td class="text-danger font-weight-bold">{{ job.status }}</td>
-                                <td>
-                                    <button class="btn delete text-light" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal" data-jobid="{{ job.id }}"
-                                        style="background-color: rgb(255, 0, 0);">
-                                        Delete
-                                    </button>
+                                {% for job in jobs %}
+                                {% if job.status == 'Rejected' %}
+                                <tr>
+                                    <td>{{ job.company }}</td>
+                                    <td>{{ job.title }}</td>
+                                    <td>{{ job.number_of_people }}</td>
+                                    <td>₱ {{ job.salary }}</td>
+                                    <td>{{ job.category }}</td>
+                                    <td>{{ job.location }}</td>
+                                    <td style="min-width: 300px;">{{ job.description|linebreaksbr|safe }}</td>
+                                    <td style="min-width: 300px;">{{ job.requirements|linebreaksbr|safe }}</td>
+                                    <td>{{ job.date }}</td>
+                                    <td class="text-danger font-weight-bold">{{ job.status }}</td>
+                                    <td>
+                                        <button class="btn delete text-light" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal" data-jobid="{{ job.id }}"
+                                            style="background-color: rgb(255, 0, 0);">
+                                            Delete
+                                        </button>
+
+
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
-                </td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-
-                </tbody>
-                </table>
             </div>
         </div>
 
