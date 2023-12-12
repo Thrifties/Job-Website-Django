@@ -57,11 +57,14 @@ def user_register(request):
 def company(request):
     # Fetch all companies from the Company model
     companies = Company.objects.all()
+    email = request.session.get('email')
+    employee = Employee.objects.get(email=email)
 
     # Pass the list of companies to the template
     context = {
         'title': 'Company',
         'companies': companies,
+        'employee': employee,
     }
 
     # Render the template with the provided context
@@ -80,9 +83,12 @@ def profile(request):
 def company_profile(request, id):
     # Your view logic here...
     # Retrieve the company details using the 'id' parameter
+    email = request.session.get('email')
+    employee = Employee.objects.get(email=email)
 
     context = {
         'title': 'Company Profile',
+        'employee': employee,
         # Other context variables...
     }
 
@@ -150,6 +156,8 @@ def user_login(request):
 def homepage(request):
     # Fetch all jobs from the Job model
     jobs = Job.objects.all()
+    email = request.session.get('email')
+    employee = Employee.objects.get(email=email)
 
     # Search functionality
     search_query = request.GET.get('search', '')
@@ -158,6 +166,7 @@ def homepage(request):
     context = {
         'title': 'Homepage',
         'jobs': jobs,
+        'employee': employee,
     }
     # Render the template with the provided context
     return render(request, 'user_homepage.html', context)
@@ -170,10 +179,13 @@ def user_toLogout(request):
 
 def job_detail(request, job_id):
     # Retrieve the job details using the job_id
+    email = request.session.get('email')
+    employee = Employee.objects.get(email=email)
     template = 'job_detail.html'
     job = get_object_or_404(Job, id=job_id)
     context = {
         'title': f'{job.title} - Job Detail', 'job': job,
+        'employee': employee,
     }
     return render(request, template, context)
 
@@ -230,6 +242,8 @@ from django.http import Http404
 
 
 def user_company_profile(request, id):
+    email = request.session.get('email')
+    employee = Employee.objects.get(email=email)
     try:
         company = get_object_or_404(Company, id=id)
     except Http404:
@@ -240,6 +254,7 @@ def user_company_profile(request, id):
     context = {
         'title': 'User Company Profile',
         'company': company,
+        'employee': employee,
     }
 
     return render(request, 'user_company_profile.html', context)
@@ -247,11 +262,21 @@ def user_company_profile(request, id):
 
 def user_my_jobs(request):
     # Fetch all applicants from the Applicant model
+    email = request.session.get('email')
+    employee = Employee.objects.get(email=email)
     applicants = Applicant.objects.filter(email=request.session.get('email'))
     # Create a list of tuples where each tuple contains an Applicant object and the corresponding Job object
     applicant_jobs = [(applicant, Job.objects.get(title=applicant.job))
                       for applicant in applicants]
     template = 'user_my_jobs.html'
+    context = {
+        'title': 'My Jobs',
+        'applicant_jobs': applicant_jobs,
+        'employee': employee,
+    }
+    # Render the template with the provided context
+    return render(request, template, context)
+    
 from django.http import JsonResponse
 
 def get_employee_data(request, employee_id):

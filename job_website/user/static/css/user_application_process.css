@@ -19,8 +19,7 @@ body {
 
 
 .accent {
-    color: var(--accent);
-    cursor: pointer;
+    color: var(--secondary);
 }
 
 #viewJob {
@@ -41,3 +40,17 @@ body {
     color: white;
     padding: 5px 5px 5px 10px;
   }
+
+#submitBtn {
+    background-color: var(--secondary);
+    color: white;
+    width: 12em;
+    height: 2.5em;
+    border: none;
+    transition: 0.3s ease-in-out;
+}
+
+#submitBtn:hover {
+    background-color: var(--dark);
+    color: white;
+}

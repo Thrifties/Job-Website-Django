@@ -24,10 +24,10 @@
         <div id="job_detail" class="banner d-flex justify-content-center align-items-center">
         </div>
 
-        <div class="container row mx-auto p-5">
+        <div class="container mt-5 d-flex flex-column justify-content-center ">
             <div class="row">
                 <h5 class="fw-normal">Applying for</h5>
-                <h1><strong>{{ job.title }}</strong></h1>
+                <h1><strong><span class="accent">{{ job.title }}</span></strong></h1>
                 <h5 class="fw-normal">{{ job.company }}</h5>
             </div>
 
@@ -39,13 +39,13 @@
                             <h6>Contact Information</h6>
                         </div>
                     </div>
-                    <h3><strong>{{ employee.first_name }} {{ employee.last_name }}</strong></h3>
+                    <h3><strong><span class="accent">{{ employee.first_name }} {{ employee.last_name }}</span></strong></h3>
                     <label for="email"><small>Email Address</small></label>
-                    <p class="email"><strong>{{ employee.email }}</strong></p>
+                    <p class="email"><strong><span class="accent">{{ employee.email }}</span></strong></p>
                     <label for="phone"><small>Phone Number</small></label>
-                    <p class="phone"><strong>{{ employee.contact_number }}</strong></p>
+                    <p class="phone"><strong><span class="accent">{{ employee.contact_number }}</span></strong></p>
                     <label for="address"><small>Address</small></le>
-                    <p class="address"><strong>{{ employee.permanent_address }}</strong></p>
+                    <p class="address"><strong><span class="accent">{{ employee.permanent_address }}</span></strong></p>
                 </div>
             </div>
 
@@ -75,7 +75,7 @@
             </div>
 
             <div class="row">
-                <button type="submit" class="btn btn-primary w-25">Submit Application</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">Submit Application</button>
             </div>
             </form>
         </div>
