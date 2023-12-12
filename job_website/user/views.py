@@ -109,7 +109,6 @@ def user_login(request):
     }
     return render(request, template, context)
 
-
 def homepage(request):
     # Fetch all jobs from the Job model
     jobs = Job.objects.all()
@@ -140,6 +139,7 @@ def user_toLogin(request):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
+            request.session['email'] = email
             return redirect('homepage')
         else:
             # Handle case where password is incorrect
@@ -226,3 +226,18 @@ def user_company_profile(request, id):
     }
 
     return render(request, 'user_company_profile.html', context)
+
+def userMyJobs(request):
+    # Fetch all jobs from the Job model
+    myJobs = Applicant.objects.get(email=request.session.get('email'))
+    template = 'user_application_process.html'
+    # Search functionality
+    search_query = request.GET.get('search', '')
+    if search_query:
+        myJobs = myJobs.filter(Q(title__icontains=search_query))
+    context = {
+        'title': 'My Jobs',
+        'myJobs': myJobs,
+    }
+    # Render the template with the provided context
+    return render(request, template, context)

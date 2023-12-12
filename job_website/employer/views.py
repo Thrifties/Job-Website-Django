@@ -21,6 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.http import HttpResponse
 from django.utils import timezone
+from user.models import MyJobs
 
 
 # Create your views here.

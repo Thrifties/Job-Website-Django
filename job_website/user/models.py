@@ -37,6 +37,7 @@ class MyJobs(models.Model):
     name = models.CharField(max_length=255, default='name')
     job = models.CharField(max_length=255, default='job')
     company = models.CharField(max_length=255, default='company')
+    status = models.CharField(max_length=255, default='status')
     
     def __str__(self):
         return self.first_name + ' ' + self.last_name
