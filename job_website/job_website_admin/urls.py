@@ -27,4 +27,5 @@ urlpatterns = [
     path('get_specific_employer_data/<int:employer_id>/',
          GetSpecificEmployerDataView.as_view(), name='get_specific_employer_data'),
     path('index', views.index, name='index'),
+    path('generate_csv', views.generate_csv, name='generate_csv'),
 ]
