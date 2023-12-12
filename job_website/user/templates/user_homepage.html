@@ -19,13 +19,17 @@
 <body id="page-top">
     {% include 'includes/user_navbar.html' %}
     <div class="banner d-flex justify-content-center align-items-center">
-        <div class="d-flex flex-column w-25">
-            <div>Search Job</div>
-            <form class="d-flex flex-row form-inline my-2 my-lg-0" method="get" action="{% url 'homepage' %}">
-                <input class="form-control mr-sm-2 me-2" type="search" placeholder="Search" name="search"
-                    value="{{ request.GET.search }}">
-                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4 mx-lg-auto">
+                    <div class="mb-3">Search Job</div>
+                    <form class="d-flex flex-row form-inline my-2 my-lg-0" method="get" action="{% url 'homepage' %}">
+                        <input class="form-control mr-sm-2 me-2" type="search" placeholder="Search" name="search"
+                            value="{{ request.GET.search }}">
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 

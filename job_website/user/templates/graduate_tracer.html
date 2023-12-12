@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{{title}}</title>
+        <!-- Custom fonts for this template -->
+        {% include 'includes/user_cdn.html' %}
+        <link rel="stylesheet" href="{% static 'css/graduate_tracer.css' %}">
+        <!-- Custom styles for this template -->
+
+    </head>
+
+    <body id="page-top">
+        {% include 'includes/user_navbar.html' %}
+        <div class="banner d-flex justify-content-end align-items-center"></div>
+
+        <div class="container">
+            <div class = "form_container">
+                <form method="post" action="{% url 'add_tracer' %}" class="form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h2 style="margin-bottom: 50px;">Graduate Tracer Form</h2>
+                
+                    <h5>Personal Information</h5>
+                    <hr>
+                    <label for="college" >College:</label> 
+                    <input type="text" id="college" name="college" required>
+                
+                    <label for="course" >Course:</label>
+                    <input type="text" id="course" name="course" required>
+                <br>
+                    <label for="name" >Name:</label>
+                    <input type="text" id="name" name="name" required>
+                
+                    <label for="year_graduated">Year Graduated:</label>
+                    <select id="year_graduated" name="year_graduated" class="year_graduated" required>
+                    <option value="" disabled selected>Select year graduated</option>
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                    </select>
+                
+                    <label for="civil_status">Civil Status:</label>
+                        <select id="civil_status" name="civil_status" class="civil_status" required>
+                        <option value="" disabled selected>Select civil status</option>
+                        {% for status in civil_status %}
+                            <option value="{{ status }}">{{ status }}</option>
+                        {% endfor %}
+                        </select>
+                <br>
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required>
+
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required>
+
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="contact_number">Contact Number:</label>
+                    <input type="number" id="contact_number" name="contact_number" required>
+
+                    <label for="sex">Sex:</label>
+                        <select id="sex" name="sex" required>
+                        <option value="" disabled selected>Select Sex</option>
+                        {% for sex in sexes %}
+                            <option value="{{ sex }}">{{ sex }}</option>
+                        {% endfor %}
+                        </select>
+                    <br>
+
+                    <!-- Education Attained -->
+                    <label for="education_attained">Education Attained:</label>
+                    <select id="education_attained" name="education_attained" required>
+                        <option value="" disabled selected>Select education attained</option>
+                        {% for attained in education_attained %}
+                        <option value="{{attained}}">{{attained}}</option>
+                        {% endfor %}
+                    <!-- Add other education options similarly -->
+                    </select>
+
+                    <label for="scholarship_recipient">Scholarship:</label>
+                    <select name="scholarship_recipient" id="scholarship_recipient" required>
+                        <option value="" disabled selected>Select Scholarship Grantor</option>
+                        {% for scholarship in scholarship_recipient %}
+                            <option value="{{ scholarship }}">{{ scholarship }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <h5>Employement Information</h5>
+                    <hr>
+                    <label for="presently_employed">Presently Employed:</label>
+                    <select name="presently_employed" id="presently_employed" required>
+                        <option value="" disabled selected>Select Presently Employed</option>
+                        {% for employed in employed_by %}
+                            <option value="{{ employed }}">{{ employed }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="organization_or_employer">Organization/Employer:</label>
+                    <input type="text" id="organization_or_employer" name="organization_or_employer" class="employer" required>
+
+                    <label for="organization_type">Organization Type:</label>
+                    <select name="organization_type" id="organization_type" required>
+                        <option value="" disabled selected>Select Organization Type</option>
+                        {% for organization in organization_types %}
+                            <option value="{{ organization }}">{{ organization }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="employment_status">Employment Status:</label>
+                    <select name="employment_status" id="employment_status" required>
+                        <option value="" disabled selected>Select Employment Status</option>
+                        {% for status in employment_status %}
+                            <option value="{{ status }}">{{ status }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="work_location">Work Location:</label>
+                    <select name="work_location" id="work_location" required>
+                        <option value="" disabled selected>Select Work Location</option>
+                        {% for location in work_location %}
+                            <option value="{{ location }}">{{ location }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="current_occupation">Current Occupation:</label>
+                    <input type="text" name="current_occupation" id="current_occupation" class="current_occupation" required>
+
+                    <label for="years_in_company">Years in Company:</label>
+                    <input type="number" name="years_in_company" id="years_in_company" class="years_in_company" required>
+                    
+                    <label for="major_line_of_business">Major Line of Business</label>
+                    <select name="major_line_of_business" id="major_line_of_business" required>
+                        <option value="" disabled selected>Select Line of Business</option>
+                        {% for business in line_of_business %}
+                            <option value="{{ business }}">{{ business }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="reason_to_stay">Reason to Stay:</label>
+                    <input type="text" name="reason_to_stay" id="reason_to_stay" required>
+
+                    <label for="gross_monthly_rate">Gross Monthly Rate:</label>
+                    <select name="gross_monthly_rate" id="gross_monthly_rate" required>
+                        <option value="" disabled selected>Select Gross Monthly Rate</option>
+                        {% for rate in gross_monthly_rate %}
+                            <option value="{{ rate }}">{{ rate }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <h5>Additional Information</h5>
+                    <hr>
+                    <label for="award">Award/s:</label>
+                    <input type="text" name="award" id="award" required>
+
+                    <label for="key_position">Key Position:</label>
+                    <input type="text" name="key_position" id="key_position" required>
+
+                    <label for="course_related_to_job">Course Related to Job:</label>
+                    <select name="course_related_to_job" id="course_related_to_job" required>
+                        <option value="" disabled selected>Select Course Related to Job</option>
+                        {% for course in course_related_to_job %}
+                            <option value="{{ course }}">{{ course }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="first_job_found_duration">Duration of Finding First Job:</label>
+                    <select name="first_job_found_duration" id="first_job_found_duration" required>
+                        <option value="" disabled selected>Select Duration of Finding First Job</option>
+                        {% for duration in first_job_found_duration %}
+                            <option value="{{ duration }}">{{ duration }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="first_job_present">Present Job is First Job:</label>
+                    <select name="first_job_present" id="first_job_present" required>
+                        <option value="" disabled selected>Select Present Job is First Job</option>
+                        {% for job in first_job_present %}
+                            <option value="{{ job }}">{{ job }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="first_job_stay_duration">Duration of Stay in First Job:</label>
+                    <select name="first_job_stay_duration" id="first_job_stay_duration" required>
+                        <option value="" disabled selected>Select Duration of Stay in First Job</option>
+                        {% for duration in first_job_stay_duration %}
+                            <option value="{{ duration }}">{{ duration }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="known_first_job_through">First Job was Known Through:</label>
+                    <select name="known_first_job_through" id="known_first_job_through" required>
+                        <option value="" disabled selected>Select First Job was Known Through</option>
+                        {% for job in known_first_job_through %}
+                            <option value="{{ job }}">{{ job }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="first_job_level_position">Level Position at First Job:</label>
+                    <select name="first_job_level_position" id="first_job_level_position" required>
+                        <option value="" disabled selected>Select Level Position at First Job</option>
+                        {% for position in first_job_level_position %}
+                            <option value="{{ position }}">{{ position }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="gross_monthly_earning_first_job">Gross Monthly Earning at First Job:</label>
+                    <select name="gross_monthly_earning_first_job" id="gross_monthly_earning_first_job" required>
+                        <option value="" disabled selected>Select Gross Monthly Earning at First Job</option>
+                        {% for earning in gross_monthly_earning_first_job %}
+                            <option value="{{ earning }}">{{ earning }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="curriculum_related_to_first_job">Is First Job Related to Curriculum:</label>
+                    <select name="curriculum_related_to_first_job" id="curriculum_related_to_first_job" required>
+                        <option value="" disabled selected>Select Is First Job Related to Curriculum</option>
+                        {% for job in curriculum_related_to_first_job %}
+                            <option value="{{ job }}">{{ job }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <h5>Competency Ratings</h5>
+                    <hr>
+                    <p>Choose Between one (1) poorly, two (2) Fairly, three (3) highly, and four (4) very highly which skills helped grow personally and professionally. </p>
+                    
+                    <label for="communication_skills">Communication Skills:</label>
+                    <select name="communication_skills" id="communication_skills" required>
+                        <option value="" disabled selected>Select Rating</option>
+                        {% for rate in rates %}
+                            <option value="{{ rate }}">{{ rate }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="human_relations_skills">Human Relations Skills:</label>
+                    <select name="human_relations_skills" id="human_relations_skills" required>
+                        <option value="" disabled selected>Select Rating</option>
+                        {% for rate in rates %}
+                            <option value="{{ rate }}">{{ rate }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="entrepreneurial_skills">Entrepreneurial Skills:</label>
+                    <select name="entrepreneurial_skills" id="entrepreneurial_skills" required>
+                        <option value="" disabled selected>Select Rating</option>
+                        {% for rate in rates %}
+                            <option value="{{ rate }}">{{ rate }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="information_technology_skills">Information Technology Skills:</label>
+                    <select name="information_technology_skills" id="information_technology_skills" required>
+                        <option value="" disabled selected>Select Rating</option>
+                        {% for rate in rates %}
+                            <option value="{{ rate }}">{{ rate }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="problem_solving_skills">Problem Solving Skills:</label>
+                    <select name="problem_solving_skills" id="problem_solving_skills" required>
+                        <option value="" disabled selected>Select Rating</option>
+                        {% for rate in rates %}
+                            <option value="{{ rate }}">{{ rate }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="critical_thinking_skills">Critical_Thinking Skills:</label>
+                    <select name="critical_thinking_skills" id="critical_thinking_skills" required>
+                        <option value="" disabled selected>Select Rating</option>
+                        {% for rate in rates %}
+                            <option value="{{ rate }}">{{ rate }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        {% include 'includes/user_js_cdn.html' %}
+    </body>
+
+</html>

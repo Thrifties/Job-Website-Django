@@ -4,16 +4,100 @@ from django.views import View
 from django.shortcuts import render, redirect
 from employer.models import Job
 from django.views.decorators.csrf import csrf_exempt
-
+from .models import Admin_Account
+from employer.models import Job, JobStatus, Details
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password, check_password
+from django.http import HttpResponse
+import csv
 # Create your views here.
 
 
-def dashboard_admin(request):
-    template = 'dashboard_admin.html'
+def admin_register(request):
+    template = 'admin_register.html'
     context = {
-        'title': 'Admin Dashboard'
+        'title': 'Admin Register',
     }
     return render(request, template, context)
+
+
+def register_admin(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Hash the password before saving it
+        hashed_password = make_password(password)
+
+        # Create a new admin_account instance
+        admin = Admin_Account(email=email, password=hashed_password)
+
+        # Save the instance to the database
+        admin.save()
+
+        # You may want to add additional logic, such as redirecting to a login page
+
+    # Adjust the template path accordingly
+    return render(request, 'admin_login.html')
+
+
+def admin_login(request):
+    template = 'admin_login.html'
+    context = {
+        'title': 'Admin Login',
+    }
+    return render(request, template, context)
+
+
+def admin_toLogin(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user_admin = Admin_Account.objects.get(email=email)
+        if check_password(password, user_admin.password):
+            request.session['email'] = user_admin.email
+            return redirect('dashboard_admin')
+        else:
+            return redirect('admin_login')
+    else:
+        return redirect('admin_login')
+
+
+def dashboard_admin(request):
+
+    open_jobs_count = Job.objects.filter(status=JobStatus.OPEN).count()
+    pending_jobs_count = Job.objects.filter(status=JobStatus.PENDING).count()
+    rejected_jobs_count = Job.objects.filter(status=JobStatus.REJECTED).count()
+    account_count = Details.objects.count()
+    template = 'dashboard_admin.html'
+    context = {
+        'title': 'Admin Dashboard',
+        'open_jobs_count': open_jobs_count,
+        'pending_jobs_count': pending_jobs_count,
+        'rejected_jobs_count': rejected_jobs_count,
+        'account_count': account_count
+    }
+    return render(request, template, context)
+
+
+def generate_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="List of Approve Jobs.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Company', 'Job Title', 'Number of Employee',
+                    'Salary', 'Category', 'Location'])
+
+    open_jobs = Job.objects.filter(status=JobStatus.OPEN).values_list(
+        'company', 'title', 'number_of_people', 'salary', 'category', 'location')
+
+    for job in open_jobs:
+        writer.writerow(job)
+
+    return response
 
 
 def manage_account(request):

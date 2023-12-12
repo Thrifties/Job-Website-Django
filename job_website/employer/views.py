@@ -21,6 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.http import HttpResponse
 from django.utils import timezone
+from user.models import MyJobs
 
 
 # Create your views here.
@@ -56,7 +57,7 @@ def dashboard(request):
     pending_applicants_count = Applicant.objects.filter(
         status='Pending').count()
     approved_applicants_count = Applicant.objects.filter(
-        status='Accepted').count()
+        status='Approved').count()
 
     template = 'dashboard.html'
     context = {

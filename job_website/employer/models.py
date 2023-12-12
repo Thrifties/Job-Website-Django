@@ -22,7 +22,7 @@ class Details(models.Model):
 
 class JobStatus(models.TextChoices):
     PENDING = 'Pending', 'Pending'
-    REJECTED = 'Reject', 'Reject'
+    REJECTED = 'Rejected', 'Rejected'
     OPEN = 'Open', 'Open'
     CLOSED = 'Closed', 'Closed'
 

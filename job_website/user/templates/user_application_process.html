@@ -21,6 +21,8 @@
 
     <body id="page-top">
         {% include 'includes/user_navbar.html' %}
+        <div id="job_detail" class="banner d-flex justify-content-center align-items-center">
+        </div>
 
         <div class="container row mx-auto p-5">
             <div class="row">
@@ -44,9 +46,9 @@
                     <label for="email"><small>Email Address</small></label>
                     <p class="email"><strong>{{ employee.email }}</strong></p>
                     <label for="phone"><small>Phone Number</small></label>
-                    <p class="phone"><strong>{{ employee.phone_number }}</strong></p>
+                    <p class="phone"><strong>{{ employee.contact_number }}</strong></p>
                     <label for="address"><small>Address</small></le>
-                    <p class="address"><strong>{{ employee.address }}</strong></p>
+                    <p class="address"><strong>{{ employee.permanent_address }}</strong></p>
                 </div>
             </div>
 
@@ -56,8 +58,8 @@
                 <input type="hidden" name="job_company" value="{{ job.company }}">
                 <input type="hidden" name="employee_name" value="{{ employee.first_name }} {{ employee.last_name }}">
                 <input type="hidden" name="employee_email" value="{{ employee.email }}">
-                <input type="hidden" name="employee_phone_number" value="{{ employee.phone_number }}">
-                <input type="hidden" name="employee_address" value="{{ employee.address }}">
+                <input type="hidden" name="employee_phone_number" value="{{ employee.contact_number }}">
+                <input type="hidden" name="employee_address" value="{{ employee.permanent_address }}">
             
     
             <div class="row mt-3">
