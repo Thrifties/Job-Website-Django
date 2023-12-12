@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from employer.models import Details
+from user.models import Employee
 from django.views import View
 from django.shortcuts import render, redirect
 from employer.models import Job
@@ -172,6 +173,21 @@ class GetEmployerDataView(View):
 
             # Return the data as JSON
             return JsonResponse({'success': True, 'data': employer_data_list})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+        
+
+class GetEmployeeDataView(View):
+    def get(self, request, *args, **kwargs):
+        try:
+            # Fetch data from the Details model
+            employee_data = Employee.objects.all().values()
+
+            # Convert the QuerySet to a list for serialization
+            employee_data_list = list(employee_data)
+
+            # Return the data as JSON
+            return JsonResponse({'success': True, 'data': employee_data_list})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
 

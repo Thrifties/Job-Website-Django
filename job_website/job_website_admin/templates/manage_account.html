@@ -64,7 +64,7 @@
     <div id="wrapper">
 
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            
+
 
             <div id="success-delete-employer" class="toast align-items-center text-bg-success border-0" role="alert"
                 aria-live="assertive" aria-atomic="true">
@@ -207,7 +207,7 @@
                         <table id="user_list" class="table table-hover text-center">
                             <thead>
                                 <tr>
-                                    <th>First name123</th>
+                                    <th>First name</th>
                                     <th>Last name</th>
                                     <th>Address</th>
                                     <th>Contact</th>
@@ -216,6 +216,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                             </tbody>
                         </table>
 
@@ -260,12 +261,13 @@
         <script>
             $(document).ready(function () {
                 fetchEmployerData();
+                fetchEmployeeData();
                 console.log("TITE");
             });
 
             function hideEditAlert() {
-            $('#edit-alert').hide();
-        }
+                $('#edit-alert').hide();
+            }
 
             function assignEmployerData(employerID) {
                 // Make an Ajax request to fetch employer data
@@ -483,7 +485,71 @@
                         $('#user_list, #employer_list').DataTable();
                     },
                     error: function (error) {
-                        
+
+                        console.error("Error fetching employer data:", error);
+                    }
+                });
+            }
+
+            function fetchEmployeeData() {
+
+                $.ajax({
+                    type: "GET",
+                    url: "get_employee_data/",  // Update with your actual URL
+                    success: function (data) {
+                        console.log("HEPHEP"+data);
+                        if (data.success) {
+                            // Clear existing table rows
+                            $("#user_list tbody").empty();
+
+                            // Iterate through the fetched data and append rows to the table
+                            for (let i = 0; i < data.data.length; i++) {
+                                let user = data.data[i];
+                                $("#user_list tbody").append(`
+                                    <tr>
+                                        <td>${user.first_name}</td>
+                                        <td>${user.last_name}</td>
+                                        <td>${user.permanent_address}</td>
+                                        <td>${user.contact_number}</td>
+                                        <td>${user.email}</td>
+                                        <td>
+                                            <div>
+                                                <div class="modal" id="deleteEmployer${user.id}" tabindex="-1">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Delete Account</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure you want to ${user.first_name}'s Account?.</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteEmployerAccount(${user.id})">Delete</button>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteEmployer${user.id}">
+                                                    <i class="bi bi-trash me-1"></i>Delete
+                                                </button>
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                `);
+                            }
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                        $('#user_list, #employer_list').DataTable();
+                    },
+                    error: function (error) {
+
                         console.error("Error fetching employer data:", error);
                     }
                 });
