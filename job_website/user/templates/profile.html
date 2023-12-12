@@ -1,0 +1,1984 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="{% static 'css/company.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <base href="http://127.0.0.1:8000/">
+    <title>{{title}}</title>
+    <!-- Custom fonts for this template -->
+    {% include 'includes/user_cdn.html' %}
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Custom styles for this template -->
+
+</head>
+
+
+<body id="page-top">
+    {% include 'includes/user_navbar.html' %}
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+<script>
+    console.log("TUITEL " + "{{ employee.id }}");
+</script>
+
+        <div></div>
+        <div id="success-profile-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully changed profile picture.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Failed Toast for Advance Reasons -->
+        <div id="failed-profile-toast" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to change profile picture.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Success Toast for Advance Reasons -->
+        <div id="success-advance-reasons-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully added advance reasons.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Failed Toast for Advance Reasons -->
+        <div id="failed-advance-reasons-toast" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to add advance reasons.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="success-edit-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully edited employee profile.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="failed-edit-toast" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to edit employee profile.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="success-educational-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully added educational background.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="failed-educational-toast" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to add educational background.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="success-career-history-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully added career history.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="failed-career-history-toast" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to add career history.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="success-advance-studies-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully added advance studies.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="failed-advance-studies-toast" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to add advance studies.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Success Toast for Adding Skills -->
+        <div id="success-skills-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully added skills.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Failed Toast for Adding Skills -->
+        <div id="failed-skills-toast" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to add skills.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div id="success-examination-toast" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully added examination.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Failed Toast for Adding Skills -->
+        <div id="failed-examination-toas" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Failed to add examination.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+
+        <!-- Success Toast for Advance Reasons -->
+        <div id="success-delete" class="toast align-items-center text-bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Successfully deleted.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Failed Toast for Advance Reasons -->
+        <div id="failed-delete" class="toast align-items-center text-bg-danger border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Delete failed.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="banner" style="min-height: 200px;" class="position-relative">
+        <div class="position-absolute bottom-0 end-0">
+            <a href="#" type="button" class="fw-bold btn btn-purple m-2">Graduate Tracer</a>
+        </div>
+
+        <div class="position-absolute top-100 start-50 translate-middle z-3">
+            <img style="height: 170px; width: 170px;" id="display-profile-picture"
+                src="../../static/resources/default_profile.png"
+                class="border bg-white rounded-circle mx-auto d-block z-3" alt="...">
+            <div class="position-absolute bottom-0 end-0">
+                <button class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#edit-profile-picture"><i
+                        class="bi bi-camera"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-container">
+        <!-- Modal -->
+        <div class="modal fade" id="edit-personal" tabindex="-1" aria-labelledby="edit-personal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-purple">Edit Personal Information</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="hidden" id="edit-employee-id" name="edit-employee-id" value="{{ employee.id }}">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert" id="edit-alert">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control edit-profile" id="edit-firstname"
+                                        placeholder=" ">
+                                    <label for="edit-firstname">First Name</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control edit-profile" id="edit-lastname"
+                                        placeholder=" ">
+                                    <label for="edit-lastname">Last Name</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control edit-profile" id="edit-middlename"
+                                        placeholder=" ">
+                                    <label for="edit-middlename">Middle Name</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="email" class="form-control edit-profile" id="edit-email"
+                                        placeholder=" ">
+                                    <label for="edit-email">Email</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="tel" class="form-control edit-profile" id="edit-contact"
+                                        placeholder=" ">
+                                    <label for="edit-contact">Contact Number</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6  p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control edit-profile" id="edit-civil"
+                                        placeholder=" ">
+                                    <label for="edit-civil">Civil Status</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="date" class="form-control edit-profile" id="edit-birthday"
+                                        placeholder=" ">
+                                    <label for="edit-birthday">Birthday</label>
+                                </div>
+                            </div>
+                            <div class="col-12 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control edit-profile" id="edit-address"
+                                        placeholder=" ">
+                                    <label for="edit-address">Permanent Address</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control edit-profile" id="edit-province"
+                                        placeholder=" ">
+                                    <label for="edit-province">Province</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control edit-profile" id="edit-region"
+                                        placeholder=" ">
+                                    <label for="edit-region">Region of Origin</label>
+                                </div>
+                            </div>
+                            <div class="col-12 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control edit-profile" id="edit-residence"
+                                        placeholder=" ">
+                                    <label for="edit-residence">Location of Residence</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="editEmployeeProfile()">Save
+                            changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="add-educational" tabindex="-1" aria-labelledby="add-educational" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-purple">Add Educational Background</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert"
+                                    id="add-educational-alert">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-educational" id="add-degree"
+                                        placeholder=" ">
+                                    <label for="add-degree">Degree and Specialization</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-educational" id="add-college"
+                                        placeholder=" ">
+                                    <label for="add-college">College or University</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="date" class="form-control add-educational" id="add-graduated"
+                                        placeholder=" ">
+                                    <label for="add-graduated">Year Graduated</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-educational" id="add-honors"
+                                        placeholder=" ">
+                                    <label for="add-honors">Honors and Awards</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="addEducationalBackground()">Save
+                            changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="add-career-history" tabindex="-1" aria-labelledby="add-career-history"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-purple">Add Career History</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert"
+                                    id="add-career-history-alert">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-career-history" id="add-job-title"
+                                        placeholder=" ">
+                                    <label for="add-job-title">Job Title</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-career-history" id="add-company-name"
+                                        placeholder=" ">
+                                    <label for="add-company-name">Company Name</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="date" class="form-control add-career-history" id="add-started"
+                                        placeholder=" ">
+                                    <label for="add-started">Started</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="date" class="form-control add-career-history" id="add-ended"
+                                        placeholder=" ">
+                                    <label for="add-ended">Ended</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-8 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-career-history" id="add-description"
+                                        placeholder=" ">
+                                    <label for="add-description">Description</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="addCareerHistory()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="add-advance-studies" tabindex="-1" aria-labelledby="add-advance-studies"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-purple">Add Advance Studies</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert"
+                                    id="add-advance-studies-alert">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-advance-studies" id="add-training-title"
+                                        placeholder=" ">
+                                    <label for="add-training-title">Training Title</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-advance-studies"
+                                        id="add-training-institution" placeholder=" ">
+                                    <label for="add-training-institution">Training Institution</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-advance-studies" id="add-duration"
+                                        placeholder=" ">
+                                    <label for="add-duration">Duration</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="number" class="form-control add-advance-studies"
+                                        id="add-credits-earned" placeholder=" ">
+                                    <label for="add-credits-earned">Credits Earned</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="addAdvanceStudies()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="add-skills-modal" tabindex="-1" aria-labelledby="add-skills-modal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-purple">Add Skills</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert"
+                                    id="add-skills-alert"></div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-skills" id="add-skill" placeholder=" ">
+                                    <label for="add-skill">Skill</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="addSkill()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="add-examination-modal" tabindex="-1" aria-labelledby="add-examination-modal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-purple">Add Professional Examination</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert"
+                                    id="add-examination-alert">
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-exam-field" id="add-exam-title" placeholder=" ">
+                                    <label for="add-exam-title">Exam Title</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="date" class="form-control add-exam-field" id="add-exam-date" placeholder=" ">
+                                    <label for="add-exam-date">Date Taken</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="number" class="form-control add-exam-field" id="add-exam-rating" placeholder=" ">
+                                    <label for="add-exam-rating">Rating</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="addExamination()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="add-advance-reasons" tabindex="-1" aria-labelledby="add-advance-reasons"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-purple">Add Training Reason</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert"
+                                    id="add-advance-reasons-alert">
+                                </div>
+                            </div>
+                            <div class="col-12 p-1">
+                                <div class="form-floating mb-1">
+                                    <input type="text" class="form-control add-advance-reasons" id="add-training-reason"
+                                        placeholder=" ">
+                                    <label for="add-training-reason">Training Reason</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="addAdvanceReason()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="edit-profile-picture" tabindex="-1" aria-labelledby="edit-profile-picture-modal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-purple">Edit Profile Picture</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="display: none;" class="alert alert-danger" role="alert" id="profile-alert">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <!-- File input for profile picture -->
+                                <div class="form-floating mb-1">
+                                    <input type="file" class="form-control" id="profile-picture-upload"
+                                        accept="image/*">
+                                    <label for="profile-picture-upload">Choose a new profile picture</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-purple" onclick="updateProfilePicture('{{ employee.id }}')">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+    <div style="margin-top: 90px;" class="container z-n1">
+        <div class="container-fluid d-flex justify-content-center">
+            <h1 id="display-full-name">-</h1>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <h5 class="text-purple ms-1">Personal Information</h5>
+                    <div class="border shadow border-secondary-subtle rounded-2 p-3 position-relative">
+                        <button onclick="assignPersonalInformation('{{ employee.id }}'), hideEditAlert()"
+                            class="btn position-absolute top-0 end-0 m-2 text-purple" type="button"><i
+                                class="bi bi-pencil-square" data-bs-toggle="modal"
+                                data-bs-target="#edit-personal"></i></button>
+                        <div class="mb-1">
+                            <label class="fw-lighter text-secondary profile-label">Email Address</label>
+                            <h6 id="display-email">-</h6>
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-lighter text-secondary profile-label">Contact</label>
+                            <h6 id="display-contact">-</h6>
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-lighter text-secondary profile-label">Permanent Address</label>
+                            <h6 id="display-address">-</h6>
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-lighter text-secondary profile-label">Civil Status</label>
+                            <h6 id="display-civil">-</h6>
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-lighter text-secondary profile-label">Birthday</label>
+                            <h6 id="display-birthday">-</h6>
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-lighter text-secondary profile-label">Region of Origin</label>
+                            <h6 id="display-region">-</h6>
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-lighter text-secondary profile-label">Province</label>
+                            <h6 id="display-province">-</h6>
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-lighter text-secondary profile-label">Location of Residence</label>
+                            <h6 id="display-location">-</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5 class="text-purple ms-1">Educational Background</h5>
+                    <div id="educational-background-container">
+                        <!-- <div class="border border-secondary-subtle rounded-2 p-3 position-relative">
+                            <button class="btn position-absolute top-0 end-0 m-2 text-danger" type="button"><i
+                                    class="bi bi-trash"></i></button>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Degree and Specialization</label>
+                                <h6>Diploma of Information and Communication Technology</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">College or University</label>
+                                <h6>Bulacan State University</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Year Graduated</label>
+                                <h6>2024</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Honors and Awards</label>
+                                <h6>Dean’s Lister</h6>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-2">
+                        <button class="btn btn-purple me-md-2" type="button" data-bs-toggle="modal"
+                            data-bs-target="#add-educational" onclick="hideAddEducationalAlert()">Add Education</button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5 class="text-purple ms-1">Career History</h5>
+                    <div id="career-history-container">
+                        <!-- <div class="border shadow border-secondary-subtle rounded-2 p-3 mb-3 position-relative">
+                            <button class="btn position-absolute top-0 end-0 m-2 text-danger" type="button"><i
+                                    class="bi bi-trash"></i></button>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Job Title</label>
+                                <h6>Reservation Officer</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Company Name</label>
+                                <h6>Amana Waterpark</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Started</label>
+                                <h6>Jan 2021</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Ended</label>
+                                <h6>Apr 2021</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Description</label>
+                                <h6>Employee of the Month</h6>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-2">
+                        <button class="btn btn-purple me-md-2" type="button" data-bs-toggle="modal"
+                            data-bs-target="#add-career-history" onclick="hideAddCareerAlert()">Add Career</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <h5 class="text-purple ms-1">Trainings and Advance Studies</h5>
+                    <div id="advance-studies-container">
+                        <!-- <div class="border shadow border-secondary-subtle rounded-2 p-3 mb-3 position-relative">
+                            <button class="btn position-absolute top-0 end-0 m-2 text-danger" type="button"><i
+                                    class="bi bi-trash"></i></button>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Training Title</label>
+                                <h6>Web Development Bootcamp</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Training Institution</label>
+                                <h6>Tech Institute</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Duration</label>
+                                <h6>12 weeks</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Credits Earned</label>
+                                <h6>5</h6>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-2">
+                        <button class="btn btn-purple me-md-2" type="button" data-bs-toggle="modal"
+                            data-bs-target="#add-advance-studies" onclick="hideAddAdvanceStudiesAlert()">Add Advance
+                            Studies</button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5 class="text-purple ms-1">Advance Study Reasons</h5>
+                    <div id="study-reason-container" class="d-flex flex-wrap">
+                        <!-- <div
+                            class=" display-block shadow border-secondary-subtle rounded-pill p-1 m-1 d-flex justify-content-center align-items-center">
+                            <h6 class="m-0 ms-2">Web Development Bootcamp</h6>
+                            <button class="btn rounded-circle text-danger" type="button"><i
+                                    class="bi bi-trash"></i></button>
+                        </div> -->
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-2">
+                        <button class="btn btn-purple me-md-2" type="button" data-bs-toggle="modal"
+                            data-bs-target="#add-advance-reasons" onclick="hideReasonsAlert()">Add Reasons</button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5 class="text-purple ms-1">Skills</h5>
+                    <div id="skills-container" class="d-flex flex-wrap">
+                        <div
+                            class=" display-block shadow border-secondary-subtle rounded-pill p-1 m-1 d-flex justify-content-center align-items-center">
+                            <h6 class="m-0 ms-2">Graphic Design</h6>
+                            <button class="btn rounded-circle text-danger" type="button"><i
+                                    class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-2">
+                        <button class="btn btn-purple me-md-2" type="button" data-bs-toggle="modal"
+                            data-bs-target="#add-skills-modal" onclick="hideSkillsAlert()">Add Skills</button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5 class="text-purple ms-1">Professional Examination</h5>
+                    <div id="professional-examination-container">
+                        <div class="border shadow border-secondary-subtle rounded-2 p-3 mb-3 position-relative">
+                            <button class="btn position-absolute top-0 end-0 m-2 text-danger" type="button"><i
+                                    class="bi bi-trash"></i></button>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Exam Title</label>
+                                <h6>Civil Service Exam - Professional Level</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Date Taken</label>
+                                <h6>2024-03-15</h6>
+                            </div>
+                            <div class="mb-1">
+                                <label class="fw-lighter text-secondary profile-label">Rating</label>
+                                <h6>94.77</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-2">
+                        <button class="btn btn-purple me-md-2" type="button" data-bs-toggle="modal"
+                            data-bs-target="#add-examination-modal" onclick="hideExaminationAlert()">Add
+                            Examination</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        var userID = '{{ employee.id }}';
+        $(document).ready(function () {
+            fetchPersonalInformation("{{ employee.id }}");
+            fetchEducationalBackground("{{ employee.id }}")
+            fetchCareerHistory("{{ employee.id }}");
+            fetchAdvanceStudies("{{ employee.id }}");
+            fetchAdvanceReasons("{{ employee.id }}");
+            fetchSkills("{{ employee.id }}");
+            fetchProfessionalExaminations("{{ employee.id }}");
+
+        });
+
+        function hideEditAlert() {
+            $('#edit-alert').hide();
+        }
+
+        function hideAddEducationalAlert() {
+            // Function to hide the educational background alert
+            $('#add-educational-alert').hide();
+        }
+
+        function hideAddAdvanceStudiesAlert() {
+            // Function to hide the educational background alert
+            $('#add-advance-studies-alert').hide();
+        }
+
+        function hideReasonsAlert() {
+            // Function to hide the advance reasons alert
+            $('#add-advance-reasons-alert').hide();
+        }
+
+        function hideAddCareerHistoryAlert() {
+            // Function to hide the educational background alert
+            $('#add-career-history-alert').hide();
+        }
+
+        function hideSkillsAlert() {
+            // Function to hide the educational background alert
+            $('#add-skills-alert').hide();
+        }
+
+        function hideExaminationAlert() {
+            $('#add-examination-alert').hide();
+        }
+        function fetchPersonalInformation(userId) {
+            // Make an Ajax request to fetch company data
+            console.log(userId);
+            $.ajax({
+                type: "GET",
+                url: `/user/get_employee_data/${userId}/`,  // Update with your actual URL
+                success: function (data) {
+                    console.log(data);
+                    if (data.success) {
+
+                        var full_name = data.employee.first_name + " " + data.employee.last_name;
+                        // Populate input fields with fetched data
+
+                        $('#display-full-name').text(full_name);
+                        $('#display-email').text(data.employee.email);
+                        $('#display-contact').text(data.employee.contact_number);
+                        $('#display-address').text(data.employee.permanent_address);
+                        $('#display-civil').text(data.employee.civil_status);
+                        $('#display-birthday').text(data.employee.birthdate);
+                        $('#display-region').text(data.employee.region_of_origin);
+                        $('#display-province').text(data.employee.province);
+                        $('#display-location').text(data.employee.location_of_residence);
+
+                        if (data.employee.profile_picture_path && data.employee.profile_picture_path.trim() !== '') {
+                            const timestamp = new Date().getTime(); // Add a timestamp
+                            const imageUrl = 'static/resources/profile_picture_user/' + data.employee.profile_picture_path + '?t=' + timestamp;
+                            $('#display-profile-picture').attr('src', imageUrl);
+                        }
+
+                    } else {
+                        console.error("Error: " + data.message);
+                    }
+                },
+                error: function (error) {
+                    console.error("Error fetching company data:", error);
+                }
+            });
+        }
+
+        function assignPersonalInformation(userId) {
+
+            // Make an Ajax request to fetch company data
+            console.log(userId);
+            $.ajax({
+                type: "GET",
+                url: `/user/get_employee_data/${userId}/`,  // Update with your actual URL
+                success: function (data) {
+                    console.log(data);
+                    if (data.success) {
+
+                        $('#edit-firstname').val(data.employee.first_name);
+                        $('#edit-lastname').val(data.employee.last_name);
+                        $('#edit-middlename').val(data.employee.middle_name);
+                        $('#edit-email').val(data.employee.email);
+                        $('#edit-contact').val(data.employee.contact_number);
+                        $('#edit-address').val(data.employee.permanent_address);
+                        $('#edit-civil').val(data.employee.civil_status);
+                        $('#edit-birthday').val(data.employee.birthdate);
+                        $('#edit-region').val(data.employee.region_of_origin);
+                        $('#edit-province').val(data.employee.province);
+                        $('#edit-residence').val(data.employee.location_of_residence);
+
+                    } else {
+                        console.error("Error: " + data.message);
+                    }
+                },
+                error: function (error) {
+                    console.error("Error fetching company data:", error);
+                }
+            });
+        }
+
+        function editEmployeeProfile() {
+            var employeeId = $("#edit-employee-id").val();
+
+            // Validate form fields
+            var validationPassed = true;
+
+            // Email validation function
+            function isValidEmail(email) {
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            // Loop through each form field
+            $(".edit-profile").each(function () {
+                var fieldValue = $(this).val().trim();
+
+                // Check if the field is empty
+                if (fieldValue === "") {
+                    $('#edit-alert').show();
+                    $("#edit-alert").text("All fields must be filled out").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if any field is empty
+                }
+
+                // Validate email
+                if ($(this).attr("id") === "edit-email" && !isValidEmail(fieldValue)) {
+                    $('#edit-alert').show();
+                    $("#edit-alert").text("Please enter a valid email address").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if email is invalid
+                }
+            });
+
+            if (!validationPassed) {
+                return; // Exit the function if validation fails
+            }
+
+            // Collect data from form
+            var formData = {
+                first_name: $("#edit-firstname").val(),
+                last_name: $("#edit-lastname").val(),
+                middle_name: $("#edit-middlename").val(),
+                email: $("#edit-email").val(),
+                contact_number: $("#edit-contact").val(),
+                civil_status: $("#edit-civil").val(),
+                birthdate: $("#edit-birthday").val(),
+                permanent_address: $("#edit-address").val(),
+                province: $("#edit-province").val(),
+                region_of_origin: $("#edit-region").val(),
+                location_of_residence: $("#edit-residence").val(),
+                // Add other form fields as needed
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: "POST",  // Use POST or PUT based on your server implementation
+                url: "/user/update_employee_profile/" + employeeId + "/",  // Replace with your API endpoint
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        hideEditAlert();
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+                        // Close the modal or perform other actions
+                        $('#edit-personal').modal('hide');
+                        const success_edit_toast = document.getElementById('success-edit-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_edit_toast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        $('#edit-alert').show();
+                        $("#edit-alert").text(response.message).show();
+                        // You can display an error message to the user or take other actions
+                        const failed_edit_toast = document.getElementById('failed-edit-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
+                    }
+
+                    fetchPersonalInformation("{{ employee.id }}");
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function addEducationalBackground() {
+            // Validate form fields
+            var validationPassed = true;
+
+            // Loop through each form field
+            $(".add-educational").each(function () {
+                var fieldValue = $(this).val().trim();
+
+                // Check if the field is empty
+                if (fieldValue === "") {
+                    $('#add-educational-alert').show();
+                    $("#add-educational-alert").text("All fields must be filled out").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if any field is empty
+                }
+            });
+
+            if (!validationPassed) {
+                return; // Exit the function if validation fails
+            }
+
+            // Extract only the year from the add-graduated field
+            var yearGraduated = new Date($("#add-graduated").val()).getFullYear();
+
+            // Collect data from form
+            var formData = {
+                degree: $("#add-degree").val(),
+                college_or_university: $("#add-college").val(),
+                year_graduated: yearGraduated,
+                honors_or_awards: $("#add-honors").val(),
+                employee_id: $("#edit-employee-id").val(),
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: "POST",
+                url: "/user/add_educational_background/",  // Replace with your API endpoint
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        hideAddEducationalAlert();
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear input fields
+                        $(".add-educational").val("");  // This will clear all input fields with the class 'add-educational'
+
+
+                        // Close the modal or perform other actions
+                        $('#add-educational').modal('hide');
+
+                        fetchEducationalBackground("{{ employee.id }}");
+                        const success_add_toast = document.getElementById('success-educational-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_add_toast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        $('#add-educational-alert').show();
+                        $("#add-educational-alert").text(response.message).show();
+                        // You can display an error message to the user or take other actions
+                        const failed_add_toast = document.getElementById('failed-educational-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_add_toast).show();
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function fetchEducationalBackground(employeeId) {
+            // Make AJAX request
+            $.ajax({
+                type: "GET",
+                url: "/user/fetch_educational_background/",  // Replace with your API endpoint
+                data: { employee_id: employeeId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear existing data in educational-background-container
+                        $("#educational-background-container").empty();
+
+                        // Populate educational-background-container with fetched data
+                        response.data.forEach(function (education) {
+                            var container = $('<div class="border shadow border-secondary-subtle rounded-2 p-3 mb-2 position-relative"></div>');
+                            container.append('<button class="btn position-absolute top-0 end-0 m-2 text-danger" onclick="deleteEducationalBackground(' + education.id + ')" type="button"><i class="bi bi-trash"></i></button>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Degree and Specialization</label><h6>' + education.degree + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">College or University</label><h6>' + education.college_or_university + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Year Graduated</label><h6>' + education.year_graduated + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Honors and Awards</label><h6>' + education.honors_or_awards + '</h6></div>');
+
+                            $("#educational-background-container").append(container);
+                        });
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function addCareerHistory() {
+            // Validate form fields
+            var validationPassed = true;
+
+            // Loop through each form field
+            $(".add-career-history").each(function () {
+                var fieldValue = $(this).val().trim();
+
+                // Check if the field is empty
+                if (fieldValue === "") {
+                    $('#add-career-history-alert').show();
+                    $("#add-career-history-alert").text("All fields must be filled out").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if any field is empty
+                }
+            });
+
+            if (!validationPassed) {
+                return; // Exit the function if validation fails
+            }
+
+            // Extract start and end dates from the form
+            var startedDate = $("#add-started").val();
+            var endedDate = $("#add-ended").val();
+
+            // Collect data from form
+            var formData = {
+                job_title: $("#add-job-title").val(),
+                company_name: $("#add-company-name").val(),
+                started: startedDate,
+                ended: endedDate,
+                description: $("#add-description").val(),
+                employee_id: $("#edit-employee-id").val(),
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: "POST",
+                url: "/user/add_career_history/",  // Replace with your API endpoint
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        hideAddCareerHistoryAlert();
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear input fields
+                        $(".add-career-history").val("");  // This will clear all input fields with the class 'add-career-history'
+
+                        // Close the modal or perform other actions
+                        $('#add-career-history').modal('hide');
+
+                        // Fetch and update the career history container
+                        fetchCareerHistory("{{ employee.id }}");
+
+                        const success_add_toast = document.getElementById('success-career-history-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_add_toast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        $('#add-career-history-alert').show();
+                        $("#add-career-history-alert").text(response.message).show();
+                        // You can display an error message to the user or take other actions
+                        const failed_add_toast = document.getElementById('failed-career-history-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_add_toast).show();
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function fetchCareerHistory(employeeId) {
+            // Make AJAX request
+            $.ajax({
+                type: "GET",
+                url: "/user/fetch_career_history/",  // Replace with your API endpoint
+                data: { employee_id: employeeId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear existing data in career-history-container
+                        $("#career-history-container").empty();
+
+                        // Populate career-history-container with fetched data
+                        response.data.forEach(function (career) {
+                            var container = $('<div class="border shadow border-secondary-subtle rounded-2 p-3 mb-2 position-relative"></div>');
+                            container.append('<button onclick="deleteCareerHistory(' + career.id + ')" class="btn position-absolute top-0 end-0 m-2 text-danger" type="button"><i class="bi bi-trash"></i></button>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Job Title</label><h6>' + career.job_title + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Company Name</label><h6>' + career.company_name + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Started</label><h6>' + career.started + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Ended</label><h6>' + career.ended + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Description</label><h6>' + career.description + '</h6></div>');
+
+                            $("#career-history-container").append(container);
+                        });
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function addAdvanceStudies() {
+            // Validate form fields
+            var validationPassed = true;
+
+            // Loop through each form field
+            $(".add-advance-studies").each(function () {
+                var fieldValue = $(this).val().trim();
+
+                // Check if the field is empty
+                if (fieldValue === "") {
+                    $('#add-advance-studies-alert').show();
+                    $("#add-advance-studies-alert").text("All fields must be filled out").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if any field is empty
+                }
+            });
+
+            if (!validationPassed) {
+                return; // Exit the function if validation fails
+            }
+
+            // Collect data from form
+            var formData = {
+                training_title: $("#add-training-title").val(),
+                training_institution: $("#add-training-institution").val(),
+                duration: $("#add-duration").val(),
+                credits_earned: $("#add-credits-earned").val(),
+                employee_id: $("#edit-employee-id").val(),  // Make sure to get the correct employee_id
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: "POST",
+                url: "/user/add_advance_studies/",  // Replace with your API endpoint
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        hideAddAdvanceStudiesAlert();
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear input fields
+                        $(".add-advance-studies").val("");  // This will clear all input fields with the class 'add-advance-studies'
+
+                        // Close the modal or perform other actions
+                        $('#add-advance-studies').modal('hide');
+
+                        fetchAdvanceStudies("{{ employee.id }}");  // Assuming you want to fetch and update the display after adding
+                        const success_add_toast = document.getElementById('success-advance-studies-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_add_toast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        $('#add-advance-studies-alert').show();
+                        $("#add-advance-studies-alert").text(response.message).show();
+                        // You can display an error message to the user or take other actions
+                        const failed_add_toast = document.getElementById('failed-advance-studies-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_add_toast).show();
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function fetchAdvanceStudies(employeeId) {
+            // Make AJAX request
+            $.ajax({
+                type: "GET",
+                url: "/user/fetch_advance_studies/",  // Replace with your API endpoint
+                data: { employee_id: employeeId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear existing data in advance-studies-container
+                        $("#advance-studies-container").empty();
+
+                        // Populate advance-studies-container with fetched data
+                        response.data.forEach(function (study) {
+                            var container = $('<div class="border shadow border-secondary-subtle rounded-2 p-3 mb-3 position-relative"></div>');
+                            container.append('<button onclick="deleteAdvanceStudies(' + study.id + ')" class="btn position-absolute top-0 end-0 m-2 text-danger" type="button"><i class="bi bi-trash"></i></button>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Training Title</label><h6>' + study.training_title + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Training Institution</label><h6>' + study.training_institution + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Duration</label><h6>' + study.duration + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Credits Earned</label><h6>' + study.credits_earned + '</h6></div>');
+
+                            $("#advance-studies-container").append(container);
+                        });
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function addAdvanceReason() {
+            // Validate form fields
+            var validationPassed = true;
+
+            // Loop through each form field
+            $(".add-advance-reasons").each(function () {
+                var fieldValue = $(this).val().trim();
+
+                // Check if the field is empty
+                if (fieldValue === "") {
+                    $('#add-advance-reasons-alert').show();
+                    $("#add-advance-reasons-alert").text("All fields must be filled out").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if any field is empty
+                }
+            });
+
+            if (!validationPassed) {
+                return; // Exit the function if validation fails
+            }
+
+            // Collect data from form
+            var formData = {
+                training_reason: $("#add-training-reason").val(),
+                employee_id: $("#edit-employee-id").val(),  // Add the employee_id field
+                // Add other fields as needed
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: "POST",
+                url: "/user/add_advance_reason/",  // Replace with your API endpoint
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        hideReasonsAlert();
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear input fields
+                        $(".add-advance-reasons").val("");  // This will clear all input fields with the class 'add-advance-reasons'
+
+                        // Close the modal or perform other actions
+                        $('#add-advance-reasons').modal('hide');
+
+                        fetchAdvanceReasons("{{ employee.id }}");  // Fetch and display reasons after adding
+
+                        const success_add_toast = document.getElementById('success-advance-reasons-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_add_toast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        $('#add-advance-reasons-alert').show();
+                        $("#add-advance-reasons-alert").text(response.message).show();
+                        // You can display an error message to the user or take other actions
+                        const failed_add_toast = document.getElementById('failed-advance-reasons-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_add_toast).show();
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function fetchAdvanceReasons(employeeId) {
+            // Make AJAX request
+            $.ajax({
+                type: "GET",
+                url: "/user/fetch_advance_reasons/",  // Replace with your API endpoint
+                data: { employee_id: employeeId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear existing data in study-reason-container
+                        $("#study-reason-container").empty();
+
+                        // Populate study-reason-container with fetched data
+                        response.data.forEach(function (reason) {
+                            var container = $('<div class="display-block shadow border-secondary-subtle rounded-pill p-1 m-1 d-flex justify-content-center align-items-center"></div>');
+                            container.append('<h6 class="m-0 ms-2">' + reason.training_reason + '</h6>');
+                            container.append('<button onclick="deleteAdvanceStudyReason(' + reason.id + ')" class="btn rounded-circle text-danger" type="button"><i class="bi bi-trash"></i></button>');
+
+                            $("#study-reason-container").append(container);
+                        });
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function addSkill() {
+            // Validate form fields
+            var validationPassed = true;
+
+            // Loop through each form field
+            $(".add-skills").each(function () {
+                var fieldValue = $(this).val().trim();
+
+                // Check if the field is empty
+                if (fieldValue === "") {
+                    $('#add-skills-alert').show();
+                    $("#add-skills-alert").text("All fields must be filled out").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if any field is empty
+                }
+            });
+
+            if (!validationPassed) {
+                return; // Exit the function if validation fails
+            }
+
+            // Collect data from form, including employee_id
+            var formData = {
+                skill: $("#add-skill").val(),
+                employee_id: $("#edit-employee-id").val(),  // Assuming you have an input field with id 'edit-employee-id'
+                // Add other fields as needed
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: "POST",
+                url: "/user/add_skill/",  // Replace with your API endpoint
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        hideSkillsAlert();
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear input fields
+                        $(".add-skills").val("");  // This will clear all input fields with the class 'add-skills'
+
+                        // Close the modal or perform other actions
+                        $('#add-skills-modal').modal('hide');
+
+                        // Fetch and update the skills container
+                        fetchSkills("{{ employee.id }}");
+
+                        const success_add_toast = document.getElementById('success-skills-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_add_toast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        $('#add-skills-alert').show();
+                        $("#add-skills-alert").text(response.message).show();
+                        // You can display an error message to the user or take other actions
+                        const failed_add_toast = document.getElementById('failed-skills-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_add_toast).show();
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function fetchSkills(employeeId) {
+            // Make AJAX request
+            $.ajax({
+                type: "GET",
+                url: "/user/fetch_skills/",  // Replace with your API endpoint
+                data: { employee_id: employeeId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear existing data in skills-container
+                        $("#skills-container").empty();
+
+                        // Populate skills-container with fetched data
+                        response.data.forEach(function (skill) {
+                            var container = $('<div class="display-block shadow border-secondary-subtle rounded-pill p-1 m-1 d-flex justify-content-center align-items-center"></div>');
+                            container.append('<h6 class="m-0 ms-2">' + skill.skill_name + '</h6>');
+                            container.append('<button onclick="deleteSkill(' + skill.id + ')" class="btn rounded-circle text-danger" type="button"><i class="bi bi-trash"></i></button>');
+
+                            $("#skills-container").append(container);
+                        });
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function addExamination() {
+            // Validate form fields
+            var validationPassed = true;
+
+            // Loop through each form field
+            $(".add-exam-field").each(function () {
+                var fieldValue = $(this).val().trim();
+
+                // Check if the field is empty
+                if (fieldValue === "") {
+                    $('#add-examination-alert').show();
+                    $("#add-examination-alert").text("All fields must be filled out").show();
+                    validationPassed = false;
+                    return false; // Exit the loop early if any field is empty
+                }
+            });
+
+            if (!validationPassed) {
+                return; // Exit the function if validation fails
+            }
+
+            // Collect data from form
+            var formData = {
+                exam_title: $("#add-exam-title").val(),
+                exam_date: $("#add-exam-date").val(),
+                exam_rating: $("#add-exam-rating").val(),
+                employee_id: $("#edit-employee-id").val(),
+            };
+
+            // Make AJAX request
+            $.ajax({
+                type: "POST",
+                url: "/user/add_professional_examination/",  // Replace with your API endpoint
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        hideExaminationAlert();
+
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear input fields
+                        $(".add-exam-field").val("");
+
+                        // Close the modal or perform other actions
+                        $('#add-examination-modal').modal('hide');
+
+                        // Fetch and update the professional examination container
+                        fetchProfessionalExaminations("{{ employee.id }}");
+
+                        const success_add_toast = document.getElementById('success-examination-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_add_toast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        $('#add-examination-alert').show();
+                        $("#add-examination-alert").text(response.message).show();
+
+                        // You can display an error message to the user or take other actions
+                        const failed_add_toast = document.getElementById('failed-examination-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_add_toast).show();
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function fetchProfessionalExaminations(employeeId) {
+            // Make AJAX request
+            $.ajax({
+                type: "GET",
+                url: "/user/fetch_professional_examinations/",  // Adjust the URL based on your project structure
+                data: { employee_id: employeeId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Clear existing data in professional-examination-container
+                        $("#professional-examination-container").empty();
+
+                        // Populate professional-examination-container with fetched data
+                        response.data.forEach(function (examination) {
+                            var container = $('<div class="border shadow border-secondary-subtle rounded-2 p-3 mb-3 position-relative"></div>');
+                            container.append('<button onclick="deleteProfessionalExamination(' + examination.id + ')" class="btn position-absolute top-0 end-0 m-2 text-danger" type="button"><i class="bi bi-trash"></i></button>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Exam Title</label><h6>' + examination.exam_title + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Date Taken</label><h6>' + examination.exam_date + '</h6></div>');
+                            container.append('<div class="mb-1"><label class="fw-lighter text-secondary profile-label">Rating</label><h6>' + examination.exam_rating + '</h6></div>');
+
+                            $("#professional-examination-container").append(container);
+                        });
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function deleteEducationalBackground(educationalId) {
+            // Make AJAX request to delete educational background
+            $.ajax({
+                type: "POST",
+                url: "/user/delete_educational_background/",  // Replace with your API endpoint
+                data: { educational_id: educationalId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Remove the deleted educational background from the UI
+                        $("#educational-background-" + educationalId).remove();
+
+                        // Show success toast
+                        const successDeleteToast = document.getElementById('success-delete');
+                        bootstrap.Toast.getOrCreateInstance(successDeleteToast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                        const failedDeleteToast = document.getElementById('failed-delete');
+                        bootstrap.Toast.getOrCreateInstance(failedDeleteToast).show();
+                    }
+
+                    fetchEducationalBackground("{{ employee.id }}");
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function deleteCareerHistory(careerHistoryId) {
+            // Make AJAX request to delete career history
+            $.ajax({
+                type: "POST",
+                url: "/user/delete_career_history/",  // Replace with your API endpoint
+                data: { career_history_id: careerHistoryId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Remove the deleted career history from the UI
+                        $("#career-history-" + careerHistoryId).remove();
+
+                        // Show success toast
+                        const successDeleteToast = document.getElementById('success-delete');
+                        bootstrap.Toast.getOrCreateInstance(successDeleteToast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                        const failedDeleteToast = document.getElementById('failed-delete');
+                        bootstrap.Toast.getOrCreateInstance(failedDeleteToast).show();
+                    }
+
+                    // Fetch and update the career history container after deletion
+                    fetchCareerHistory("{{ employee.id }}");
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function deleteAdvanceStudies(trainingId) {
+            // Make AJAX request to delete training
+            $.ajax({
+                type: "POST",
+                url: "/user/delete_advance_studies/",  // Replace with your API endpoint
+                data: { training_id: trainingId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Remove the deleted training from the UI
+                        $("#advance-studies-" + trainingId).remove();
+
+                        // Show success toast
+                        const successDeleteToast = document.getElementById('success-delete');
+                        bootstrap.Toast.getOrCreateInstance(successDeleteToast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                        const failedDeleteToast = document.getElementById('failed-delete');
+                        bootstrap.Toast.getOrCreateInstance(failedDeleteToast).show();
+                    }
+
+                    // Fetch and update the advance studies container
+                    fetchAdvanceStudies("{{ employee.id }}");
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function deleteAdvanceStudyReason(reasonId) {
+            // Make AJAX request to delete Advance Study Reason
+            $.ajax({
+                type: "POST",
+                url: "/user/delete_advance_reason/",  // Replace with your API endpoint
+                data: { reason_id: reasonId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Remove the deleted Advance Study Reason from the UI
+                        $("#advance-reason-" + reasonId).remove();
+
+                        // Show success toast
+                        const successDeleteToast = document.getElementById('success-delete');
+                        bootstrap.Toast.getOrCreateInstance(successDeleteToast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                        const failedDeleteToast = document.getElementById('failed-delete');
+                        bootstrap.Toast.getOrCreateInstance(failedDeleteToast).show();
+                    }
+
+                    // Fetch and update the Advance Study Reasons container
+                    fetchAdvanceReasons("{{ employee.id }}");
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function deleteSkill(skillId) {
+            // Make AJAX request to delete skill
+            $.ajax({
+                type: "POST",
+                url: "/user/delete_skill/",  // Replace with your API endpoint
+                data: { skill_id: skillId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Remove the deleted skill from the UI
+                        $("#skill-" + skillId).remove();
+
+                        // Show success toast
+                        const successDeleteToast = document.getElementById('success-delete');
+                        bootstrap.Toast.getOrCreateInstance(successDeleteToast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                        const failedDeleteToast = document.getElementById('failed-delete');
+                        bootstrap.Toast.getOrCreateInstance(failedDeleteToast).show();
+                    }
+
+                    fetchSkills("{{ employee.id }}");
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function deleteProfessionalExamination(examinationId) {
+            // Make AJAX request to delete professional examination
+            $.ajax({
+                type: "POST",
+                url: "/user/delete_professional_examination/",  // Replace with your API endpoint
+                data: { examination_id: examinationId },
+                success: function (response) {
+                    if (response.success) {
+                        // Handle successful response (if needed)
+                        console.log(response.message);
+
+                        // Remove the deleted examination from the UI
+                        $("#professional-examination-" + examinationId).remove();
+
+                        // Show success toast
+                        const successDeleteToast = document.getElementById('success-delete');
+                        bootstrap.Toast.getOrCreateInstance(successDeleteToast).show();
+                    } else {
+                        // Handle error response
+                        console.error(response.message);
+                        // You can display an error message to the user or take other actions
+                        const failedDeleteToast = document.getElementById('failed-delete');
+                        bootstrap.Toast.getOrCreateInstance(failedDeleteToast).show();
+                    }
+
+                    // Fetch and update the professional examinations container
+                    fetchProfessionalExaminations("{{ employee.id }}");
+                },
+                error: function (error) {
+                    // Handle AJAX error
+                    console.log("AJAX Error:", error);
+                }
+            });
+        }
+
+        function updateProfilePicture(userId) {
+
+            var formData = new FormData();
+            formData.append('profile_picture', document.getElementById('profile-picture-upload').files[0]);
+            formData.append('employee_id', userId);
+            console.log(document.getElementById('profile-picture-upload').files[0]);
+            $.ajax({
+                type: 'POST',
+                url: '/user/update_profile_picture/',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data.success) {
+                        console.log('Profile picture updated successfully');
+                        // Add any additional logic or UI updates here
+                        const success_edit_toast = document.getElementById('success-profile-toast');
+                        bootstrap.Toast.getOrCreateInstance(success_edit_toast).show();
+                        $('#edit-profile-picture').modal('hide');
+                        setTimeout(function () {
+                            fetchPersonalInformation("{{ employee.id }}");
+                        }, 1000);
+                    } else {
+                        $('#profile-alert').show();
+                        $("#profile-alert").text(data.message).show();
+                        console.log('Failed to update profile picture: ' + data.message);
+                        const failed_edit_toast = document.getElementById('failed-profile-toast');
+                        bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log('Failed to update profile picture: ' + error);
+                    const failed_edit_toast = document.getElementById('failed-profile-toast');
+                    bootstrap.Toast.getOrCreateInstance(failed_edit_toast).show();
+                }
+            });
+        }
+
+    </script>
+    {% include 'includes/user_js_cdn.html' %}
+</body>
+
+</html>
