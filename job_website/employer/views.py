@@ -58,6 +58,8 @@ def dashboard(request):
         status='Pending').count()
     approved_applicants_count = Applicant.objects.filter(
         status='Approved').count()
+    rejected_applicants_count = Applicant.objects.filter(
+        status='Rejected').count()
 
     template = 'dashboard.html'
     context = {
@@ -66,6 +68,7 @@ def dashboard(request):
         'open_jobs_count': open_jobs_count,
         'pending_applicants_count': pending_applicants_count,
         'approved_applicants_count': approved_applicants_count,
+        'rejected_applicants_count': rejected_applicants_count,
     }
     return render(request, template, context)
 

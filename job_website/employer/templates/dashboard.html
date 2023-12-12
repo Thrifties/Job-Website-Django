@@ -2,131 +2,208 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
 
-        <title>{{title}}</title>
+    <title>{{title}}</title>
 
-        <!-- Custom fonts for this template -->
-        {% include 'includes/header-cdn.html' %}
+    <!-- Custom fonts for this template -->
+    {% include 'includes/header-cdn.html' %}
 
-        <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 
-    </head>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <body id="page-top">
 
-        <!-- Page Wrapper -->
-        <div id="wrapper">
+</head>
 
-            <!-- Sidebar -->
-            {% include 'includes/navbar.html' %}
-            <div class="banner d-flex justify-content-end align-items-center"></div>
+<body id="page-top">
 
-                    <!-- Begin Page Content -->
-                    <div class="container-fluid mt-3">
-                        
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-                        <!-- Page Heading -->
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <div class="purple-line">
-                                <h1 class="dashboard_header">
-                                    Dashboard
-                                </h1>
-                            </div>
-                            <a href="{% url 'generate_csv' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                        </div>
+        <!-- Sidebar -->
+        {% include 'includes/navbar.html' %}
+        <div class="banner d-flex justify-content-end align-items-center"></div>
 
-                        <!-- Content Row -->
-                        <div class="row">
+        <!-- Begin Page Content -->
+        <div class="container-fluid mt-3">
 
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    Posted Jobs</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ open_jobs_count }}</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="bi bi-briefcase-fill fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-success shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                    Pending Applicants</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_applicants_count }}</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="bi bi-person-fill-exclamation fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-info shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                    Approved Applicants
-                                                </div>
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col-auto">
-                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                            {{ approved_applicants_count }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="bi bi-person-fill-check fa-2x text-gray-300"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                    </div>
-                    <!-- /.container-fluid -->
-
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <div class="purple-line">
+                    <h1 class="dashboard_header">
+                        Dashboard
+                    </h1>
                 </div>
-                <!-- End of Main Content -->
+                <a href="{% url 'generate_csv' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row">
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Posted Jobs</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ open_jobs_count }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-briefcase-fill fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Pending Applicants</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_applicants_count }}
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-person-fill-exclamation fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Approved Applicants
+                                    </div>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                {{ approved_applicants_count }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-person-fill-check fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                        Rejected Applicants
+                                    </div>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                {{ rejected_applicants_count }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-person-fill-x fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
-            <!-- End of Content Wrapper -->
-
+            <!-- /.container-fluid -->
+            <div id="chartContainer" style=" height: 350px;">
+                <canvas id="jobChart"></canvas>
+            </div>
         </div>
-        <!-- End of Page Wrapper -->
+        <!-- End of Main Content -->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+    </div>
+    <!-- End of Content Wrapper -->
 
-        {% include 'includes/js-cdn.html' %}
+    </div>
+    <!-- End of Page Wrapper -->
 
-        <script>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-        </script>
-       
+    {% include 'includes/js-cdn.html' %}
 
-    </body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('jobChart').getContext('2d');
+
+            var jobChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Approve Jobs', 'Pending Jobs', 'Rejected Jobs', 'Accounts'],
+                    datasets: [{
+                        label: 'Job Status Counts & Account',
+                        data: ['{{ open_jobs_count|default:0 }}', '{{ pending_applicants_count|default:0 }}', '{{ approved_applicants_count|default:0 }}', '{{ rejected_applicants_count|default:0 }}'],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(255, 205, 86, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 205, 86, 1)',
+                            'rgba(54, 162, 235, 1)',
+                        ],
+                        borderWidth: 1,
+                        // Add display property to hide legend for this dataset
+                        legend: { display: false }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: false,  // Set display to false to hide the legend
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Job Counts'
+                    },
+                    labels: {
+                        // Add this line to hide the legend
+                        boxWidth: 0
+                    }
+                }
+            });
+        });
+    </script>
+
+
+</body>
 
 </html>
